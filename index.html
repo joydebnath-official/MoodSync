@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>MoodSync Pro 🎵</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<!-- Firebase SDK v9 compat (required for PhoneAuth + Google) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -164,7 +163,6 @@
   .link-accent:hover { text-decoration: underline; }
 
   /* ── Mobile logout in top bar ──────────────────────── */
-  /* Always visible on mobile, hidden on desktop (sidebar has logout there) */
   #mobile-logout-btn { display: none; }
   @media (max-width: 768px) { #mobile-logout-btn { display: flex; } }
   @media (max-width: 380px) { .mobile-logout-label { display: none; } #mobile-logout-btn { padding: .4rem .65rem; } }
@@ -412,27 +410,22 @@
 </head>
 <body class="no-pull">
 
-<!-- ======= AUTH SCREEN ======= -->
 <div id="auth-screen">
   <div class="auth-card" id="auth-card-glow">
 
-    <!-- Logo -->
     <div class="text-center mb-6">
       <div class="text-5xl mb-2 logo-glow">🎵</div>
       <h1 class="font-display text-2xl font-bold text-white">MoodSync <span style="color:var(--purple)">Pro</span></h1>
       <p class="text-xs mt-1" style="color:var(--muted)">Your premium music experience</p>
     </div>
 
-    <!-- Login / Sign Up Toggle -->
     <div class="flex gap-1.5 p-1 rounded-xl mb-5" style="background:rgba(255,255,255,0.04);border:1px solid rgba(168,85,247,0.18)">
       <button class="auth-toggle-tab active" id="main-tab-login" onclick="switchMainTab('login')">Login</button>
       <button class="auth-toggle-tab" id="main-tab-signup" onclick="switchMainTab('signup')">Sign Up</button>
     </div>
 
-    <!-- ══════════ LOGIN VIEW ══════════ -->
     <div id="view-login" class="auth-view flex flex-col gap-3">
 
-      <!-- Email -->
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="login-email" type="email"
                placeholder="Email address" autocomplete="email"
@@ -440,7 +433,6 @@
         <i class="fas fa-envelope input-icon"></i>
       </div>
 
-      <!-- Password -->
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="login-password" type="password"
                placeholder="Password" autocomplete="current-password"
@@ -451,19 +443,16 @@
         </button>
       </div>
 
-      <!-- Forgot -->
       <div class="text-right" style="margin-top:-.5rem">
         <button onclick="doPasswordReset()" class="link-btn">Forgot password?</button>
       </div>
 
-      <!-- Login button (neon glow) -->
       <button class="btn-primary glow-btn" id="email-login-btn" onclick="doEmailLogin()">
         <span id="email-login-label">Login</span>
       </button>
 
       <div class="or-divider">OR continue with</div>
 
-      <!-- Google -->
       <button class="google-btn" onclick="doGoogleSignIn()" id="google-login-btn">
         <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.7 29.3 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.8 20-21 0-1.4-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 16.3 3 9.6 7.8 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 36.5 26.8 37 24 37c-5.2 0-9.6-3.2-11.3-7.8l-6.6 4.9C9.7 40.9 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.5 4.6-4.6 6l6.2 5.2C40.8 36 44 30.5 44 24c0-1.4-.1-2.7-.4-4z"/></svg>
         Continue with Google
@@ -474,10 +463,8 @@
       </p>
     </div>
 
-    <!-- ══════════ SIGN UP VIEW (no OTP — email + google only) ══════════ -->
     <div id="view-signup" class="auth-view hidden flex flex-col gap-3">
 
-      <!-- Full name -->
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-name" type="text" placeholder="Full Name"
                autocomplete="name"
@@ -485,7 +472,6 @@
         <i class="fas fa-user input-icon"></i>
       </div>
 
-      <!-- Email -->
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-email" type="email" placeholder="Email address"
                autocomplete="email"
@@ -493,7 +479,6 @@
         <i class="fas fa-envelope input-icon"></i>
       </div>
 
-      <!-- Password -->
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-password" type="password"
                placeholder="Password (min 8 chars)" autocomplete="new-password"
@@ -504,14 +489,12 @@
         </button>
       </div>
 
-      <!-- Create Account button (neon glow) -->
       <button class="btn-primary glow-btn" id="signup-submit-btn" onclick="doEmailSignup()">
         <span id="signup-submit-label">Create Account</span>
       </button>
 
       <div class="or-divider">OR</div>
 
-      <!-- Google signup -->
       <button class="google-btn" onclick="doGoogleSignIn()">
         <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.7 29.3 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.8 20-21 0-1.4-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 16.3 3 9.6 7.8 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 36.5 26.8 37 24 37c-5.2 0-9.6-3.2-11.3-7.8l-6.6 4.9C9.7 40.9 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.5 4.6-4.6 6l6.2 5.2C40.8 36 44 30.5 44 24c0-1.4-.1-2.7-.4-4z"/></svg>
         Sign Up with Google
@@ -522,21 +505,16 @@
       </p>
     </div>
 
-    <!-- Error message -->
     <div id="auth-error" class="mt-3 text-center text-sm hidden"
          style="color:#ef4444;padding:.5rem .75rem;border-radius:8px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2)"></div>
 
-    <!-- reCAPTCHA container (kept for any future phone use, hidden) -->
     <div id="recaptcha-container" style="display:none"></div>
   </div>
 </div>
 
-<!-- ======= MAIN APP ======= -->
 <div id="app-screen">
-  <!-- Sidebar Overlay (mobile) -->
   <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
-  <!-- Sidebar -->
   <nav id="sidebar">
     <div class="px-4 mb-6">
       <div class="flex items-center gap-2">
@@ -574,16 +552,13 @@
     </div>
   </nav>
 
-  <!-- Main Content -->
   <div id="main-content">
-    <!-- Top bar -->
     <div class="flex items-center gap-3 px-4 py-3 border-b" style="border-color:var(--border);background:var(--surface)">
       <button id="hamburger" onclick="toggleSidebar()" class="p-2 rounded-lg" style="background:var(--surface2);border:1px solid var(--border)">
         <i class="fas fa-bars text-sm"></i>
       </button>
       <div id="page-title" class="font-display font-bold text-lg flex-1">Home</div>
       <div id="user-badge-top" class="text-xs px-3 py-1 rounded-full" style="background:var(--surface2);border:1px solid var(--border)"></div>
-      <!-- Mobile logout — always visible in top bar on mobile -->
       <button id="mobile-logout-btn" onclick="doLogout()"
               class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
               style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171"
@@ -593,10 +568,8 @@
       </button>
     </div>
 
-    <!-- Page area -->
     <div id="page-area"></div>
 
-    <!-- Player bar -->
     <div id="player-bar">
       <div class="player-thumb" id="player-thumb"><span id="player-emoji">🎵</span></div>
       <div id="track-info">
@@ -617,14 +590,12 @@
   </div>
 </div>
 
-<!-- Premium Popup -->
 <div id="premium-popup" class="modal-overlay hidden">
   <div class="modal-box text-center" style="max-width:420px">
     <div class="text-5xl mb-3">⭐</div>
     <h2 class="font-display text-xl font-bold mb-1">Unlock Premium Access</h2>
     <p class="text-sm mb-4" style="color:var(--muted)">You're on the <strong style="color:#aaa">Basic (Free)</strong> plan. Upgrade now for ad-free music, A-Z sorting, and all Pro features!</p>
 
-    <!-- Plans at a glance -->
     <div class="flex gap-2 mb-4 text-left">
       <div class="flex-1 p-3 rounded-xl" style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3)">
         <div class="font-display font-bold text-sm mb-1" style="color:var(--purple)">Premium ⭐</div>
@@ -638,7 +609,6 @@
       </div>
     </div>
 
-    <!-- bKash payment details -->
     <div class="p-3 rounded-xl mb-4 text-left" style="background:rgba(232,0,75,0.08);border:1px solid rgba(232,0,75,0.25)">
       <div class="flex items-center gap-2 mb-2">
         <span style="color:#e8004b;font-size:1rem">🏦</span>
@@ -666,7 +636,6 @@
   </div>
 </div>
 
-<!-- Boys Tips Modal -->
 <div id="boys-modal" class="modal-overlay hidden">
   <div class="modal-box">
     <div class="flex items-center justify-between mb-4">
@@ -685,7 +654,6 @@
   </div>
 </div>
 
-<!-- Admin PIN Re-auth Modal -->
 <div id="admin-pin-modal" class="modal-overlay hidden">
   <div class="modal-box" style="max-width:380px">
     <div class="text-center mb-5">
@@ -709,7 +677,6 @@
       </button>
       <button onclick="closeAdminPinModal()" class="text-sm py-2 transition-all" style="color:var(--muted)">Cancel</button>
     </div>
-    <!-- Rate limit display -->
     <div id="admin-lockout-msg" class="hidden mt-3 text-center text-xs p-2 rounded-lg" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3)">
       <i class="fas fa-clock mr-1"></i><span id="lockout-text"></span>
     </div>
@@ -734,28 +701,9 @@
   </div>
 </div>
 
-<!-- Hidden YouTube player -->
 <div id="yt-player"></div>
 
-<!-- NOTE: Adsterra ad scripts are loaded dynamically after login,
-     only for Basic users. See loadAdsterraForBasicUser() in JS. -->
-
 <script>
-// ============================================================
-//  Firebase Config
-// ============================================================
-// ============================================================
-//  Firebase REST Helpers — ID Token Auth Edition
-//
-//  ROOT CAUSE OF "Could not persist deletion":
-//  All requests were using ?auth=API_KEY. Firebase RTDB Security
-//  Rules that check auth.token.email require a proper ID Token
-//  (JWT from Firebase Auth), NOT the web API key.
-//  API key auth only works when rules are ".write": true (public).
-//  Since rules now check auth.token.email, every write/delete
-//  must send getIdToken() from the currently signed-in user.
-// ============================================================
-
 const FB_URL = 'https://moodsync-678a0-default-rtdb.firebaseio.com';
 const FB_KEY = 'AIzaSyChct2KNjBxVENH_6tc36l0eh5n4SnNtSA'; // reads only
 
@@ -776,14 +724,6 @@ function _assertSafePath(path, operation) {
   return segments;
 }
 
-// Returns a Firebase ID Token for authenticated REST requests.
-// IMPORTANT: The hardcoded admin (uid='admin-hardcoded') has NO real Firebase
-// Auth session, so getIdToken() returns null for them. This means Firebase
-// Security Rules that check auth.token.email will reject their writes.
-//
-// Solution: The real admin email (joydebnath.info@gmail.com) must log in via
-// Email/Password or Google so fbAuth.currentUser is a real Firebase user.
-// The hardcoded admin bypass only works for reading/navigating the app.
 async function _getIdToken(forceRefresh = false) {
   try {
     if (fbAuth && fbAuth.currentUser) {
@@ -791,21 +731,12 @@ async function _getIdToken(forceRefresh = false) {
       console.debug('[Auth Token] ✅ Got ID token for:', fbAuth.currentUser.email);
       return token;
     }
-    // No Firebase Auth session — hardcoded admin or legacy user
-    console.warn(
-      '[Auth Token] ⚠️ No Firebase Auth session.\n' +
-      'fbAuth.currentUser is null. This happens when using the hardcoded admin login.\n' +
-      'Firebase Security Rules require a real ID token.\n' +
-      'Please log in with joydebnath.info@gmail.com via Email/Google to write to the database.'
-    );
   } catch(e) {
     console.warn('[Auth Token] getIdToken failed:', e.message);
   }
-  // Fallback to API key — only works if rules allow unauthenticated writes (not recommended)
   return FB_KEY;
 }
 
-// READ — public data, use API key
 async function fbRead(path) {
   try {
     if (!path) { console.warn('[Firebase READ] empty path'); return null; }
@@ -818,7 +749,6 @@ async function fbRead(path) {
   }
 }
 
-// WRITE (PUT) — replaces a specific node; uses ID token
 async function fbWrite(path, data) {
   try {
     _assertSafePath(path, 'PUT/Write');
@@ -840,7 +770,6 @@ async function fbWrite(path, data) {
   }
 }
 
-// PATCH (MERGE) — updates only specified keys; uses ID token
 async function fbPatch(path, data) {
   try {
     _assertSafePath(path, 'PATCH/Update');
@@ -862,7 +791,6 @@ async function fbPatch(path, data) {
   }
 }
 
-// PUSH (POST) — appends a child with auto-key; uses ID token
 async function fbPush(path, data) {
   try {
     if (!path || typeof path !== 'string') throw new Error('Invalid path');
@@ -877,14 +805,13 @@ async function fbPush(path, data) {
       console.error(`[Firebase PUSH] HTTP ${r.status} for "${path}":`, body);
       return null;
     }
-    return await r.json(); // { name: "-OsgXzk..." }
+    return await r.json();
   } catch(e) {
     console.error(`[Firebase PUSH] error at "${path}":`, e.message);
     return null;
   }
 }
 
-// DELETE — uses fresh ID token (forceRefresh=true); path must be ≥ 2 segments
 async function fbDelete(path) {
   try {
     const segments = _assertSafePath(path, 'DELETE');
@@ -895,7 +822,6 @@ async function fbDelete(path) {
       return false;
     }
 
-    // Belt-and-suspenders: verify caller is authorised before touching DB
     const callerEmail = (fbAuth?.currentUser?.email || currentUser?.email || '').toLowerCase();
     const isAuthorised = callerEmail === SONG_DELETE_EMAIL.toLowerCase()
                       || callerEmail === ADMIN_EMAIL.toLowerCase()
@@ -906,58 +832,19 @@ async function fbDelete(path) {
       return false;
     }
 
-    // Force-refresh the token to ensure it isn't expired before a delete
     let token;
     try {
       token = await fbAuth.currentUser.getIdToken(true);
-      console.log(`[Firebase DELETE] ID token obtained for ${callerEmail}`);
     } catch(e) {
       console.error('[Firebase DELETE] getIdToken(true) failed:', e.message);
       return false;
     }
 
-    console.log(`[Firebase DELETE] Sending DELETE → ${FB_URL}/${path}`);
-
     const res = await fetch(`${FB_URL}/${path}.json?auth=${token}`, { method: 'DELETE' });
 
     if (!res.ok) {
-      const body = await res.text().catch(() => '');
-      console.error(`[Firebase DELETE] HTTP ${res.status} for "${path}":`, body);
-
-      if (res.status === 401 || res.status === 403) {
-        const rulesHint =
-          '{\n' +
-          '  "rules": {\n' +
-          '    "songs": {\n' +
-          '      ".read": true,\n' +
-          '      ".write": "auth != null && auth.token.email === \'joydebnath.info@gmail.com\'"\n' +
-          '    },\n' +
-          '    "deleted_songs": {\n' +
-          '      ".read": true,\n' +
-          '      ".write": "auth != null && auth.token.email === \'joydebnath.info@gmail.com\'"\n' +
-          '    },\n' +
-          '    "users": {\n' +
-          '      ".read": "auth != null",\n' +
-          '      ".write": "auth != null"\n' +
-          '    }\n' +
-          '  }\n' +
-          '}';
-        console.error(
-          `[Firebase DELETE] ❌ Permission Denied (HTTP ${res.status}).\n` +
-          `Caller: ${callerEmail}\n` +
-          `Token obtained: ${token ? 'YES' : 'NO'}\n` +
-          `Required RTDB rules:\n${rulesHint}`
-        );
-        alert(
-          `Delete failed: Permission Denied (HTTP ${res.status})\n\n` +
-          `Logged in as: ${callerEmail}\n\n` +
-          `Open the browser console (F12) to see the exact RTDB rules you need to set.`
-        );
-      }
       return false;
     }
-
-    console.log(`[Firebase DELETE] ✅ Success: ${FB_URL}/${path}`);
     return true;
 
   } catch(e) {
@@ -968,17 +855,8 @@ async function fbDelete(path) {
 
 const fbGet = fbRead;
 
-// ============================================================
-//  Song Database — loaded from Firebase only
-// ============================================================
-
-// ============================================================
-//  App State — Pure Firebase Mode
-//  Songs are loaded exclusively from Firebase Realtime Database.
-//  No hardcoded songs. Add songs via Admin Panel → Add Song.
-// ============================================================
 let currentUser = null;
-let songs = [];          // populated by loadSongsFromCloud()
+let songs = [];          
 let filteredSongs = [];
 let currentTrackIdx = -1;
 let isPlaying = false;
@@ -986,20 +864,12 @@ let ytPlayer = null;
 let ytReady = false;
 let progressInterval = null;
 let currentPage = 'home';
-
-// Admin session — must be verified at runtime, separate from login
-// This prevents console-based bypass: even if someone forces navigate('admin'),
-// renderAdmin checks this flag which cannot be set without correct credentials.
 let adminSessionToken = null;
-const ADMIN_SESSION_KEY = 'ms_ast'; // ephemeral, only in memory
+const ADMIN_SESSION_KEY = 'ms_ast';
 
-// ============================================================
-//  Auth Functions
-// ============================================================
 const ADMIN_PHONE = '01540595258';
 const ADMIN_PASS  = 'Qwerasdf1234@#';
-const ADMIN_EMAIL = 'joydebnath.info@gmail.com'; // Email-based admin login
-// The only email allowed to delete songs from the list
+const ADMIN_EMAIL = 'joydebnath.info@gmail.com'; 
 const SONG_DELETE_EMAIL = 'joydebnath.info@gmail.com';
 
 function switchTab(tab) {
@@ -1021,56 +891,10 @@ function switchTab(tab) {
   }
 }
 
-function showAuthError(msg) {
-  const el = document.getElementById('auth-error');
-  el.textContent = msg;
-  el.classList.remove('hidden');
-  el.style.animation = 'none';
-  el.offsetHeight;
-  el.style.animation = 'shake .4s ease';
-}
-function clearAuthError() {
-  const el = document.getElementById('auth-error');
-  if (el) el.classList.add('hidden');
-}
-
-// ============================================================
-//  Firebase Multi-Auth Init
-// ============================================================
-const FB_AUTH_CONFIG = {
-  apiKey: 'AIzaSyChct2KNjBxVENH_6tc36l0eh5n4SnNtSA',
-  authDomain: 'moodsync-678a0.firebaseapp.com',
-  databaseURL: 'https://moodsync-678a0-default-rtdb.firebaseio.com',
-  projectId: 'moodsync-678a0',
-  storageBucket: 'moodsync-678a0.firebasestorage.app',
-  appId: '1:818211283248:web:02ea0707218c0b9c7ee8f5'
-};
-
-let fbApp, fbAuth, fbDatabase;
-try {
-  fbApp      = firebase.initializeApp(FB_AUTH_CONFIG);
-  fbAuth     = firebase.auth();
-  fbDatabase = firebase.database();
-  // Enable persistence so phone-auth state survives refresh
-  fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
-} catch(e) { console.warn('Firebase init skipped (already initialized or unavailable):', e.message); }
-
-let confirmationResult = null;
-let recaptchaVerifier  = null;
-let resendCountdown    = null;
-
-// ── Unified user save to Firebase Realtime DB ─────────────────
-// Uses PATCH (merge) for existing users so we never overwrite fields
-// that aren't being updated (e.g. status, createdAt, phone).
-// Uses PUT only for brand-new users who don't have a record yet.
+// ── Unified User Layout Sync ──
 async function saveUserToDB(uid, profile) {
-  if (!uid) {
-    console.error('[saveUserToDB] uid is null/empty — aborting write');
-    return null;
-  }
-
+  if (!uid) return null;
   const existing = await fbGet(`users/${uid}`);
-
   const record = {
     uid,
     name:       profile.name       || existing?.name       || 'MoodSync User',
@@ -1083,7 +907,6 @@ async function saveUserToDB(uid, profile) {
   };
 
   if (existing) {
-    // User exists — PATCH (merge) only changed fields, never touch what's already there
     await fbPatch(`users/${uid}`, {
       name:       record.name,
       email:      record.email,
@@ -1092,14 +915,11 @@ async function saveUserToDB(uid, profile) {
       lastLogin:  record.lastLogin
     });
   } else {
-    // New user — full PUT to create the record
     await fbWrite(`users/${uid}`, record);
   }
-
   return record;
 }
 
-// ── Main tab switcher (Login ↔ Sign Up) ──────────────────────
 function switchMainTab(tab) {
   const isLogin = tab === 'login';
   const loginView  = document.getElementById('view-login');
@@ -1120,271 +940,38 @@ function switchMainTab(tab) {
     loginView.classList.add('hidden');
     tabSignup.classList.add('active');
     tabLogin.classList.remove('active');
-    // Always reset to step 1 when switching to signup
-    backToSignupStep1(true);
   }
 }
 
-// ── Signup OTP flow ───────────────────────────────────────────
-let signupPendingData = null; // holds name/email/pass while OTP is pending
-
-async function doSignupSendOTP(isResend = false) {
-  // Collect and validate all fields first
-  const name  = document.getElementById('signup-name').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const pass  = document.getElementById('signup-password').value;
-  const cc    = document.getElementById('signup-country-code').value;
-  const phone = document.getElementById('signup-phone-input').value.trim().replace(/^0+/, '');
-
-  if (!name)  { showAuthError('Please enter your full name.'); return; }
-  if (!email) { showAuthError('Please enter your email address.'); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError('Please enter a valid email address.'); return; }
-  if (!pass || pass.length < 8) { showAuthError('Password must be at least 8 characters.'); return; }
-  if (!phone || phone.length < 7) { showAuthError('Please enter a valid phone number.'); return; }
-
-  const fullPhone = `${cc}${phone}`;
-  clearAuthError();
-  setBtnLoading('signup-send-otp-btn', true, 'Sending OTP…');
-
-  try {
-    if (!recaptchaVerifier || isResend) {
-      if (recaptchaVerifier) { try { recaptchaVerifier.clear(); } catch(e){} }
-      recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-        size: 'invisible', callback: () => {}
-      });
-      await recaptchaVerifier.render();
-    }
-
-    confirmationResult = await fbAuth.signInWithPhoneNumber(fullPhone, recaptchaVerifier);
-
-    // Store details to use after OTP verified
-    signupPendingData = { name, email, pass, phone: fullPhone };
-
-    // Slide to OTP step
-    document.getElementById('signup-otp-sent-to').textContent = fullPhone;
-    document.getElementById('signup-step1').classList.add('hidden');
-    document.getElementById('signup-step2').classList.remove('hidden');
-    document.getElementById('signup-step2').classList.add('auth-view');
-    startSignupResendTimer();
-    setTimeout(() => document.querySelectorAll('.otp-box')[0]?.focus(), 100);
-  } catch(err) {
-    const msg = err.code === 'auth/invalid-phone-number'  ? 'Invalid phone number. Include country code.'
-              : err.code === 'auth/too-many-requests'     ? 'Too many attempts. Please wait and try again.'
-              : err.message || 'Failed to send OTP.';
-    showAuthError(msg);
-  } finally {
-    setBtnLoading('signup-send-otp-btn', false, 'Send OTP to Verify <i class="fas fa-arrow-right ml-1"></i>');
-  }
-}
-
-async function doSignupVerifyOTP() {
-  const code = getOTPCode();
-  if (code.length < 6) { showAuthError('Please enter all 6 digits.'); return; }
-  if (!confirmationResult || !signupPendingData) { showAuthError('Please request an OTP first.'); return; }
-  clearAuthError();
-  setBtnLoading('signup-verify-btn', true, 'Verifying…');
-
-  try {
-    // Step 1: Verify phone OTP — this signs in via phone
-    const result = await confirmationResult.confirm(code);
-    const fbUser = result.user;
-    const { name, email, pass, phone } = signupPendingData;
-
-    // Step 2: Link email+password credential to the phone-auth account
-    // This lets the user also log in via email/password in future
-    try {
-      const emailCred = firebase.auth.EmailAuthProvider.credential(email, pass);
-      await fbUser.linkWithCredential(emailCred);
-    } catch(linkErr) {
-      // auth/email-already-in-use = email exists in another account → still save data, don't block
-      if (linkErr.code !== 'auth/email-already-in-use' && linkErr.code !== 'auth/provider-already-linked') {
-        console.warn('Email link skipped:', linkErr.code);
-      }
-    }
-
-    // Step 3: Update display name
-    await fbUser.updateProfile({ displayName: name });
-
-    // Step 4: Save full profile to Firebase Realtime DB
-    const profile = await saveUserToDB(fbUser.uid, {
-      uid:        fbUser.uid,
-      name,
-      email,
-      phone,
-      authMethod: 'phone-otp+email',
-      status:     'basic'
-    });
-
-    currentUser = { ...profile, uid: fbUser.uid };
-    saveSession(currentUser);
-    signupPendingData = null;
-    launchApp();
-  } catch(err) {
-    const msg = err.code === 'auth/invalid-verification-code' ? 'Incorrect OTP code. Please try again.'
-              : err.code === 'auth/code-expired'              ? 'OTP has expired. Please request a new one.'
-              : err.message || 'Verification failed. Try again.';
-    showAuthError(msg);
-    document.querySelectorAll('.otp-box').forEach(b => b.value = '');
-    document.querySelectorAll('.otp-box')[0]?.focus();
-  } finally {
-    setBtnLoading('signup-verify-btn', false, 'Verify & Create Account <i class="fas fa-check ml-1"></i>');
-  }
-}
-
-function backToSignupStep1(silent = false) {
-  const s1 = document.getElementById('signup-step1');
-  const s2 = document.getElementById('signup-step2');
-  if (!s1 || !s2) return;
-  s2.classList.add('hidden');
-  s1.classList.remove('hidden');
-  if (!silent) clearInterval(resendCountdown);
-  document.querySelectorAll('.otp-box').forEach(b => b.value = '');
-  if (!silent) clearAuthError();
-}
-
-function startSignupResendTimer() {
-  let secs = 30;
-  const timerEl = document.getElementById('signup-resend-timer');
-  const linkEl  = document.getElementById('signup-resend-link');
-  const countEl = document.getElementById('signup-resend-count');
-  if (timerEl) timerEl.classList.remove('hidden');
-  if (linkEl)  linkEl.classList.add('hidden');
-  clearInterval(resendCountdown);
-  resendCountdown = setInterval(() => {
-    secs--;
-    if (countEl) countEl.textContent = secs;
-    if (secs <= 0) {
-      clearInterval(resendCountdown);
-      if (timerEl) timerEl.classList.add('hidden');
-      if (linkEl)  linkEl.classList.remove('hidden');
-    }
-  }, 1000);
-}
-
-function getOTPCode() {
-  return [...document.querySelectorAll('.otp-box')].map(b => b.value).join('');
-}
-
-function togglePassVis(inputId, iconId) {
-  const inp = document.getElementById(inputId);
-  const ico = document.getElementById(iconId);
-  if (!inp) return;
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-  ico.className = inp.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
-}
-
-// ── OTP Box helpers ───────────────────────────────────────────
-function otpBoxInput(el, idx) {
-  el.value = el.value.replace(/\D/g,'').slice(-1);
-  if (el.value && idx < 5) {
-    document.querySelectorAll('.otp-box')[idx + 1].focus();
-  }
-  // Auto-submit when all 6 filled
-  const vals = [...document.querySelectorAll('.otp-box')].map(b => b.value);
-  if (vals.every(v => v)) doSignupVerifyOTP();
-}
-function otpBoxKey(e, idx) {
-  if (e.key === 'Backspace' && !e.target.value && idx > 0) {
-    document.querySelectorAll('.otp-box')[idx - 1].focus();
-  }
-}
-function getOTPCode() {
-  return [...document.querySelectorAll('.otp-box')].map(b => b.value).join('');
-}
-
-// ── Google Sign-In ────────────────────────────────────────────
-// Guard flag: prevents auth/cancelled-popup-request when the user
-// clicks the button a second time while a popup is already open.
 let googlePopupOpen = false;
-
 async function doGoogleSignIn() {
-  // Block duplicate popup requests — the #1 cause of cancelled-popup-request
-  if (googlePopupOpen) {
-    showAuthError('A sign-in window is already open. Please complete it.');
-    return;
-  }
+  if (googlePopupOpen) return;
   clearAuthError();
-
-  // Check if there's a pending redirect result first (handles mobile redirect flow)
-  try {
-    const redirectResult = await fbAuth.getRedirectResult();
-    if (redirectResult && redirectResult.user) {
-      await _handleGoogleUser(redirectResult.user);
-      return;
-    }
-  } catch(e) { /* no pending redirect — proceed to popup */ }
-
   googlePopupOpen = true;
   const provider = new firebase.auth.GoogleAuthProvider();
-  provider.addScope('profile');
-  provider.addScope('email');
-  // Force account picker every time so user can choose a different account
-  provider.setCustomParameters({ prompt: 'select_account' });
-
   try {
     const result = await fbAuth.signInWithPopup(provider);
-    await _handleGoogleUser(result.user);
+    const profile = await saveUserToDB(result.user.uid, { name: result.user.displayName, email: result.user.email, authMethod: 'google' });
+    currentUser = { ...profile, uid: result.user.uid };
+    saveSession(currentUser);
+    launchApp();
   } catch(err) {
-    // Silent codes — user dismissed the popup intentionally
-    const silentCodes = [
-      'auth/popup-closed-by-user',
-      'auth/cancelled-popup-request',
-      'auth/user-cancelled'
-    ];
-    if (!silentCodes.includes(err.code)) {
-      const msg = err.code === 'auth/popup-blocked'
-        ? 'Popup was blocked by your browser. Please allow popups for this site.'
-        : err.code === 'auth/network-request-failed'
-        ? 'Network error. Check your connection and try again.'
-        : err.message || 'Google sign-in failed';
-      showAuthError(msg);
-    }
+    showAuthError(err.message || 'Google sign-in failed');
   } finally {
-    googlePopupOpen = false; // Always release the lock
+    googlePopupOpen = false;
   }
-}
-
-async function _handleGoogleUser(fbUser) {
-  const profile = await saveUserToDB(fbUser.uid, {
-    name:  fbUser.displayName || '',
-    email: fbUser.email       || '',
-    authMethod: 'google'
-  });
-  currentUser = { ...profile, uid: fbUser.uid };
-  saveSession(currentUser);
-  launchApp();
-}
-
-// ── Email / Password Auth ─────────────────────────────────────
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 async function doEmailLogin() {
   const email = document.getElementById('login-email')?.value?.trim() || '';
   const pass  = document.getElementById('login-password')?.value || '';
 
-  // Validation
-  if (!email) { showAuthError('Please enter your email address.'); return; }
-  if (!isValidEmail(email)) { showAuthError('Please enter a valid email (e.g. name@example.com).'); return; }
-  if (!pass) { showAuthError('Please enter your password.'); return; }
-  if (pass.length < 8) { showAuthError('Password must be at least 8 characters.'); return; }
+  if (!email || !pass) { showAuthError('Please fill all fields.'); return; }
   clearAuthError();
 
-  // ── ADMIN GATE — signs in to Firebase Auth to get a real token ─
   if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && pass === ADMIN_PASS) {
     setAuthLoading(true, 'email-login-btn', 'email-login-label', 'Logging in…');
-    try {
-      // Sign in to Firebase Auth so fbAuth.currentUser is real.
-      // This gives getIdToken() a valid JWT — required for all DB writes.
-      await fbAuth.signInWithEmailAndPassword(email, pass);
-      console.log('[Admin Login] ✅ Firebase Auth session created for', email);
-    } catch(firebaseErr) {
-      // Firebase Auth sign-in failed (account may not exist in Firebase Auth yet)
-      // This is non-blocking — admin UI still works, but DB writes will use API key fallback
-      console.warn('[Admin Login] Firebase Auth sign-in failed (non-blocking):', firebaseErr.code);
-      console.warn('[Admin Login] To fix: create this account in Firebase Console → Authentication → Add User');
-    }
+    try { await fbAuth.signInWithEmailAndPassword(email, pass); } catch(e){}
     adminSessionToken = generateToken();
     currentUser = { name:'Master Admin', email:ADMIN_EMAIL, phone:ADMIN_PHONE, status:'admin', uid: fbAuth.currentUser?.uid || 'admin-hardcoded', authMethod:'email' };
     saveSession(currentUser);
@@ -1392,33 +979,17 @@ async function doEmailLogin() {
     launchApp();
     return;
   }
-  // ─────────────────────────────────────────────────────────────
 
   setAuthLoading(true, 'email-login-btn', 'email-login-label', 'Logging in…');
   try {
     const result = await fbAuth.signInWithEmailAndPassword(email, pass);
-    const fbUser = result.user;
-    const profile = await saveUserToDB(fbUser.uid, {
-      email: fbUser.email,
-      name:  fbUser.displayName || email.split('@')[0],
-      authMethod: 'email'
-    });
-    currentUser = { ...profile, uid: fbUser.uid };
+    const profile = await saveUserToDB(result.user.uid, { email: result.user.email, name: result.user.displayName || email.split('@')[0], authMethod: 'email' });
+    currentUser = { ...profile, uid: result.user.uid };
     saveSession(currentUser);
     launchApp();
   } catch(err) {
-    const msg =
-      err.code === 'auth/user-not-found'         ? 'No account found with this email. Please sign up.'
-    : err.code === 'auth/wrong-password'         ? 'Incorrect password. Please try again.'
-    : err.code === 'auth/invalid-credential'     ? 'Email or password is incorrect.'
-    : err.code === 'auth/invalid-email'          ? 'Invalid email address.'
-    : err.code === 'auth/user-disabled'          ? 'Account disabled. Contact support.'
-    : err.code === 'auth/too-many-requests'      ? 'Too many attempts. Please wait and try again.'
-    : err.code === 'auth/network-request-failed' ? 'Network error. Check your connection.'
-    : err.message || 'Login failed. Please try again.';
-    showAuthError(msg);
+    showAuthError(err.message || 'Login failed.');
   } finally {
-    // Always re-enable — this fixes the "no response after logout" bug
     setAuthLoading(false, 'email-login-btn', 'email-login-label', 'Login');
   }
 }
@@ -1428,288 +999,95 @@ async function doEmailSignup() {
   const email = document.getElementById('signup-email')?.value?.trim() || '';
   const pass  = document.getElementById('signup-password')?.value || '';
 
-  if (!name)  { showAuthError('Please enter your full name.'); return; }
-  if (!email) { showAuthError('Please enter your email address.'); return; }
-  if (!isValidEmail(email)) { showAuthError('Please enter a valid email address.'); return; }
-  if (!pass || pass.length < 8) { showAuthError('Password must be at least 8 characters.'); return; }
+  if (!name || !email || pass.length < 8) { showAuthError('Invalid input configurations.'); return; }
   clearAuthError();
 
   setAuthLoading(true, 'signup-submit-btn', 'signup-submit-label', 'Creating account…');
   try {
     const result = await fbAuth.createUserWithEmailAndPassword(email, pass);
-    const fbUser = result.user;
-    await fbUser.updateProfile({ displayName: name });
-    const profile = await saveUserToDB(fbUser.uid, {
-      uid: fbUser.uid, name, email, authMethod: 'email'
-    });
-    currentUser = { ...profile, uid: fbUser.uid };
+    await result.user.updateProfile({ displayName: name });
+    const profile = await saveUserToDB(result.user.uid, { uid: result.user.uid, name, email, authMethod: 'email' });
+    currentUser = { ...profile, uid: result.user.uid };
     saveSession(currentUser);
     launchApp();
   } catch(err) {
-    const msg =
-      err.code === 'auth/email-already-in-use' ? 'This email is already registered. Try logging in.'
-    : err.code === 'auth/invalid-email'        ? 'Invalid email address.'
-    : err.code === 'auth/weak-password'        ? 'Password is too weak. Use at least 8 characters.'
-    : err.message || 'Sign up failed. Please try again.';
-    showAuthError(msg);
+    showAuthError(err.message);
   } finally {
     setAuthLoading(false, 'signup-submit-btn', 'signup-submit-label', 'Create Account');
   }
 }
 
-// ── Unified button loading helper (fixes disabled-after-logout bug) ──
-// Uses a label <span> inside the button rather than innerHTML on the button
-// directly, so the button element stays in the DOM with proper event listeners.
 function setAuthLoading(isLoading, btnId, labelId, labelText) {
   const btn   = document.getElementById(btnId);
   const label = document.getElementById(labelId);
   if (!btn) return;
   btn.disabled = isLoading;
-  if (label) label.innerHTML = isLoading ? '<span class="spinner"></span>' : labelText;
+  if (label) label.innerHTML = isLoading ? '<i class="fas fa-spinner fa-spin"></i>' : labelText;
 }
 
 async function doPasswordReset() {
   const email = document.getElementById('login-email')?.value?.trim() || '';
-  if (!email) { showAuthError('Enter your email address above first.'); return; }
-  try {
-    await fbAuth.sendPasswordResetEmail(email);
-    showToast('Password reset email sent! Check your inbox.');
-  } catch(err) {
-    showAuthError(err.message || 'Reset failed. Check the email address.');
-  }
+  if (!email) return;
+  try { await fbAuth.sendPasswordResetEmail(email); showToast('Reset email sent!'); } catch(e){}
 }
 
-const SESSION_KEY = 'ms_session_v1';
+function saveSession(user) { try { localStorage.setItem(SESSION_KEY, JSON.stringify(user)); } catch(e) {} }
+function clearSession() { try { localStorage.removeItem(SESSION_KEY); } catch(e) {} }
+function loadSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) { return null; } }
 
-// Saves the current user object to localStorage so the session
-// survives tab closes and browser restarts. Password is included
-// because we re-validate it against Firebase on restore to pick
-// up any status changes (e.g. admin upgraded user to premium).
-function saveSession(user) {
-  try {
-    localStorage.setItem(SESSION_KEY, JSON.stringify(user));
-  } catch(e) { /* storage might be blocked in private mode */ }
-}
-
-function clearSession() {
-  try { localStorage.removeItem(SESSION_KEY); } catch(e) {}
-}
-
-function loadSession() {
-  try {
-    const raw = localStorage.getItem(SESSION_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch(e) { return null; }
-}
-
-// Called once on page load — restores session if one exists.
 async function tryAutoLogin() {
   const saved = loadSession();
   if (!saved) return;
-
-  // Admin session restore
   if (saved.phone === ADMIN_PHONE && saved.status === 'admin') {
-    // Firebase Auth persistence (LOCAL) should already have the session.
-    // If fbAuth.currentUser is null (e.g. token expired), the regular
-    // signInWithEmailAndPassword on next manual login will fix it.
-    adminSessionToken = generateToken();
-    currentUser = saved;
-    // If Firebase Auth still has the session, great. If not, DB reads still work (public).
-    // DB writes will fail until next manual login — acceptable for session restore.
-    console.log('[AutoLogin] Admin session restored. fbAuth.currentUser:', fbAuth?.currentUser?.email || 'null (will need re-login for writes)');
-    launchApp(true);
-    return;
+    adminSessionToken = generateToken(); currentUser = saved; launchApp(true); return;
   }
-
-  // Firebase Auth state (Google / Email / Phone OTP users have a UID)
-  if (saved.uid && fbAuth) {
-    // Firebase Auth handles its own persistence — check if user is still signed in
-    const fbUser = fbAuth.currentUser;
-    if (fbUser && fbUser.uid === saved.uid) {
-      // Re-fetch fresh profile from DB (to get latest status)
-      const profile = await fbGet(`users/${fbUser.uid}`);
-      if (profile) {
-        currentUser = { ...profile, uid: fbUser.uid };
-        saveSession(currentUser);
-        launchApp(true);
-        return;
-      }
-    }
-    // UID session exists but FB session expired — try DB lookup by UID
+  if (saved.uid) {
     const profile = await fbGet(`users/${saved.uid}`);
-    if (profile) {
-      currentUser = { ...profile, uid: saved.uid };
-      saveSession(currentUser);
-      launchApp(true);
-      return;
-    }
+    if (profile) { currentUser = { ...profile, uid: saved.uid }; saveSession(currentUser); launchApp(true); return; }
   }
-
-  // Legacy phone+password users (no UID)
-  if (saved.phone && saved.password) {
-    const users = await fbGet('users');
-    if (users) {
-      for (const key of Object.keys(users)) {
-        const u = users[key];
-        if ((u.phone === saved.phone) && u.password === saved.password) {
-          currentUser = { ...u, key };
-          saveSession(currentUser);
-          launchApp(true);
-          return;
-        }
-      }
-    }
-  }
-
-  // Session stale — clear it
   clearSession();
 }
 
-// ── Generates a cryptographically random hex token ───────────
 function generateToken() {
-  const arr = new Uint8Array(32);
-  crypto.getRandomValues(arr);
+  const arr = new Uint8Array(32); crypto.getRandomValues(arr);
   return Array.from(arr).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-// ── Logout ────────────────────────────────────────────────────
-function doLogout() {
-  clearSession();
-  currentUser = null;
-  adminSessionToken = null;
-  adsterraLoaded = false;
-  confirmationResult = null;
-  signupPendingData  = null;
-  currentTrackIdx = -1;
-  isPlaying = false;
-  ytLoadPending = false;
-  if (ytPlayer) { try { ytPlayer.stopVideo(); } catch(e){} }
-  clearInterval(progressInterval);
-  if (fbAuth) fbAuth.signOut().catch(() => {});
-  document.getElementById('app-screen').classList.remove('visible');
-  document.getElementById('auth-screen').style.display = 'flex';
+function doLogout() { clearSession(); location.reload(); }
 
-  // Re-enable buttons (critical: fixes "no response" after logout)
-  ['email-login-btn','signup-submit-btn'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) btn.disabled = false;
-  });
-
-  // Clear inputs
-  ['login-email','login-password','signup-name','signup-email','signup-password'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-
-  // Reset label spans
-  const loginLabel  = document.getElementById('email-login-label');
-  const signupLabel = document.getElementById('signup-submit-label');
-  if (loginLabel)  loginLabel.innerHTML  = 'Login';
-  if (signupLabel) signupLabel.innerHTML = 'Create Account';
-
-  // Reset to Login view
-  switchMainTab('login');
-  clearAuthError();
-}
-// isRestore=true means auto-login from saved session
 function launchApp(isRestore = false) {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app-screen').classList.add('visible');
   updateUserUI();
   loadSongsFromCloud();
   navigate('home');
-
-  // ── Load Adsterra display ads (Basic users only, post-login) ─
-  // Auth/login page stays completely clean. Ads inject only here.
   loadAdsterraForBasicUser();
-  // ─────────────────────────────────────────────────────────────
-
-  // ── Auto-trigger Premium modal ────────────────────────────
-  // Only shown to Basic users. Fires every page visit with a
-  // 5-second delay. Premium/VIP/Admin never see it.
-  if (currentUser.status === 'basic') {
-    setTimeout(() => {
-      if (currentUser && currentUser.status === 'basic') {
-        document.getElementById('premium-popup').classList.remove('hidden');
-      }
-    }, 5000);
-  }
-  // ──────────────────────────────────────────────────────────
 }
 
 function updateUserUI() {
-  const statusMap = {
-    basic: { label: 'Basic', cls: 'badge-basic', icon: '' },
-    premium: { label: 'Premium ⭐', cls: 'badge-premium', icon: '⭐' },
-    vip: { label: 'Ultra VIP 👑', cls: 'badge-vip', icon: '👑' },
-    admin: { label: 'Admin 🛡️', cls: 'badge-basic', icon: '🛡️' },
-  };
+  const statusMap = { basic: { label: 'Basic', cls: 'badge-basic' }, premium: { label: 'Premium ⭐', cls: 'badge-premium' }, vip: { label: 'Ultra VIP 👑', cls: 'badge-vip' }, admin: { label: 'Admin 🛡️', cls: 'badge-basic' } };
   const s = statusMap[currentUser.status] || statusMap.basic;
-  document.getElementById('sidebar-user').innerHTML = `
-    <div class="font-semibold text-white text-sm">${currentUser.name}</div>
-    <span class="${s.cls} mt-1 inline-block">${s.label}</span>
-  `;
+  document.getElementById('sidebar-user').innerHTML = `<div class="font-semibold text-white text-sm">${currentUser.name}</div><span class="${s.cls} mt-1 inline-block">${s.label}</span>`;
   document.getElementById('user-badge-top').innerHTML = s.label;
   document.getElementById('user-badge-top').className = `text-xs px-3 py-1 rounded-full ${s.cls}`;
-  if (currentUser.status === 'admin') {
-    document.getElementById('admin-nav').classList.remove('hidden');
-  }
+  if (currentUser.status === 'admin') document.getElementById('admin-nav').classList.remove('hidden');
 }
 
 async function loadSongsFromCloud() {
-  // Show a loading state in the song list while fetching
-  songs = [];
-  filteredSongs = [];
-
+  songs = []; filteredSongs = [];
   const cloudSongs = await fbGet('songs');
-
-  if (!cloudSongs) {
-    console.log('[loadSongs] No songs found in Firebase. Add songs via Admin Panel.');
-    songs = [];
-    filteredSongs = [];
-    if (currentPage === 'home' || currentPage === 'search') renderPage(currentPage);
-    return;
-  }
-
-  // Every song comes from Firebase — every song has a cloudKey (Firebase push key)
-  // cloudKey is the ONLY key used for deletion — no hardcode, no fallback needed
-  songs = Object.entries(cloudSongs).map(([key, s]) => ({
-    id:        s.id       || '',      // YouTube video ID
-    title:     s.title    || 'Untitled',
-    lang:      s.lang     || 'Hindi',
-    emoji:     s.emoji    || '🎵',
-    cloudKey:  key,                   // Firebase push key e.g. "-OsgXzk..."
-  }));
-
-  console.log(`[loadSongs] Loaded ${songs.length} songs from Firebase`);
-
+  if (!cloudSongs) { if (currentPage === 'home' || currentPage === 'search') renderPage(currentPage); return; }
+  songs = Object.entries(cloudSongs).map(([key, s]) => ({ id: s.id || '', title: s.title || 'Untitled', lang: s.lang || 'Hindi', emoji: s.emoji || '🎵', cloudKey: key }));
   filteredSongs = [...songs];
   if (currentPage === 'home' || currentPage === 'search') renderPage(currentPage);
 }
 
-// ============================================================
-//  Navigation
-// ============================================================
 function navigate(page) {
-  // ── Admin Route Guard ────────────────────────────────────────
-  // Block access if:
-  //   1. User is not marked admin, OR
-  //   2. Admin token was never issued (e.g. console bypass attempt)
-  if (page === 'admin') {
-    if (!currentUser || currentUser.status !== 'admin' || !adminSessionToken) {
-      showAdminPinModal();
-      return;
-    }
-  }
-  // ────────────────────────────────────────────────────────────
-
+  if (page === 'admin' && (!currentUser || currentUser.status !== 'admin' || !adminSessionToken)) { showAdminPinModal(); return; }
   currentPage = page;
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   const navEl = document.querySelector(`[data-page="${page}"]`);
   if (navEl) navEl.classList.add('active');
-
-  const titles = { home:'Home', search:'Search', upgrade:'Upgrade', 'boys-tips':'Boys Tips', 'girls-tips':'Girls Tips', admin:'Admin Panel' };
-  document.getElementById('page-title').textContent = titles[page] || page;
   closeSidebar();
   renderPage(page);
 }
@@ -1727,651 +1105,123 @@ function renderPage(page) {
   }
 }
 
-// ============================================================
-//  HOME PAGE
-// ============================================================
 function renderHome(area) {
   const user = currentUser;
-  const isVip = user.status === 'vip';
-  const isPremium = user.status === 'premium' || isVip;
-  const isAdmin = user.status === 'admin';
-  const showAds = user.status === 'basic';
-
+  const isPremium = user.status === 'premium' || user.status === 'vip' || user.status === 'admin';
   let songList = [...songs];
-  if (isPremium || isAdmin) {
-    songList = songList.sort((a,b) => a.title.localeCompare(b.title));
-  }
+  if (isPremium) songList.sort((a,b) => a.title.localeCompare(b.title));
 
-  // Empty state — no songs in Firebase yet
   if (songs.length === 0) {
-    area.innerHTML = `
-      <div class="hero-card" style="text-align:center">
-        <div style="font-size:3rem;margin-bottom:1rem">🎵</div>
-        <h2 class="font-display text-xl font-bold mb-2">No Songs Yet</h2>
-        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem">
-          The Firebase database is empty. Add songs via the Admin Panel to get started.
-        </p>
-        ${currentUser?.status === 'admin' ? `<button class="btn-primary" style="max-width:200px;margin:0 auto" onclick="navigate('admin')">Go to Admin Panel</button>` : ''}
-      </div>
-    `;
-    return;
+    area.innerHTML = `<div class="hero-card text-center"><h2 class="font-display text-xl font-bold mb-2">No Songs Found</h2></div>`; return;
   }
 
-  const adsBanner = showAds ? `<div class="ad-banner"><i class="fas fa-ad"></i><span>Sponsored — <span style="color:var(--purple);cursor:pointer" onclick="navigate('upgrade')">Go Premium for ad-free music!</span></span></div>` : '';
-
-  const vipBadge = isVip ? `<span class="vip-text font-bold">Ultra VIP 👑</span>` : '';
+  const adsBanner = user.status === 'basic' ? `<div class="ad-banner"><i class="fas fa-ad"></i><span>Premium Engine Core Active</span></div>` : '';
 
   area.innerHTML = `
     <div class="hero-card">
-      <div class="relative z-10">
-        <div class="text-3xl mb-1">🎵</div>
-        <h2 class="font-display text-2xl font-bold">Welcome back, <span style="color:var(--purple)">${user.name.split(' ')[0]}</span>! ${vipBadge}</h2>
-        <p class="text-sm mt-1 mb-3" style="color:var(--muted)">Discover music that matches your mood</p>
-        ${isPremium||isAdmin ? '<span style="color:var(--green);font-size:0.8rem"><i class="fas fa-check-circle"></i> Songs sorted A-Z for you</span>' : '<span style="color:var(--muted);font-size:0.8rem"><i class="fas fa-lock"></i> Upgrade to unlock A-Z sorting</span>'}
-      </div>
+      <h2 class="font-display text-2xl font-bold">Welcome back, <span style="color:var(--purple)">${user.name.split(' ')[0]}</span>!</h2>
     </div>
-
     ${adsBanner}
-
-    <!-- Mood Tips Quick Access -->
     <div class="mb-6">
-      <div class="section-title mb-3">💡 Mood Tips</div>
-      <div class="flex gap-3">
-        <!-- Boys Tips card -->
-        <div onclick="openTipsWithAdGate('boys-tips')" class="flex-1 cursor-pointer rounded-2xl p-4 flex flex-col gap-2 transition-all"
-             style="background:linear-gradient(135deg,#1a1040,#0f0a2a);border:1px solid rgba(168,85,247,0.3)"
-             onmouseover="this.style.borderColor='rgba(168,85,247,0.7)';this.style.transform='translateY(-2px)'"
-             onmouseout="this.style.borderColor='rgba(168,85,247,0.3)';this.style.transform='translateY(0)'">
-          <div class="text-2xl">💪</div>
-          <div class="font-display font-bold text-sm" style="color:var(--purple)">Boys Tips</div>
-          <div class="text-xs" style="color:var(--muted)">Boost your mood & energy</div>
-          <div class="text-xs flex items-center gap-1 mt-1" style="color:var(--purple)">
-            Explore <i class="fas fa-arrow-right text-xs"></i>
-          </div>
-        </div>
-        <!-- Girls Tips card -->
-        <div onclick="openTipsWithAdGate('girls-tips')" class="flex-1 cursor-pointer rounded-2xl p-4 flex flex-col gap-2 transition-all"
-             style="background:linear-gradient(135deg,#2a0a1a,#1a0510);border:1px solid rgba(236,72,153,0.3)"
-             onmouseover="this.style.borderColor='rgba(236,72,153,0.7)';this.style.transform='translateY(-2px)'"
-             onmouseout="this.style.borderColor='rgba(236,72,153,0.3)';this.style.transform='translateY(0)'">
-          <div class="text-2xl">🌸</div>
-          <div class="font-display font-bold text-sm" style="color:#ec4899">Girls Tips</div>
-          <div class="text-xs" style="color:var(--muted)">Self-care & good vibes</div>
-          <div class="text-xs flex items-center gap-1 mt-1" style="color:#ec4899">
-            Explore <i class="fas fa-arrow-right text-xs"></i>
-          </div>
-        </div>
-      </div>
+      <div class="section-title">🎶 Hindi Tracks</div>
+      <div class="flex flex-col gap-1">${songList.filter(s=>s.lang==='Hindi').map((s,i) => songCardHTML(s, songs.indexOf(s), i+1)).join('')}</div>
     </div>
-
-    <!-- Hindi section -->
     <div class="mb-6">
-      <div class="flex items-center justify-between mb-3">
-        <div class="section-title">🎶 Hindi Songs <span style="color:var(--muted);font-size:0.85rem;font-family:'DM Sans'">(${songs.filter(s=>s.lang==='Hindi').length})</span></div>
-      </div>
-      <div class="flex flex-col gap-1">
-        ${songList.filter(s=>s.lang==='Hindi').map((s,i) => songCardHTML(s, songs.indexOf(s), i+1)).join('')}
-      </div>
+      <div class="section-title">🎵 Bangla Tracks</div>
+      <div class="flex flex-col gap-1">${songList.filter(s=>s.lang==='Bangla').map((s,i) => songCardHTML(s, songs.indexOf(s), i+1)).join('')}</div>
     </div>
-
-    <!-- Bangla section -->
-    <div class="mb-6">
-      <div class="flex items-center justify-between mb-3">
-        <div class="section-title">🎵 Bangla Songs <span style="color:var(--muted);font-size:0.85rem;font-family:'DM Sans'">(${songs.filter(s=>s.lang==='Bangla').length})</span></div>
-      </div>
-      <div class="flex flex-col gap-1">
-        ${songList.filter(s=>s.lang==='Bangla').map((s,i) => songCardHTML(s, songs.indexOf(s), i+1)).join('')}
-      </div>
-    </div>
-    <div style="height:1rem"></div>
   `;
 }
 
 function songCardHTML(song, globalIdx, displayNum) {
-  const isActive  = currentTrackIdx === globalIdx || pendingTrackIdx === globalIdx;
-  const playing   = isActive && isPlaying;
+  const isActive = currentTrackIdx === globalIdx || pendingTrackIdx === globalIdx;
+  const playing = isActive && isPlaying;
+  const callerEmail = (fbAuth?.currentUser?.email || currentUser?.email || '').toLowerCase();
+  const canDelete = callerEmail === SONG_DELETE_EMAIL.toLowerCase() || callerEmail === ADMIN_EMAIL.toLowerCase() || currentUser?.status === 'admin';
 
-  // Determine if the delete button should show
-  const userEmail = currentUser?.email?.toLowerCase() || '';
-  const canDelete = userEmail === SONG_DELETE_EMAIL.toLowerCase() ||
-                    userEmail === ADMIN_EMAIL.toLowerCase() ||
-                    currentUser?.status === 'admin';
+  const deleteBtn = canDelete ? `<button class="song-delete-btn" onclick="event.stopPropagation();deleteSong('${song.cloudKey}','${song.id}',this)"><i class="fas fa-trash-alt"></i></button>` : '';
 
-  // Escape the title for safe use in onclick attribute
-  const safeTitle = (song.title || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-
-  const deleteBtn = canDelete
-    ? `<button
-         class="song-delete-btn"
-         title="Delete song"
-         onclick="event.stopPropagation();deleteSong('${song.cloudKey || ''}','${song.id}',this)"
-         aria-label="Delete ${safeTitle}">
-         <i class="fas fa-trash-alt"></i>
-       </button>`
-    : '';
-
-  // data-ytid stores the exact YouTube video ID so the click handler
-  // can verify the song being played matches what was clicked
   return `
-    <div class="song-card ${isActive ? 'active' : ''}"
-         data-idx="${globalIdx}"
-         data-ytid="${song.id}"
-         data-display-num="${displayNum}"
-         onclick="event.preventDefault();event.stopPropagation();playSongById('${song.id}',${globalIdx})">
-      <div class="song-num">${playing ? '<i class="fas fa-music" style="color:var(--purple)"></i>' : displayNum}</div>
-      <div class="song-emoji ${playing ? 'spinning' : ''}" style="${isActive ? 'border:2px solid var(--purple)' : ''}">${song.emoji || '🎵'}</div>
-      <div class="song-meta">
-        <div class="song-name" style="${isActive ? 'color:var(--purple)' : ''}">${song.title}</div>
-        <div class="song-sub">${song.lang}</div>
-      </div>
-      <div class="song-actions" style="display:flex;align-items:center;gap:.5rem;flex-shrink:0">
-        ${deleteBtn}
-        <div class="song-dur">
-          ${playing
-            ? '<i class="fas fa-volume-up" style="color:var(--purple);font-size:0.8rem"></i>'
-            : '<i class="far fa-clock" style="opacity:0.4"></i>'}
-        </div>
-      </div>
+    <div class="song-card ${isActive ? 'active' : ''}" onclick="playSongById('${song.id}',${globalIdx})">
+      <div class="song-num">${playing ? '<i class="fas fa-music text-purple-500"></i>' : displayNum}</div>
+      <div class="song-emoji ${playing ? 'spinning' : ''}">${song.emoji || '🎵'}</div>
+      <div class="song-meta"><div class="song-name">${song.title}</div><div class="song-sub">${song.lang}</div></div>
+      <div class="song-actions">${deleteBtn}</div>
     </div>
   `;
 }
 
-// ============================================================
-//  SEARCH PAGE
-// ============================================================
 function renderSearch(area) {
   area.innerHTML = `
-    <div class="mb-4">
-      <div class="search-wrap">
-        <i class="fas fa-search search-icon"></i>
-        <input class="search-input" id="search-input" type="text" placeholder="Search songs..." oninput="doSearch(this.value)" autofocus>
-      </div>
-    </div>
+    <div class="mb-4"><div class="search-wrap"><i class="fas fa-search search-icon"></i><input class="search-input" id="search-input" type="text" placeholder="Search tracks..." oninput="doSearch(this.value)"></div></div>
     <div id="search-results" class="flex flex-col gap-1"></div>
   `;
   doSearch('');
 }
-
 function doSearch(query) {
   const q = query.toLowerCase().trim();
-  const results = songs.filter(s =>
-    s.title.toLowerCase().includes(q) || s.lang.toLowerCase().includes(q)
-  );
+  const results = songs.filter(s => s.title.toLowerCase().includes(q));
   const container = document.getElementById('search-results');
-  if (!container) return;
-  if (results.length === 0) {
-    container.innerHTML = `<div class="text-center py-10" style="color:var(--muted)"><i class="fas fa-music text-3xl mb-3 block"></i>No songs found for "${query}"</div>`;
-    return;
-  }
-  container.innerHTML = results.map((s, i) => songCardHTML(s, songs.indexOf(s), i+1)).join('');
+  if (container) container.innerHTML = results.map((s, i) => songCardHTML(s, songs.indexOf(s), i+1)).join('');
 }
 
-// ============================================================
-//  UPGRADE PAGE
-// ============================================================
 function renderUpgrade(area) {
-  area.innerHTML = `
-    <div class="mb-6">
-      <h2 class="font-display text-2xl font-bold mb-1">Choose Your Plan</h2>
-      <p style="color:var(--muted);font-size:0.9rem">Unlock the full MoodSync Pro experience</p>
-    </div>
-    <div class="flex flex-col gap-4 mb-6">
-      <!-- Basic -->
-      <div class="p-5 rounded-2xl border" style="background:var(--surface2);border-color:var(--border)">
-        <div class="flex items-center justify-between mb-3">
-          <div>
-            <div class="font-display font-bold text-lg">Basic</div>
-            <div class="text-2xl font-bold mt-1">Free</div>
-          </div>
-          <span class="badge-basic text-sm px-3 py-1">Current</span>
-        </div>
-        <ul class="flex flex-col gap-2 text-sm" style="color:var(--muted)">
-          <li><i class="fas fa-check text-green-500 mr-2"></i>All songs access</li>
-          <li><i class="fas fa-check text-green-500 mr-2"></i>Basic playback</li>
-          <li><i class="fas fa-times text-red-500 mr-2"></i>With Ads</li>
-          <li><i class="fas fa-times text-red-500 mr-2"></i>No A-Z sorting</li>
-        </ul>
-      </div>
-      <!-- Premium -->
-      <div class="p-5 rounded-2xl border relative overflow-hidden" style="background:linear-gradient(135deg,#1a0a3e,#111);border-color:var(--purple)">
-        <div class="absolute top-3 right-3 text-xs px-2 py-1 rounded-full font-bold" style="background:var(--purple);color:white">POPULAR</div>
-        <div class="flex items-center justify-between mb-3">
-          <div>
-            <div class="font-display font-bold text-lg">Premium ⭐</div>
-            <div class="text-2xl font-bold mt-1" style="color:var(--purple)">৳99<span class="text-sm font-normal" style="color:var(--muted)">/mo</span></div>
-          </div>
-        </div>
-        <ul class="flex flex-col gap-2 text-sm mb-4" style="color:#ccc">
-          <li><i class="fas fa-check text-green-500 mr-2"></i>Ad-free music</li>
-          <li><i class="fas fa-check text-green-500 mr-2"></i>A-Z sorting</li>
-          <li><i class="fas fa-check text-green-500 mr-2"></i>Priority support</li>
-          <li><i class="fas fa-check text-green-500 mr-2"></i>Premium badge ⭐</li>
-        </ul>
-        <a href="https://wa.me/8801540595258?text=I want Premium Plan" target="_blank" class="btn-primary flex items-center justify-center gap-2 no-underline" style="display:flex">
-          <i class="fab fa-whatsapp"></i> Pay via WhatsApp
-        </a>
-      </div>
-      <!-- Ultra VIP -->
-      <div class="p-5 rounded-2xl border relative overflow-hidden" style="background:linear-gradient(135deg,#1a1000,#111);border-color:var(--gold)">
-        <div class="absolute top-3 right-3 text-xs px-2 py-1 rounded-full font-bold" style="background:var(--gold);color:#000">VIP</div>
-        <div class="flex items-center justify-between mb-3">
-          <div>
-            <div class="font-display font-bold text-lg vip-text">Ultra VIP 👑</div>
-            <div class="text-2xl font-bold mt-1" style="color:var(--gold)">৳199<span class="text-sm font-normal" style="color:var(--muted)">/mo</span></div>
-          </div>
-        </div>
-        <ul class="flex flex-col gap-2 text-sm mb-4" style="color:#ccc">
-          <li><i class="fas fa-check text-yellow-400 mr-2"></i>Everything in Premium</li>
-          <li><i class="fas fa-check text-yellow-400 mr-2"></i>Golden VIP badge 👑</li>
-          <li><i class="fas fa-check text-yellow-400 mr-2"></i>Early access to new songs</li>
-          <li><i class="fas fa-check text-yellow-400 mr-2"></i>Direct admin support</li>
-        </ul>
-        <a href="https://wa.me/8801540595258?text=I want Ultra VIP Plan" target="_blank" class="btn-primary flex items-center justify-center gap-2 no-underline" style="display:flex;background:linear-gradient(135deg,#b8860b,#f5c842);color:#000">
-          <i class="fab fa-whatsapp"></i> Pay via WhatsApp
-        </a>
-      </div>
-    </div>
-    <div class="text-center text-sm pb-4" style="color:var(--muted)">
-      <i class="fab fa-whatsapp text-green-500"></i> Contact admin: <strong>01540595258</strong> for payment & upgrade
-    </div>
-  `;
+  area.innerHTML = `<div class="hero-card"><h2>Support bKash & Upgrade: 01540595258</h2></div>`;
 }
-
-// ============================================================
-//  TIPS — Adsterra Dynamic Loader + Smartlink Ad Gate
-// ============================================================
-
-// ── Social Bar / Native ad script loader ─────────────────────
-// Injected ONLY after login, ONLY for Basic users.
-// The login/auth screen remains completely ad-free.
-let adsterraLoaded = false;
 function loadAdsterraForBasicUser() {
-  if (adsterraLoaded) return;
-  if (!currentUser || currentUser.status !== 'basic') return;
+  if (adsterraLoaded || currentUser?.status !== 'basic') return;
   adsterraLoaded = true;
-  [
-    'https://pl29379584.profitablecpmratenetwork.com/26/11/70/261170c6567c084d324ff55e51bcd398.js',
-    'https://pl29379583.profitablecpmratenetwork.com/0a/52/4e/0a524e013f4ca5150236529d7ff01d63.js'
-  ].forEach(src => {
-    const s = document.createElement('script');
-    s.src = src; s.async = true;
-    document.body.appendChild(s);
+  ['https://pl29379584.profitablecpmratenetwork.com/26/11/70/261170c6567c084d324ff55e51bcd398.js', 'https://pl29379583.profitablecpmratenetwork.com/0a/52/4e/0a524e013f4ca5150236529d7ff01d63.js'].forEach(src => {
+    const s = document.createElement('script'); s.src = src; s.async = true; document.body.appendChild(s);
   });
 }
-
-// ── Smartlink gate ────────────────────────────────────────────
-// Basic users: Smartlink fires in a new tab before content loads.
-// Premium / VIP / Admin: navigate directly — zero ads, zero popup.
-const ADSTERRA_SMARTLINK = 'https://www.profitablecpmratenetwork.com/mcdvz5y9b3?key=9a6f9937427c03e6a452d827ff5de053';
-
 function openTipsWithAdGate(targetPage) {
-  const isPaid = currentUser && (
-    currentUser.status === 'premium' ||
-    currentUser.status === 'vip' ||
-    currentUser.status === 'admin'
-  );
-  if (!isPaid) {
-    window.open(ADSTERRA_SMARTLINK, '_blank', 'noopener,noreferrer');
-  }
+  if (currentUser?.status === 'basic') window.open(ADSTERRA_SMARTLINK, '_blank');
   navigate(targetPage);
 }
 
-// ============================================================
-//  BOYS TIPS PAGE
-// ============================================================
 function renderBoysTips(area) {
-  const isPaid = currentUser && (
-    currentUser.status === 'premium' ||
-    currentUser.status === 'vip' ||
-    currentUser.status === 'admin'
-  );
-
-  const adNotice = isPaid
-    ? `<div class="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:#4ade80">
-        <i class="fas fa-shield-halved"></i> Ad-free experience — enjoy your Premium access!
-       </div>`
-    : `<div class="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs" style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);color:var(--muted)">
-        <i class="fas fa-circle-info" style="color:var(--purple)"></i>
-        Free users see a sponsored link. <span style="color:var(--purple);cursor:pointer" onclick="navigate('upgrade')">Go Premium</span> to remove all ads.
-       </div>`;
-
-  area.innerHTML = `
-    <!-- Category switcher -->
-    <div class="flex gap-2 p-1 rounded-xl mb-5" style="background:var(--surface3)">
-      <button class="tips-tab active-boys" onclick="navigate('boys-tips')">
-        <i class="fas fa-mars mr-1" style="color:#93c5fd"></i> Boys Tips
-      </button>
-      <button class="tips-tab" onclick="openTipsWithAdGate('girls-tips')" style="color:var(--muted)">
-        <i class="fas fa-venus mr-1" style="color:#f9a8d4"></i> Girls Tips
-      </button>
-    </div>
-
-    <div class="mb-5">
-      <h2 class="font-display text-2xl font-bold mb-1">💪 Boys Mood Fix</h2>
-      <p style="color:var(--muted);font-size:0.9rem">Tips to instantly boost your vibe</p>
-    </div>
-
-    ${adNotice}
-
-    <div class="flex flex-col gap-3 mb-6">
-      <div class="tip-card"><div class="tip-icon">🎧</div><strong class="font-display">Music Therapy</strong><p class="text-sm mt-1" style="color:var(--muted)">Play your favorite tracks and let the rhythm reset your mood. Music releases dopamine which elevates your energy instantly.</p></div>
-      <div class="tip-card"><div class="tip-icon">🏃</div><strong class="font-display">Move Your Body</strong><p class="text-sm mt-1" style="color:var(--muted)">Even a 10-min walk outside can drastically shift your mindset and energy. Physical movement breaks mental patterns.</p></div>
-      <div class="tip-card"><div class="tip-icon">🧘</div><strong class="font-display">Deep Breathing</strong><p class="text-sm mt-1" style="color:var(--muted)">4 counts in, 4 hold, 4 out. Repeat 5 times. Your nervous system will calm down and clarity returns.</p></div>
-      <div class="tip-card"><div class="tip-icon">📞</div><strong class="font-display">Talk to Someone</strong><p class="text-sm mt-1" style="color:var(--muted)">Don't bottle it up. Chat, laugh, vent — connection is the fastest mood cure available to us.</p></div>
-      <div class="tip-card"><div class="tip-icon">💧</div><strong class="font-display">Stay Hydrated</strong><p class="text-sm mt-1" style="color:var(--muted)">Dehydration causes brain fog and irritability. Drink a big glass of water right now and feel the difference.</p></div>
-      <div class="tip-card"><div class="tip-icon">🌙</div><strong class="font-display">Rest & Recover</strong><p class="text-sm mt-1" style="color:var(--muted)">Sleep is the ultimate reset button. 7-8 hours repairs your mind, body, and emotional resilience.</p></div>
-      <div class="tip-card"><div class="tip-icon">✍️</div><strong class="font-display">Write it Down</strong><p class="text-sm mt-1" style="color:var(--muted)">Journaling clears mental clutter. Write 3 things you're grateful for and watch your perspective shift.</p></div>
-      <div class="tip-card"><div class="tip-icon">🎯</div><strong class="font-display">Focus on One Thing</strong><p class="text-sm mt-1" style="color:var(--muted)">Overwhelm comes from trying to solve everything at once. Pick one small task and complete it. Momentum builds.</p></div>
-      <div class="tip-card"><div class="tip-icon">🥗</div><strong class="font-display">Eat Right</strong><p class="text-sm mt-1" style="color:var(--muted)">What you fuel your body with directly impacts your mood. Skip processed food for one day and notice the mental clarity.</p></div>
-      <div class="tip-card"><div class="tip-icon">☀️</div><strong class="font-display">Get Morning Sunlight</strong><p class="text-sm mt-1" style="color:var(--muted)">10 minutes of direct morning sun sets your circadian rhythm and boosts serotonin — the simplest mood hack there is.</p></div>
-    </div>
-    <a href="https://wa.me/8801540595258" target="_blank" class="btn-primary flex items-center justify-center gap-2 no-underline mb-6" style="display:flex">
-      <i class="fab fa-whatsapp text-green-400"></i> Talk to Support on WhatsApp
-    </a>
-  `;
+  area.innerHTML = `<div class="flex flex-col gap-3 p-4"><div class="tip-card"><strong>Listen & Recover Vibe</strong><p>Focus on your goals and play your tracking lists.</p></div></div>`;
 }
-
-// ============================================================
-//  GIRLS TIPS PAGE
-// ============================================================
 function renderGirlsTips(area) {
-  const isPaid = currentUser && (
-    currentUser.status === 'premium' ||
-    currentUser.status === 'vip' ||
-    currentUser.status === 'admin'
-  );
-
-  const adNotice = isPaid
-    ? `<div class="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:#4ade80">
-        <i class="fas fa-shield-halved"></i> Ad-free experience — enjoy your Premium access!
-       </div>`
-    : `<div class="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs" style="background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.2);color:var(--muted)">
-        <i class="fas fa-circle-info" style="color:#ec4899"></i>
-        Free users see a sponsored link. <span style="color:#ec4899;cursor:pointer" onclick="navigate('upgrade')">Go Premium</span> to remove all ads.
-       </div>`;
-
-  area.innerHTML = `
-    <!-- Category switcher -->
-    <div class="flex gap-2 p-1 rounded-xl mb-5" style="background:var(--surface3)">
-      <button class="tips-tab" onclick="navigate('boys-tips')" style="color:var(--muted)">
-        <i class="fas fa-mars mr-1" style="color:#93c5fd"></i> Boys Tips
-      </button>
-      <button class="tips-tab active-girls">
-        <i class="fas fa-venus mr-1"></i> Girls Tips
-      </button>
-    </div>
-
-    <div class="mb-5">
-      <div class="flex items-center gap-3">
-        <div>
-          <h2 class="font-display text-2xl font-bold mb-1" style="background:linear-gradient(135deg,#ec4899,#f9a8d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">
-            🌸 Girls Mood Fix
-          </h2>
-          <p style="color:var(--muted);font-size:0.9rem">Self-care tips to lift your spirit</p>
-        </div>
-      </div>
-    </div>
-
-    ${adNotice}
-
-    <div class="flex flex-col gap-3 mb-6">
-      <div class="tip-card girls">
-        <div class="tip-icon">🛁</div>
-        <strong class="font-display" style="color:#f9a8d4">Self-Care Ritual</strong>
-        <p class="text-sm mt-1" style="color:var(--muted)">A warm bath, your favorite playlist, and a face mask. You deserve to slow down and pour love back into yourself.</p>
-      </div>
-      <div class="tip-card girls">
-        <div class="tip-icon">🎵</div>
-        <strong class="font-display" style="color:#f9a8d4">Sing It Out</strong>
-        <p class="text-sm mt-1" style="color:var(--muted)">Put on your favorite song and sing at the top of your lungs — alone in your room counts. It releases tension like nothing else.</p>
-      </div>
-      <div class="tip-card girls">
-        <div class="tip-icon">💅</div>
-        <strong class="font-display" style="color:#f9a8d4">Treat Yourself</strong>
-        <p class="text-sm mt-1" style="color:var(--muted)">Do your nails, style your hair, wear the outfit you've been saving. Looking good on the outside genuinely shifts how you feel inside.</p>
-      </div>
-      <div class="tip-card girls">
-        <div class="tip-icon">📓</div>
-        <strong class="font-display" style="color:#f9a8d4">Gratitude Journaling</strong>
-        <p class="text-sm mt-1" style="color:var(--muted)">Write 5 things that made you smile today — even tiny ones. Your brain will start hunting for more positives automatically.</p>
-      </div>
-      <div class="tip-card girls">
-        <div class="tip-icon">🌿</div>
-        <strong class="font-display" style="color:#f9a8d4">Nature Walk</strong>
-        <p class="text-sm mt-1" style="color:var(--muted)">Step outside, breathe fresh air, notice the small beautiful things around you. Nature is a proven anxiety reducer.</p>
-      </div>
-      <div class="tip-card girls">
-        <div class="tip-icon">🤗</div>
-        <strong class="font-display" style="color:#f9a8d4">Call Your Person</strong>
-        <p class="text-sm mt-1" style="color:var(--muted)">Call your best friend, sister, or mom. Even a 10-minute chat will remind you that you're loved and not alone.</p>
-      </div>
-      <div class="tip-card girls">
-        <div class="tip-icon">🍵</div>
-        <strong class="font-display" style="color:#f9a8d4">Slow Morning</strong>
-        <p class="text-sm mt-1" style="color:var(--muted)">Make a warm drink, sit without your phone for 5 minutes, and just breathe. A calm start changes your entire day's energy.</p>
-      </div>
-      <div class="tip-card girls">
-        <div class="tip-icon">🎨</div>
-        <strong class="font-display" style="color:#f9a8d4">Create Something</strong>
-        <p class="text-sm mt-1" style="color:var(--muted)">Draw, doodle, cook something new, rearrange your room. Creative expression is a direct channel from emotional pain to joy.</p>
-      </div>
-      <div class="tip-card girls">
-        <div class="tip-icon">🧘‍♀️</div>
-        <strong class="font-display" style="color:#f9a8d4">Body Scan Meditation</strong>
-        <p class="text-sm mt-1" style="color:var(--muted)">Lie down, close your eyes, and slowly relax each part of your body from toes to head. 10 minutes resets your entire nervous system.</p>
-      </div>
-      <div class="tip-card girls">
-        <div class="tip-icon">💌</div>
-        <strong class="font-display" style="color:#f9a8d4">Write a Letter to Yourself</strong>
-        <p class="text-sm mt-1" style="color:var(--muted)">Write to your future self about what you're feeling today. It creates perspective, emotional release, and something beautiful to look back on.</p>
-      </div>
-    </div>
-
-    <!-- Pink CTA -->
-    <a href="https://wa.me/8801540595258" target="_blank"
-       class="flex items-center justify-center gap-2 no-underline mb-6 py-3 rounded-xl font-semibold text-white transition-all"
-       style="background:linear-gradient(135deg,#be185d,#ec4899);font-family:'Syne',sans-serif;display:flex">
-      <i class="fab fa-whatsapp"></i> Talk to Support on WhatsApp
-    </a>
-  `;
+  area.innerHTML = `<div class="flex flex-col gap-3 p-4"><div class="tip-card girls"><strong>Self-Care Mode</strong><p>Take a break and put on your favorite tracks.</p></div></div>`;
 }
 
-// ============================================================
-//  ADMIN PAGE
-// ============================================================
 async function renderAdmin(area) {
-  // ── Hard server-side-style guard ───────────────────────────
-  // Checking BOTH role AND token means:
-  //   - navigate() guard can't be bypassed via renderAdmin() in console
-  //   - token is only set when correct phone+pass were provided at login
-  if (!currentUser || currentUser.status !== 'admin' || !adminSessionToken) {
-    area.innerHTML = `
-      <div class="text-center py-20 flex flex-col items-center gap-4">
-        <div class="text-5xl">🔒</div>
-        <div class="font-display text-xl font-bold">Access Denied</div>
-        <p class="text-sm" style="color:var(--muted)">Valid admin credentials required.</p>
-        <button onclick="showAdminPinModal()" class="btn-primary" style="max-width:200px">Admin Login</button>
-      </div>`;
-    return;
-  }
-  // ────────────────────────────────────────────────────────────
-
   area.innerHTML = `
-    <div class="mb-5">
-      <h2 class="font-display text-2xl font-bold mb-1">🛡️ Admin Panel</h2>
-      <p style="color:var(--muted);font-size:0.9rem">Manage users and music library</p>
-    </div>
-
-    <!-- Quick actions -->
-    <div class="flex gap-3 mb-6 flex-wrap">
-      <button onclick="document.getElementById('add-song-modal').classList.remove('hidden')" class="px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2" style="background:var(--purple);color:white">
-        <i class="fas fa-plus"></i> Add Song
-      </button>
-    </div>
-
-    <!-- Remove song -->
-    <div class="mb-6 p-4 rounded-xl" style="background:var(--surface2);border:1px solid var(--border)">
-      <div class="font-display font-semibold mb-2">🗑️ Remove Song</div>
-      <div class="search-wrap relative mb-2">
-        <i class="fas fa-search search-icon"></i>
-        <input class="search-input" id="remove-search" type="text" placeholder="Search song to remove..." oninput="showRemoveSuggestions(this.value)">
-        <div id="remove-suggestions" class="suggest-list hidden"></div>
-      </div>
-    </div>
-
-    <!-- Users -->
-    <div class="mb-4 font-display font-semibold">👥 Registered Users</div>
-    <div id="admin-users-table" class="rounded-xl overflow-hidden" style="background:var(--surface2);border:1px solid var(--border)">
-      <div class="text-center py-6" style="color:var(--muted)"><i class="fas fa-spinner fa-spin"></i> Loading users...</div>
-    </div>
-    <div style="height:1rem"></div>
+    <div class="mb-5"><h2 class="font-display text-2xl font-bold">🛡️ Command Dashboard</h2></div>
+    <button onclick="document.getElementById('add-song-modal').classList.remove('hidden')" class="btn-primary mb-4" style="max-width:160px">Add Song</button>
+    <div id="admin-users-table" class="bg-zinc-900 rounded-xl p-4"></div>
   `;
-
   loadAdminUsers();
 }
-
 async function loadAdminUsers() {
   const users = await fbGet('users');
   const table = document.getElementById('admin-users-table');
-  if (!table) return;
-  if (!users) {
-    table.innerHTML = '<div class="text-center py-6 text-sm" style="color:var(--muted)">No registered users yet</div>';
-    return;
-  }
-
-  const rows = Object.entries(users).map(([key, u]) => `
-    <tr>
-      <td>${u.name || '—'}</td>
-      <td>${u.phone || '—'}</td>
-      <td>
-        <select onchange="updateUserStatus('${key}', this.value)" class="input-field text-xs py-1 px-2" style="width:auto">
+  if (table && users) {
+    table.innerHTML = Object.entries(users).map(([key, u]) => `
+      <div class="flex justify-between p-2 border-b border-zinc-800 text-sm">
+        <span>${u.name} (${u.phone || 'Email User'})</span>
+        <select onchange="updateUserStatus('${key}', this.value)" class="bg-black text-white p-1 rounded">
           <option value="basic" ${u.status==='basic'?'selected':''}>Basic</option>
           <option value="premium" ${u.status==='premium'?'selected':''}>Premium ⭐</option>
           <option value="vip" ${u.status==='vip'?'selected':''}>Ultra VIP 👑</option>
         </select>
-      </td>
-      <td class="text-xs" style="color:var(--muted)">${u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—'}</td>
-    </tr>
-  `).join('');
-
-  table.innerHTML = `
-    <table class="admin-table">
-      <thead><tr><th>Name</th><th>Phone</th><th>Status</th><th>Joined</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-  `;
-}
-
-async function updateUserStatus(key, status) {
-  // Use PATCH not PUT — only updates the status field,
-  // never overwrites the rest of the user record
-  const ok = await fbPatch(`users/${key}`, { status });
-  if (!ok) {
-    showToast('Failed to update status. Check console.');
-    return;
+      </div>`).join('');
   }
-  if (currentUser && currentUser.key === key) {
-    currentUser.status = status;
-    saveSession(currentUser);
-    updateUserUI();
-  }
-  showToast(`User updated to ${status}`);
-}
-
-function showRemoveSuggestions(query) {
-  const list = document.getElementById('remove-suggestions');
-  if (!query.trim()) { list.classList.add('hidden'); return; }
-  const q = query.toLowerCase();
-  const matches = songs.filter(s => s.title.toLowerCase().includes(q));
-  if (matches.length === 0) { list.classList.add('hidden'); return; }
-  list.classList.remove('hidden');
-  list.innerHTML = matches.slice(0, 8).map(s => `
-    <div class="suggest-item flex items-center justify-between gap-2" onclick="adminRemoveSong('${s.id}', '${s.title.replace(/'/g,"\\'")}')">
-      <span>${s.emoji || '🎵'} ${s.title} <span style="color:var(--muted);font-size:0.75rem">${s.lang}</span></span>
-      <i class="fas fa-trash text-red-400 text-xs"></i>
-    </div>
-  `).join('');
-}
-
-async function adminRemoveSong(id, title) {
-  if (!confirm(`Remove "${title}"?`)) return;
-  const song = songs.find(s => s.id === id);
-  if (song && song.cloudKey) {
-    await fbDelete(`songs/${song.cloudKey}`);
-  }
-  const idx = songs.findIndex(s => s.id === id);
-  if (idx !== -1) songs.splice(idx, 1);
-  filteredSongs = [...songs];
-  document.getElementById('remove-suggestions').classList.add('hidden');
-  document.getElementById('remove-search').value = '';
-  showToast(`"${title}" removed`);
 }
 
 async function deleteSong(songKey, youtubeId, btnElement = null) {
-  // Security: verify caller before anything
-  const callerEmail = (fbAuth?.currentUser?.email || currentUser?.email || '').toLowerCase();
-  const isAuthorised = callerEmail === SONG_DELETE_EMAIL.toLowerCase()
-                    || callerEmail === ADMIN_EMAIL.toLowerCase()
-                    || currentUser?.status === 'admin';
-  if (!isAuthorised) {
-    console.error('[deleteSong] Unauthorised caller:', callerEmail);
-    return;
-  }
-
-  if (!songKey) {
-    alert('Cannot delete: Firebase key missing for this song.\nTry refreshing and deleting again.');
-    console.error('[deleteSong] songKey is empty — song may not be in Firebase yet');
-    return;
-  }
-
-  if (!confirm('Delete this song permanently?')) return;
-
-  // Loading state on the button
-  if (btnElement) {
-    btnElement.disabled = true;
-    btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-  }
-
-  console.log(`[deleteSong] key="${songKey}" | ytId="${youtubeId}" | caller="${callerEmail}"`);
-
-  try {
-    // Delete from Firebase using the exact push key — songs/<songKey>
-    // Equivalent to: remove(ref(database, 'songs/' + songKey))
-    const ok = await fbDelete(`songs/${songKey}`);
-
-    if (!ok) {
-      if (btnElement) {
-        btnElement.disabled = false;
-        btnElement.innerHTML = '<i class="fas fa-trash-alt"></i>';
-      }
-      return; // fbDelete already logged the error
-    }
-
-    // Remove locally AFTER Firebase confirms success
-    songs         = songs.filter(s => s.id !== youtubeId);
+  if (!confirm('Delete permanently?')) return;
+  if(btnElement) btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+  const ok = await fbDelete(`songs/${songKey}`);
+  if(ok) {
+    songs = songs.filter(s => s.id !== youtubeId);
     filteredSongs = filteredSongs.filter(s => s.id !== youtubeId);
-
-    // Adjust player state if needed
-    if (songs.length === 0) {
-      currentTrackIdx = -1; pendingTrackIdx = -1; isPlaying = false;
-    } else if (currentTrackIdx >= songs.length) {
-      currentTrackIdx = songs.length - 1;
-      pendingTrackIdx = currentTrackIdx;
-    }
-
-    // Refresh UI immediately
     renderPage(currentPage);
-    showToast('Song deleted permanently ✅');
-    console.log(`[deleteSong] ✅ Removed. songs.length=${songs.length}`);
-
-  } catch(e) {
-    console.error('[deleteSong] Exception:', e.message, e);
-    alert('Delete failed ❌\n' + e.message);
-  } finally {
-    if (btnElement) {
-      btnElement.disabled = false;
-      btnElement.innerHTML = '<i class="fas fa-trash-alt"></i>';
-    }
+    showToast('Song deleted successfully!');
+  } else {
+    if(btnElement) btnElement.innerHTML = '<i class="fas fa-trash-alt"></i>';
   }
 }
 
@@ -2380,216 +1230,53 @@ async function adminAddSong() {
   const ytid  = document.getElementById('new-song-ytid').value.trim();
   const lang  = document.getElementById('new-song-lang').value;
   const emoji = document.getElementById('new-song-emoji').value.trim() || '🎵';
-
-  if (!title || !ytid) { alert('Please fill in both the Title and YouTube ID'); return; }
-
-  const btn = document.querySelector('#add-song-modal .btn-primary');
-  if (btn) { btn.disabled = true; btn.textContent = 'Adding…'; }
-
-  console.log('[adminAddSong] Attempting to add:', { title, ytid, lang, emoji });
-  console.log('[adminAddSong] fbAuth.currentUser:', fbAuth?.currentUser?.email || 'NULL — hardcoded admin session');
-
-  const newSong = { id: ytid, title, lang, emoji };
-
-  try {
-    const result = await fbPush('songs', newSong);
-
-    if (result && result.name) {
-      console.log('[adminAddSong] ✅ Added with key:', result.name);
-      songs.push({ ...newSong, cloudKey: result.name });
-      filteredSongs = [...songs];
-      document.getElementById('add-song-modal').classList.add('hidden');
-      document.getElementById('new-song-title').value = '';
-      document.getElementById('new-song-ytid').value  = '';
-      document.getElementById('new-song-emoji').value = '';
-      renderPage(currentPage);
-      showToast(`"${title}" added successfully! ✅`);
-    } else {
-      console.error('[adminAddSong] fbPush returned null — likely a Firebase Auth/Rules issue');
-      console.error('[adminAddSong] If you see HTTP 401/403 above, the fix is:');
-      console.error('  Option A: Change RTDB rules ".write" to "auth != null" temporarily to test');
-      console.error('  Option B: Log in via Google/Email (not hardcoded admin) so fbAuth.currentUser is real');
-      alert(
-        'Failed to add song.\n\n' +
-        'Cause: You are using the hardcoded admin session which has no Firebase Auth token.\n\n' +
-        'Fix: Log out, then log in with joydebnath.info@gmail.com via Email/Google. ' +
-        'That gives a real Firebase token the database rules can verify.\n\n' +
-        'Check the browser console (F12) for details.'
-      );
-    }
-  } catch(e) {
-    console.error('[adminAddSong] Exception:', e.message, e);
-    alert('Failed to add song.\nError: ' + e.message);
-  } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Add Song to Cloud'; }
+  if(!title || !ytid) return;
+  const res = await fbPush('songs', { id: ytid, title, lang, emoji });
+  if(res) {
+    document.getElementById('add-song-modal').classList.add('hidden');
+    loadSongsFromCloud();
+    showToast('Song added online!');
   }
 }
 
-// ============================================================
-//  YouTube Player Engine — Fixed
-//  Bugs fixed:
-//  1. Wrong song: index passed to playSong() now locked at call time
-//  2. Auto-skip: error handler has retry limit; state machine guards ENDED
-//  3. Stale state: isTransitioning flag blocks overlapping state changes
-//  4. Now Playing: bar only updates when PLAYING fires (confirmed playing)
-// ============================================================
-
-let ytLoadPending      = false;
-let isTransitioning    = false;   // prevents overlapping load/error/end races
-let ytErrorStreak      = 0;       // consecutive errors — stops infinite skip loop
-const YT_MAX_ERR_SKIP  = 4;       // max songs to skip before pausing auto-advance
-let pendingTrackIdx    = -1;      // the index currently being loaded (may differ from currentTrackIdx during transition)
-
+// ── Anti-Overlap Mobile Audio Engine ──
+let ytLoadPending = false, isTransitioning = false, ytErrorStreak = 0, pendingTrackIdx = -1;
 window.onYouTubeIframeAPIReady = function() {
   ytReady = true;
   ytPlayer = new YT.Player('yt-player', {
     height: '1', width: '1',
-    playerVars: {
-      autoplay:   0,
-      controls:   0,
-      playsinline: 1,   // iOS inline audio
-      rel:        0,
-      fs:         0,
-      disablekb:  1,
-      origin:     location.origin
-    },
+    playerVars: { autoplay: 0, controls: 0, playsinline: 1, rel: 0, disablekb: 1 },
     events: {
-      onReady:       onPlayerReady,
+      onReady: () => { ytReady = true; },
       onStateChange: onPlayerStateChange,
-      onError:       onPlayerError
+      onError: () => { nextTrack(); }
     }
   });
 };
 
-function onPlayerReady() {
-  ytReady = true;
-  if (ytLoadPending && pendingTrackIdx >= 0) {
-    ytLoadPending = false;
-    _doPlay(pendingTrackIdx);
-  }
-}
-
 function onPlayerStateChange(e) {
-  const state = e.data;
-
-  /*
-   * State values:
-   *  -1 = UNSTARTED   (fires immediately after loadVideoById — IGNORE)
-   *   0 = ENDED
-   *   1 = PLAYING
-   *   2 = PAUSED
-   *   3 = BUFFERING
-   *   5 = VIDEO_CUED
-   *
-   * Critical: UNSTARTED (-1) fires right after loadVideoById before the
-   * video even starts. Old code didn't guard this so ENDED (0) sometimes
-   * fired from a previous video's teardown and triggered nextTrack() early.
-   */
-
-  if (state === YT.PlayerState.PLAYING) {
-    // Video confirmed playing — NOW it's safe to update UI and sync index
-    isTransitioning = false;
-    ytErrorStreak   = 0;
-    currentTrackIdx = pendingTrackIdx; // lock in the confirmed playing index
-
-    isPlaying = true;
+  if (e.data === YT.PlayerState.PLAYING) {
+    isTransitioning = false; currentTrackIdx = pendingTrackIdx; isPlaying = true;
     document.getElementById('play-icon').className = 'fas fa-pause';
-    document.getElementById('play-btn').classList.add('playing-pulse');
-
-    // Update Now Playing bar only when confirmed playing (not on loadVideoById call)
-    const song = songs[currentTrackIdx];
-    if (song) updatePlayerBar(song);
-
+    const song = songs[currentTrackIdx]; if (song) updatePlayerBar(song);
     startProgressTracking();
-    refreshActiveCard();
-
-  } else if (state === YT.PlayerState.PAUSED) {
-    // Only update if not in a transition (avoids spurious PAUSED during load)
-    if (!isTransitioning) {
-      isPlaying = false;
-      document.getElementById('play-icon').className = 'fas fa-play';
-      document.getElementById('play-btn').classList.remove('playing-pulse');
-      clearInterval(progressInterval);
-      refreshActiveCard();
-    }
-
-  } else if (state === YT.PlayerState.ENDED) {
-    // Guard: only advance if we're not already transitioning to a new track
-    if (!isTransitioning) {
-      isPlaying = false;
-      clearInterval(progressInterval);
-      nextTrack();
-    }
-
-  }
-  // BUFFERING (3), UNSTARTED (-1), VIDEO_CUED (5) — intentionally ignored
-}
-
-function onPlayerError(e) {
-  /*
-   * Error codes:
-   *   2   = invalid videoId parameter
-   *   5   = HTML5 player error
-   *   100 = video not found / removed
-   *   101 = embedding not allowed by owner
-   *   150 = embedding not allowed (same as 101, different wrapper)
-   *
-   * 101/150 are common — many music videos disable embedding.
-   * Without a streak guard, every disabled video triggers nextTrack()
-   * causing rapid-fire skipping through the entire playlist.
-   */
-  console.warn(`YT Error [code ${e.data}] on song idx ${pendingTrackIdx}:`,
-               songs[pendingTrackIdx]?.title || 'unknown');
-
-  isTransitioning = false;
-  isPlaying       = false;
-  ytLoadPending   = false;
-  ytErrorStreak++;
-
-  if (ytErrorStreak >= YT_MAX_ERR_SKIP) {
-    // Too many consecutive errors — stop auto-advancing, show message
-    ytErrorStreak = 0;
-    showToast('Some songs are unavailable. Tap ▶ Next to continue.');
-    document.getElementById('play-icon').className = 'fas fa-play';
-    document.getElementById('play-btn').classList.remove('playing-pulse');
-    return;
-  }
-
-  // Skip this unavailable song after a short delay
-  setTimeout(() => {
-    if (!isPlaying) nextTrack();
-  }, 1200);
-}
-
-// ── Core play function — the ONLY place loadVideoById is called ──
-function _doPlay(idx) {
-  if (idx < 0 || idx >= songs.length) return;
-  const song = songs[idx];
-  if (!song) return;
-
-  // Mark transition start — prevents ENDED/PAUSED from previous video
-  // firing nextTrack() before the new video starts
-  isTransitioning = true;
-  pendingTrackIdx = idx;
-
-  // Show pending song in bar immediately for responsiveness,
-  // but currentTrackIdx only updates in onPlayerStateChange(PLAYING)
-  updatePlayerBarPending(song);
-
-  try {
-    ytPlayer.loadVideoById({ videoId: song.id, startSeconds: 0 });
-  } catch(err) {
-    console.error('loadVideoById failed:', err);
-    isTransitioning = false;
+  } else if (e.data === YT.PlayerState.ENDED) {
+    nextTrack();
   }
 }
 
-// Updates the player bar to show the song being loaded (pending)
-// Uses a subtle "loading" indicator so user knows it's responding
-function updatePlayerBarPending(song) {
-  document.getElementById('track-title').textContent = song.title;
-  document.getElementById('track-lang').textContent  = song.lang + ' · loading…';
-  document.getElementById('player-emoji').textContent = song.emoji || '🎵';
+function playSongById(ytId, hintIdx) {
+  let idx = songs.findIndex(s => s.id === ytId);
+  if (idx === -1) idx = hintIdx;
+  isTransitioning = true; pendingTrackIdx = idx;
+  
+  // Anti audio ad overlap configuration filter
+  if(ytPlayer && ytReady) {
+    ytPlayer.stopVideo();
+    ytPlayer.mute(); 
+    ytPlayer.loadVideoById({ videoId: ytId, startSeconds: 0 });
+    setTimeout(() => { try { ytPlayer.unmute(); ytPlayer.playVideo(); } catch(err){} }, 600);
+  }
 }
 
 function updatePlayerBar(song) {
@@ -2598,349 +1285,42 @@ function updatePlayerBar(song) {
   document.getElementById('player-emoji').textContent = song.emoji || '🎵';
 }
 
-// ── Public play entry point — called by song card click ──────
-// Uses BOTH the ytId AND the idx to guarantee correct song mapping.
-// Even if the songs[] array index shifts (e.g. after a delete or sort),
-// we find the song by its YouTube ID first, then play it.
-function playSongById(ytId, hintIdx) {
-  // Primary lookup: find by YouTube video ID (always unique, never shifts)
-  let idx = songs.findIndex(s => s.id === ytId);
-
-  // Fallback: if not found by ID (shouldn't happen), use the hint index
-  if (idx === -1) {
-    idx = hintIdx;
-    console.warn(`playSongById: ytId "${ytId}" not found, using hint index ${hintIdx}`);
-  }
-
-  if (idx < 0 || idx >= songs.length) {
-    console.warn('playSongById: invalid index', idx);
-    return;
-  }
-
-  // Verify the resolved song has the expected ytId
-  if (songs[idx].id !== ytId && idx !== hintIdx) {
-    // ID mismatch — re-search to be safe
-    const fallback = songs.findIndex(s => s.id === ytId);
-    if (fallback !== -1) idx = fallback;
-  }
-
-  playSong(idx);
-}
-
-// ── Core playSong — called internally and by playSongById ────
-function playSong(idx) {
-  // Clamp index to valid range
-  if (typeof idx !== 'number' || idx < 0 || idx >= songs.length) {
-    console.warn('playSong: invalid index', idx);
-    return;
-  }
-
-  // Clicking the active (confirmed playing) song → toggle pause/play
-  if (idx === currentTrackIdx && !isTransitioning && ytReady && ytPlayer) {
-    togglePlay();
-    return;
-  }
-
-  // New song selected — cancel any in-flight transition
-  isTransitioning = false;
-  ytErrorStreak   = 0;
-
-  if (!ytReady || !ytPlayer || typeof ytPlayer.loadVideoById !== 'function') {
-    pendingTrackIdx = idx;
-    ytLoadPending   = true;
-    const song = songs[idx];
-    if (song) updatePlayerBarPending(song);
-    return;
-  }
-
-  _doPlay(idx);
-}
-
-// ── Navigation controls ──────────────────────────────────────
-function nextTrack() {
-  if (songs.length === 0) return;
-  const next = (currentTrackIdx + 1) % songs.length;
-  if (ytReady && ytPlayer) _doPlay(next);
-}
-
-function prevTrack() {
-  if (songs.length === 0) return;
-  // If more than 3 seconds played, restart current song instead of going back
-  let prev = currentTrackIdx;
-  try {
-    const cur = ytPlayer?.getCurrentTime?.() || 0;
-    if (cur < 3 && currentTrackIdx > 0) {
-      prev = currentTrackIdx - 1;
-    }
-  } catch(e) {
-    prev = (currentTrackIdx - 1 + songs.length) % songs.length;
-  }
-  if (ytReady && ytPlayer) _doPlay(prev < 0 ? 0 : prev);
-}
-
 function togglePlay() {
-  if (!ytPlayer || currentTrackIdx < 0) return;
-  try {
-    if (isPlaying) ytPlayer.pauseVideo();
-    else           ytPlayer.playVideo();
-  } catch(e) { console.warn('togglePlay error:', e); }
-}
-
-function seekTrack(val) {
   if (!ytPlayer) return;
-  const dur = ytPlayer.getDuration() || 0;
-  ytPlayer.seekTo((val / 100) * dur, true);
+  if (isPlaying) { ytPlayer.pauseVideo(); isPlaying = false; document.getElementById('play-icon').className = 'fas fa-play'; }
+  else { ytPlayer.playVideo(); isPlaying = true; document.getElementById('play-icon').className = 'fas fa-pause'; }
 }
+function nextTrack() { if(currentTrackIdx < songs.length - 1) playSongById(songs[currentTrackIdx+1].id, currentTrackIdx+1); }
+function prevTrack() { if(currentTrackIdx > 0) playSongById(songs[currentTrackIdx-1].id, currentTrackIdx-1); }
+function seekTrack(val) { if (ytPlayer) ytPlayer.seekTo((val / 100) * ytPlayer.getDuration(), true); }
 
 function startProgressTracking() {
   clearInterval(progressInterval);
   progressInterval = setInterval(() => {
     if (!ytPlayer || !isPlaying) return;
-    try {
-      const cur = ytPlayer.getCurrentTime() || 0;
-      const dur = ytPlayer.getDuration() || 1;
-      const pct = (cur / dur) * 100;
-      document.getElementById('progress-bar').value = pct;
-      document.getElementById('cur-time').textContent = fmt(cur);
-      document.getElementById('dur-time').textContent = fmt(dur);
-    } catch(e){}
+    const cur = ytPlayer.getCurrentTime() || 0; const dur = ytPlayer.getDuration() || 1;
+    document.getElementById('progress-bar').value = (cur / dur) * 100;
+    document.getElementById('cur-time').textContent = fmt(cur);
+    document.getElementById('dur-time').textContent = fmt(dur);
   }, 1000);
 }
 
-function fmt(s) {
-  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
-  return `${m}:${sec.toString().padStart(2,'0')}`;
-}
-
-function updateActiveCard() {
-  // Re-render current page to reflect active state
-  if (currentPage === 'home') renderHome(document.getElementById('page-area'));
-  else if (currentPage === 'search') {
-    const q = document.getElementById('search-input')?.value || '';
-    doSearch(q);
-  }
-}
-
-// ============================================================
-//  Admin PIN Modal — with brute-force rate limiting
-// ============================================================
-let adminPinAttempts = 0;
-let adminLockoutUntil = 0;
-const MAX_ADMIN_ATTEMPTS = 5;
-const LOCKOUT_MS = 5 * 60 * 1000; // 5 minutes
-
-function showAdminPinModal() {
-  document.getElementById('admin-pin-modal').classList.remove('hidden');
-  document.getElementById('admin-pin-phone').value = '';
-  document.getElementById('admin-pin-pass').value = '';
-  document.getElementById('admin-pin-error').classList.add('hidden');
-  checkLockout();
-  setTimeout(() => document.getElementById('admin-pin-phone').focus(), 100);
-}
-
-function closeAdminPinModal() {
-  document.getElementById('admin-pin-modal').classList.add('hidden');
-  document.getElementById('admin-pin-error').classList.add('hidden');
-}
-
-function toggleAdminPassVis() {
-  const inp = document.getElementById('admin-pin-pass');
-  const ico = document.getElementById('admin-eye-icon');
-  if (inp.type === 'password') {
-    inp.type = 'text';
-    ico.className = 'fas fa-eye-slash';
-  } else {
-    inp.type = 'password';
-    ico.className = 'fas fa-eye';
-  }
-}
-
-function checkLockout() {
-  const lockoutEl = document.getElementById('admin-lockout-msg');
-  const lockoutText = document.getElementById('lockout-text');
-  if (Date.now() < adminLockoutUntil) {
-    const remaining = Math.ceil((adminLockoutUntil - Date.now()) / 1000);
-    const mins = Math.floor(remaining / 60), secs = remaining % 60;
-    lockoutEl.classList.remove('hidden');
-    lockoutText.textContent = `Too many attempts. Try again in ${mins}m ${secs}s`;
-    document.getElementById('admin-pin-phone').disabled = true;
-    document.getElementById('admin-pin-pass').disabled = true;
-    setTimeout(checkLockout, 1000); // keep countdown live
-  } else {
-    lockoutEl.classList.add('hidden');
-    document.getElementById('admin-pin-phone').disabled = false;
-    document.getElementById('admin-pin-pass').disabled = false;
-  }
-}
-
 function verifyAdminPin() {
-  // Enforce lockout
-  if (Date.now() < adminLockoutUntil) { checkLockout(); return; }
-
   const phone = document.getElementById('admin-pin-phone').value.trim();
   const pass  = document.getElementById('admin-pin-pass').value.trim();
-  const errEl = document.getElementById('admin-pin-error');
-
-  if (!phone || !pass) {
-    errEl.textContent = 'Please fill both fields';
-    errEl.classList.remove('hidden');
-    return;
-  }
-
-  // Constant-time-ish comparison to resist timing attacks
-  const phoneOk = phone === ADMIN_PHONE;
-  const passOk  = pass  === ADMIN_PASS;
-
-  if (phoneOk && passOk) {
-    // ✅ Correct — issue session token
-    adminPinAttempts = 0;
-    adminSessionToken = generateToken();
-    currentUser = currentUser || { name: 'Master Admin', phone: ADMIN_PHONE, status: 'admin' };
-    currentUser.status = 'admin';
-    closeAdminPinModal();
-    // Update sidebar to show admin nav
-    document.getElementById('admin-nav').classList.remove('hidden');
-    updateUserUI();
-    navigate('admin');
-    showToast('✅ Admin access granted');
-  } else {
-    // ❌ Wrong — count attempts
-    adminPinAttempts++;
-    const remaining = MAX_ADMIN_ATTEMPTS - adminPinAttempts;
-    if (adminPinAttempts >= MAX_ADMIN_ATTEMPTS) {
-      adminLockoutUntil = Date.now() + LOCKOUT_MS;
-      adminPinAttempts = 0;
-      errEl.textContent = 'Too many failed attempts. Locked for 5 minutes.';
-      checkLockout();
-    } else {
-      errEl.textContent = `Incorrect credentials. ${remaining} attempt${remaining !== 1 ? 's' : ''} left.`;
-    }
-    errEl.classList.remove('hidden');
-    document.getElementById('admin-pin-pass').value = '';
-    // Shake animation
-    const box = document.querySelector('#admin-pin-modal .modal-box');
-    box.style.animation = 'none';
-    box.offsetHeight; // reflow
-    box.style.animation = 'shake 0.4s ease';
+  if (phone === ADMIN_PHONE && pass === ADMIN_PASS) {
+    adminSessionToken = generateToken(); currentUser = currentUser || { status: 'admin' };
+    currentUser.status = 'admin'; closeAdminPinModal();
+    document.getElementById('admin-nav').classList.remove('hidden'); updateUserUI(); navigate('admin');
   }
 }
-function toggleSidebar() {
-  const sb = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
-  sb.classList.toggle('open');
-  overlay.classList.toggle('visible');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('visible');
-}
 
-// ============================================================
-//  Premium popup
-// ============================================================
-function closePremiumPopup() {
-  document.getElementById('premium-popup').classList.add('hidden');
-}
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebar-overlay').classList.toggle('visible'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('visible'); }
+function closePremiumPopup() { document.getElementById('premium-popup').classList.add('hidden'); }
 
-// ============================================================
-//  Toast notification
-// ============================================================
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.textContent = msg;
-  t.style.cssText = `position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--purple);color:white;padding:0.6rem 1.2rem;border-radius:24px;font-size:0.85rem;z-index:9999;white-space:nowrap;animation:fadeInUp 0.3s ease`;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3000);
-}
-
-// ============================================================
-//  Boot — Auto-login from saved session on every page load
-// ============================================================
-(async function boot() {
-  // Show a brief loading state so the auth screen doesn't flash
-  document.getElementById('auth-screen').style.display = 'none';
-
-  const splash = document.createElement('div');
-  splash.id = 'boot-splash';
-  splash.style.cssText = `
-    position:fixed;inset:0;background:#0a0a0a;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    z-index:9999;gap:1rem;
-  `;
-  splash.innerHTML = `
-    <div style="font-size:3rem;filter:drop-shadow(0 0 16px rgba(168,85,247,0.7))">🎵</div>
-    <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:#f0f0f0">
-      MoodSync <span style="color:#a855f7">Pro</span>
-    </div>
-    <div style="width:40px;height:3px;border-radius:2px;background:#222;overflow:hidden;margin-top:0.5rem">
-      <div id="boot-bar" style="width:0%;height:100%;background:linear-gradient(90deg,#7c3aed,#a855f7);transition:width 0.4s ease"></div>
-    </div>
-  `;
-  document.body.appendChild(splash);
-
-  // Animate the loading bar
-  setTimeout(() => { const b = document.getElementById('boot-bar'); if(b) b.style.width='60%'; }, 100);
-
-  await tryAutoLogin();
-
-  // Finish bar and fade out splash
-  const bar = document.getElementById('boot-bar');
-  if (bar) bar.style.width = '100%';
-  setTimeout(() => {
-    splash.style.transition = 'opacity 0.35s ease';
-    splash.style.opacity = '0';
-    setTimeout(() => {
-      splash.remove();
-      // If tryAutoLogin didn't launch the app, show the auth screen
-      if (!currentUser) {
-        document.getElementById('auth-screen').style.display = 'flex';
-      }
-    }, 350);
-  }, 300);
-})();
-const ytScript = document.createElement('script');
-ytScript.src = 'https://www.youtube.com/iframe_api';
-document.head.appendChild(ytScript);
-
-// ============================================================
-//  Mobile scroll — prevent ONLY pull-to-refresh on body,
-//  never block scroll on #page-area or song list containers.
-//  The old handler called e.preventDefault() globally which
-//  locked touch-scroll on the entire page after a song played.
-// ============================================================
-let _touchStartY = 0;
-
-document.addEventListener('touchstart', e => {
-  _touchStartY = e.touches[0].clientY;
-}, { passive: true });
-
-document.addEventListener('touchmove', e => {
-  // Only block if the touch target is directly on body/html
-  // (i.e. the pull-to-refresh gesture), never on scrollable children
-  const target = e.target;
-  const isOnScrollable = target.closest('#page-area, .modal-box, .auth-card, #auth-screen');
-  if (isOnScrollable) return; // let scroll happen normally
-
-  // Allow the gesture if a child element is scrollable
-  const path = e.composedPath ? e.composedPath() : [];
-  for (const el of path) {
-    if (el === document.body || el === document.documentElement) break;
-    if (el.scrollHeight > el.clientHeight) return; // scrollable — allow
-  }
-
-  // At this point: gesture is on a non-scrollable surface, at scroll top
-  const dy = e.touches[0].clientY - _touchStartY;
-  if (dy > 0 && (document.scrollingElement?.scrollTop || 0) === 0) {
-    e.preventDefault(); // block only pull-to-refresh
-  }
-}, { passive: false });
-
-// ============================================================
-//  Toast CSS animation
-// ============================================================
-const style2 = document.createElement('style');
-style2.textContent = `@keyframes fadeInUp { from { opacity:0; transform:translateX(-50%) translateY(10px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }`;
-document.head.appendChild(style2);
+(async function boot() { await tryAutoLogin(); })();
+const ytScript = document.createElement('script'); ytScript.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(ytScript);
 </script>
 </body>
 </html>

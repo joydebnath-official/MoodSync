@@ -7,7 +7,6 @@
 <title>MoodSync Pro - Stream Premium Hindi & Bangla Songs Online 🎵</title>
 <meta name="google-site-verification" content="GC3PjMScdkMFOJxcE4mVUd4vzvnSa3y1AVgY6_CWpXI" />
 <meta name="description" content="MoodSync Pro by Joy Debnath. Stream the best Hindi hits and Bangla songs free online. Enjoy ad-free premium music with background play support." />
-<meta name="keywords" content="MoodSync Pro, Joy Debnath, MoodSync music, free online music player, Hindi hits online, Bangla songs streaming, background play music, ad-free music website, boys mood fix, web music player github" />
 <meta name="author" content="Joy Debnath" />
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -20,13 +19,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <link rel="icon" type="image/jpeg" href="https://i.pinimg.com/736x/04/2a/e4/042ae4bf49945e32faefafa950b2c3ba.jpg">
-<link rel="shortcut icon" type="image/jpeg" href="https://i.pinimg.com/736x/04/2a/e4/042ae4bf49945e32faefafa950b2c3ba.jpg">
-<link rel="apple-touch-icon" href="https://i.pinimg.com/736x/04/2a/e4/042ae4bf49945e32faefafa950b2c3ba.jpg">
 
 <style>
   :root {
     --gold: #F5C842;
-    --gold-dim: #c9a02a;
     --purple: #a855f7;
     --purple-dark: #6b21a8;
     --bg: #0a0a0a;
@@ -42,15 +38,16 @@
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
     color: var(--text);
-    overflow-x: hidden;
+    overflow: hidden;
+    height: 100vh;
   }
   h1, h2, h3, .font-display { font-family: 'Syne', sans-serif; }
 
-  /* App Layout splitting grid */
+  /* App Layout Layout Structures */
   .app-container { display: grid; grid-template-columns: 240px 1fr; height: calc(100vh - 90px); overflow: hidden; }
-  .main-viewport { display: grid; grid-template-columns: 1fr 380px; overflow: hidden; background: #0c0c0e; }
-  .content-feed { overflow-y: auto; padding: 2rem; }
-  .side-panel-admin { background: #120b0b; border-left: 2px solid #3b1111; padding: 1.5rem; overflow-y: auto; }
+  .main-viewport { display: grid; grid-template-columns: 1fr 380px; overflow: hidden; background: #0c0c0e; height: 100%; }
+  .content-feed { overflow-y: auto; padding: 2rem; height: 100%; }
+  .side-panel-admin { background: #120b0b; border-left: 2px solid #3b1111; padding: 1.5rem; overflow-y: auto; height: 100%; }
 
   /* Custom Sidebar Styling */
   .sidebar-logo-container { border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 1.5rem; text-align: center; }
@@ -61,10 +58,10 @@
   }
   .sidebar-menu-btn:hover { color: var(--text); background: var(--surface2); }
   .sidebar-menu-btn.active { background: var(--purple-dark); color: white; }
-  .sidebar-menu-btn.admin-btn { background: linear-gradient(135deg, #d97706, #b45309); color: white; box-shadow: 0 4px 15px rgba(180,83,9,0.3); }
+  .sidebar-menu-btn.admin-btn { background: linear-gradient(135deg, #d97706, #b45309); color: white; }
 
   /* Discovery Track Cards Grid */
-  .song-grid-dashboard { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+  .song-grid-dashboard { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
   .track-item-card {
     background: #141416; border: 1px solid var(--border); border-radius: 14px;
     padding: 1rem; display: flex; align-items: center; gap: 1rem; transition: all 0.2s ease; position: relative;
@@ -74,57 +71,84 @@
 
   /* Joy's Command Center Panel Card Layout */
   .admin-command-box { border: 2px solid #851c1c; border-radius: 16px; background: #150e0e; padding: 1.25rem; margin-bottom: 1.5rem; }
-  .admin-panel-header { font-family: 'Syne', sans-serif; font-weight: 800; color: #f87171; text-align: center; font-size: 1.15rem; letter-spacing: 0.5px; border-bottom: 1px solid #3b1a1a; padding-bottom: 0.75rem; margin-bottom: 1rem; }
+  .admin-panel-header { font-family: 'Syne', sans-serif; font-weight: 800; color: #f87171; text-align: center; font-size: 1.15rem; border-bottom: 1px solid #3b1a1a; padding-bottom: 0.75rem; margin-bottom: 1rem; }
   
-  /* Input Custom Formatting */
   .panel-input {
     width: 100%; padding: 0.65rem 1rem; background: #1e1414; border: 1px solid #442222;
     border-radius: 8px; color: white; font-size: 0.9rem; outline: none; margin-bottom: 0.85rem;
   }
-  .panel-input:focus { border-color: #ef4444; }
-  .action-add-btn { width: auto; background: var(--gold); color: #000; font-weight: 700; padding: 0.5rem 1.2rem; border-radius: 8px; font-size: 0.85rem; transition: transform 0.15s; }
-  .action-add-btn:active { transform: scale(0.96); }
+  .action-add-btn { width: 100%; background: var(--gold); color: #000; font-weight: 700; padding: 0.65rem; border-radius: 8px; font-size: 0.9rem; }
 
-  /* Members Status Row list table */
+  /* Members Status list */
   .member-list-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
   .member-row-item { border-bottom: 1px solid #261616; font-size: 0.88rem; }
   .member-row-item td { padding: 0.65rem 0.25rem; }
 
-  /* Premium Bottom Promotion Banner line footer bar */
+  /* Premium Footer Promo Banner Line Bar Row */
   .upgrade-promo-banner-footer {
     height: 45px; background: linear-gradient(90deg, #b45309, #d97706);
-    display: flex; align-items: center; justify-content: center; font-size: 0.88rem; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.5px;
+    display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; padding: 0 1rem;
   }
 
   /* Audio player bottom deck container overlay bar controller */
   .music-player-deck-bar {
     height: 90px; background: #09090b; border-top: 1px solid var(--border);
-    display: grid; grid-template-columns: 280px 1fr 320px; align-items: center; padding: 0 2rem;
+    display: grid; grid-template-columns: 280px 1fr 200px; align-items: center; padding: 0 2rem; z-index: 100;
   }
   #playback-range-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 5px; border-radius: 3px; background: #222; outline: none; cursor: pointer; }
   #playback-range-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--purple); cursor: pointer; }
 
   /* Floating Overlay Widget Popup Container */
   .boys-mood-popup-widget {
-    position: absolute; bottom: 110px; left: 260px; background: white; color: black;
-    border-radius: 12px; padding: 1.2rem; width: 250px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 999;
+    position: absolute; bottom: 145px; left: 20px; background: white; color: black;
+    border-radius: 12px; padding: 1.2rem; width: 260px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 999;
   }
 
+  /* MOBILE RESPONSIVE ADAPTATIONS */
   @media(max-width: 1024px) {
-    .main-viewport { grid-template-columns: 1fr; }
-    .side-panel-admin { display: none; }
     .app-container { grid-template-columns: 1fr; }
-    .sidebar-navigation-panel { display: none; }
+    .main-viewport { grid-template-columns: 1fr; }
+    
+    /* Hide Sidebars dynamically on mobile layouts */
+    .sidebar-navigation-panel {
+      position: fixed; left: -250px; top: 0; width: 240px; height: 100vh;
+      z-index: 200; background: #111113; transition: left 0.3s ease;
+    }
+    .sidebar-navigation-panel.open { left: 0; }
+    
+    .side-panel-admin {
+      position: fixed; right: -390px; top: 0; width: 340px; height: 100vh;
+      z-index: 200; background: #120b0b; transition: right 0.3s ease;
+    }
+    .side-panel-admin.open { right: 0; }
+    
+    .content-feed { padding: 1rem; }
+    .music-player-deck-bar { grid-template-columns: 1fr 1fr; padding: 0 1rem; }
+    .music-player-deck-bar > *:nth-child(3) { display: none; } /* Hide volume controls on mobile */
   }
+
+  /* Sidebar drawer backdrop cover block overlay */
+  .drawer-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 150;
+  }
+  .drawer-overlay.active { display: block; }
 </style>
 </head>
 <body>
+
+<div class="lg:hidden bg-[#111113] border-b border-[#222] p-3 flex items-center justify-between text-white" style="z-index:110; position:relative;">
+  <button onclick="toggleMobileSidebar(true)" class="p-2 text-xl"><i class="fas fa-bars"></i></button>
+  <div class="font-display font-black text-sm tracking-widest text-purple-400">MOODSYNC PRO</div>
+  <button onclick="toggleMobileAdmin(true)" class="p-2 text-xl text-amber-500"><i class="fas fa-sliders"></i></button>
+</div>
+
+<div class="drawer-overlay" id="app-drawer-dimmer-overlay" onclick="closeAllMobileDrawers()"></div>
 
 <div class="flex flex-col h-screen overflow-hidden">
   
   <div class="app-container flex-1">
     
-    <aside class="sidebar-navigation-panel bg-[#111113] p-4 flex flex-col justify-between border-r border-[#1f1f23]">
+    <aside class="sidebar-navigation-panel bg-[#111113] p-4 flex flex-col justify-between border-r border-[#1f1f23]" id="mobile-sidebar-drawer">
       <div>
         <div class="sidebar-logo-container">
           <img src="https://i.pinimg.com/736x/04/2a/e4/042ae4bf49945e32faefafa950b2c3ba.jpg" alt="MoodSync Pro Logo" class="w-20 h-20 mx-auto rounded-full object-cover border-2 border-purple-500 mb-2 shadow-lg">
@@ -148,8 +172,8 @@
           <button class="sidebar-menu-btn" id="btn-nav-girls" onclick="changeAppRoute('girls-tips')">
             <i class="fas fa-venus text-sm text-pink-400"></i> <span>GIRLS TIPS</span>
           </button>
-          <button class="sidebar-menu-btn admin-btn mt-4" id="btn-nav-admin" onclick="changeAppRoute('admin')">
-            <i class="fas fa-sliders text-sm"></i> <span>ADMIN PANEL</span>
+          <button class="sidebar-menu-btn admin-btn mt-4 lg:hidden" onclick="toggleMobileAdmin(true); toggleMobileSidebar(false);">
+            <i class="fas fa-sliders text-sm"></i> <span>OPEN ADMIN TOOLS</span>
           </button>
         </nav>
       </div>
@@ -163,31 +187,34 @@
       
       <section class="content-feed" id="viewport-route-view-container">
         <div class="flex items-center justify-between border-b border-[#222] pb-4 mb-6">
-          <h1 class="font-display font-extrabold text-2xl tracking-tight" id="header-dynamic-title">DISCOVERY</h1>
+          <h1 class="font-display font-extrabold text-xl lg:text-2xl tracking-tight" id="header-dynamic-title">DISCOVERY</h1>
           <div class="text-xs font-semibold px-3 py-1 rounded-full border border-purple-500 bg-purple-950/30 text-purple-400">PREMIUM ACCOUNT</div>
         </div>
 
-        <div class="bg-gradient-to-r from-neutral-900 to-neutral-800 border border-neutral-700/60 rounded-xl p-3 flex items-center justify-between mb-6 text-sm">
+        <div class="bg-gradient-to-r from-neutral-900 to-neutral-800 border border-neutral-700/60 rounded-xl p-3 flex flex-col sm:flex-row gap-2 items-center justify-between mb-6 text-sm">
           <div class="flex items-center gap-2 text-neutral-400">
             <span class="text-xs bg-amber-500/20 text-amber-500 px-2 py-0.5 rounded font-bold">Adsterra</span>
-            <span>No Ads & Fast Sorting links unlocked successfully.</span>
+            <span class="text-xs sm:text-sm text-center sm:text-left">No Ads & Fast Sorting links unlocked successfully.</span>
           </div>
-          <button class="bg-neutral-700 text-white font-bold px-3 py-1 rounded text-xs hover:bg-neutral-600 transition">Adsterra Direct</button>
+          <a href="https://www.google.com" target="_blank" class="bg-neutral-700 text-white font-bold px-3 py-1 rounded text-xs hover:bg-neutral-600 transition decoration-none">Adsterra Direct Link</a>
         </div>
 
         <div class="song-grid-dashboard" id="dynamic-songs-deck-grid">
           </div>
       </section>
 
-      <aside class="side-panel-admin flex flex-col">
+      <aside class="side-panel-admin flex flex-col" id="mobile-admin-drawer">
         <div class="admin-command-box">
-          <h3 class="admin-panel-header">JOY'S COMMAND CENTER</h3>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-extrabold text-sm text-red-400 tracking-wider uppercase">JOY'S COMMAND CENTER</h3>
+            <button class="lg:hidden text-white p-1" onclick="toggleMobileAdmin(false)"><i class="fas fa-times"></i></button>
+          </div>
           
           <div class="text-xs text-neutral-400 font-bold uppercase tracking-wider mb-2">Add New Song</div>
           <input type="text" class="panel-input" id="form-input-title" placeholder="Title">
           <input type="text" class="panel-input" id="form-input-ytid" placeholder="YT ID (e.g. hVCYwwFwGEE)">
           
-          <div class="grid grid-columns-2 gap-2 mb-3">
+          <div class="grid grid-cols-2 gap-2 mb-3">
             <div>
               <label class="text-[10px] text-neutral-400 font-bold block mb-1">Language</label>
               <select class="panel-input" id="form-input-lang">
@@ -202,7 +229,7 @@
             </div>
           </div>
 
-          <button class="action-add-btn w-full" onclick="executeAdminSongAppend()">ADD NEW TRACK</button>
+          <button class="action-add-btn" onclick="executeAdminSongAppend()">ADD NEW TRACK</button>
         </div>
 
         <div class="flex-1 overflow-y-auto">
@@ -231,11 +258,6 @@
                 <td class="text-neutral-400 font-mono">01540595258</td>
                 <td class="text-right text-amber-400"><i class="fas fa-star"></i></td>
               </tr>
-              <tr class="member-row-item">
-                <td class="font-medium text-neutral-300">Ohnar Cham</td>
-                <td class="text-neutral-400 font-mono">01530952234</td>
-                <td class="text-right text-amber-400"><i class="fas fa-star"></i></td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -257,30 +279,30 @@
   </div>
 
   <div class="upgrade-promo-banner-footer">
-    UPGRADE TO PREMIUM (bKash/Nagad Call Center Support Line): 01540595258
+    UPGRADE TO PREMIUM (bKash/Nagad Line Support): 01540595258
   </div>
 
   <footer class="music-player-deck-bar">
-    <div class="flex items-center gap-3">
-      <div class="w-12 h-12 bg-neutral-800 rounded-lg flex items-center justify-center text-xl text-purple-400 font-bold border border-neutral-700 shadow-inner" id="current-player-cover-box">🎵</div>
-      <div class="overflow-hidden">
-        <div class="text-sm font-bold text-white tracking-wide truncate" id="current-player-title">Select a Track to Stream</div>
-        <div class="text-xs text-neutral-500 font-medium truncate" id="current-player-sub-meta">MoodSync Library Cloud Feed</div>
+    <div class="flex items-center gap-2 lg:gap-3 min-w-0">
+      <div class="w-10 h-10 lg:w-12 lg:h-12 bg-neutral-800 rounded-lg flex items-center justify-center text-lg text-purple-400 font-bold border border-neutral-700 shadow-inner flex-shrink-0" id="current-player-cover-box">🎵</div>
+      <div class="overflow-hidden min-w-0">
+        <div class="text-xs lg:text-sm font-bold text-white tracking-wide truncate" id="current-player-title">Select a Track to Stream</div>
+        <div class="text-[10px] lg:text-xs text-neutral-500 font-medium truncate" id="current-player-sub-meta">MoodSync Library Cloud Feed</div>
       </div>
     </div>
 
-    <div class="flex flex-col items-center justify-center gap-1.5 px-4">
-      <div class="flex items-center gap-5">
-        <button class="text-neutral-500 hover:text-white transition" onclick="firePrevTrack()"><i class="fas fa-step-backward text-sm"></i></button>
-        <button class="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shadow-lg hover:scale-105 transition duration-150" onclick="triggerPlaybackToggle()">
+    <div class="flex flex-col items-center justify-center gap-1.5 px-2 lg:px-4">
+      <div class="flex items-center gap-4 lg:gap-5">
+        <button class="text-neutral-500 hover:text-white transition" onclick="firePrevTrack()"><i class="fas fa-step-backward text-xs lg:text-sm"></i></button>
+        <button class="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-white text-black flex items-center justify-center shadow-lg hover:scale-105 transition duration-150" onclick="triggerPlaybackToggle()">
           <i class="fas fa-play text-xs pl-0.5" id="deck-trigger-play-icon"></i>
         </button>
-        <button class="text-neutral-500 hover:text-white transition" onclick="fireNextTrack()"><i class="fas fa-step-forward text-sm"></i></button>
+        <button class="text-neutral-500 hover:text-white transition" onclick="fireNextTrack()"><i class="fas fa-step-forward text-xs lg:text-sm"></i></button>
       </div>
       <div class="w-full flex items-center gap-2">
-        <span class="text-[10px] text-neutral-500 font-mono" id="player-time-current">0:00</span>
+        <span class="text-[9px] lg:text-[10px] text-neutral-500 font-mono" id="player-time-current">0:00</span>
         <input type="range" id="playback-range-slider" min="0" max="100" value="0" oninput="executeTrackSeek(this.value)">
-        <span class="text-[10px] text-neutral-500 font-mono" id="player-time-total">0:00</span>
+        <span class="text-[9px] lg:text-[10px] text-neutral-500 font-mono" id="player-time-total">0:00</span>
       </div>
     </div>
 
@@ -294,7 +316,7 @@
 
 </div>
 
-<div id="hidden-youtube-iframe-worker-target" class="absolute -top-[9999px] -left-[9999px] w-1 h-1"></div>
+<div id="hidden-youtube-iframe-worker-target"></div>
 
 <script>
 // Mock initial database configuration for live execution system models
@@ -303,29 +325,50 @@ let songsArrayCloud = [
   { title: "Khola Janala", id: "hVCYwwFwGEE", lang: "Bangla", emoji: "🌦️" },
   { title: "Mita Kahi", id: "agABhrijdd", lang: "Hindi", emoji: "🍁" },
   { title: "Panjashwmar Dhi", id: "gvVGNn61BU", lang: "Bangla", emoji: "🎼" },
-  { title: "Shorigar", id: "SftryZ2Xl", lang: "Hindi", emoji: "✨" },
-  { title: "Khola Janala v2", id: "hoWlJfv02ML", lang: "Bangla", emoji: "💫" }
+  { title: "Shorigar", id: "SftryZ2Xl", lang: "Hindi", emoji: "✨" }
 ];
 
 let globalActiveIndex = -1;
 let systemPlaybackActiveState = false;
 let ytStreamPlayerWorker = null;
 let apiLoadingConfirmedState = false;
+let timeProgressInterval = null;
 
 function buildTracksUIGridDashboard() {
   const container = document.getElementById('dynamic-songs-deck-grid');
   container.innerHTML = songsArrayCloud.map((song, index) => `
-    <div class="track-item-card ${globalActiveIndex === index ? 'border-purple-500 bg-purple-950/10' : ''}" onclick="dispatchTrackPlaySignal(${index})">
+    <div class="track-item-card ${globalActiveIndex === index ? 'border-purple-500 bg-purple-950/20' : ''}" onclick="dispatchTrackPlaySignal(${index})">
       <div class="track-cover-img flex items-center justify-center text-xl">${song.emoji}</div>
       <div class="flex-1 min-w-0">
         <h4 class="text-sm font-bold text-white truncate">${song.title}</h4>
-        <p class="text-xs text-neutral-500 font-semibold mt-0.5">Artist ID: ${song.id}</p>
+        <p class="text-xs text-neutral-500 font-semibold mt-0.5">${song.lang} • ID: ${song.id}</p>
       </div>
-      <button class="text-xs font-bold text-neutral-600 hover:text-red-500 p-1 transition" onclick="event.stopPropagation(); removeTrackFromSystemIndex(${index})">
-        <i class="fas fa-minus-circle"></i>
+      <button class="text-xs font-bold text-neutral-500 hover:text-red-500 p-2 transition z-10" onclick="event.stopPropagation(); removeTrackFromSystemIndex(${index})">
+        <i class="fas fa-trash-alt"></i>
       </button>
     </div>
   `).join('');
+}
+
+// Mobile View Drawers Controllers Logic Engine
+function toggleMobileSidebar(status) {
+  const sidebar = document.getElementById('mobile-sidebar-drawer');
+  const overlay = document.getElementById('app-drawer-dimmer-overlay');
+  if (status) { sidebar.classList.add('open'); overlay.classList.add('active'); } 
+  else { sidebar.classList.remove('open'); }
+}
+
+function toggleMobileAdmin(status) {
+  const admin = document.getElementById('mobile-admin-drawer');
+  const overlay = document.getElementById('app-drawer-dimmer-overlay');
+  if (status) { admin.classList.add('open'); overlay.classList.add('active'); } 
+  else { admin.classList.remove('open'); }
+}
+
+function closeAllMobileDrawers() {
+  toggleMobileSidebar(false);
+  toggleMobileAdmin(false);
+  document.getElementById('app-drawer-dimmer-overlay').classList.remove('active');
 }
 
 function dispatchTrackPlaySignal(index) {
@@ -338,9 +381,19 @@ function dispatchTrackPlaySignal(index) {
   document.getElementById('current-player-cover-box').textContent = targetTrack.emoji;
 
   if (apiLoadingConfirmedState && ytStreamPlayerWorker) {
+    // ANTI AD & AD-AUDIO OVERLAP RE-INITIALIZATION TRICK
+    ytStreamPlayerWorker.stopVideo(); 
+    ytStreamPlayerWorker.mute(); // Mute background audio ads during initiation buffering
     ytStreamPlayerWorker.loadVideoById({ videoId: targetTrack.id });
+    
+    setTimeout(() => {
+      ytStreamPlayerWorker.unmute(); // Unmute clean track stream audio play lines
+      ytStreamPlayerWorker.playVideo();
+    }, 900);
+
     systemPlaybackActiveState = true;
     document.getElementById('deck-trigger-play-icon').className = "fas fa-pause text-xs";
+    startPlaybackTimerProgress();
   }
   buildTracksUIGridDashboard();
 }
@@ -351,10 +404,45 @@ function triggerPlaybackToggle() {
     ytStreamPlayerWorker.pauseVideo();
     systemPlaybackActiveState = false;
     document.getElementById('deck-trigger-play-icon').className = "fas fa-play text-xs pl-0.5";
+    clearInterval(timeProgressInterval);
   } else {
     ytStreamPlayerWorker.playVideo();
     systemPlaybackActiveState = true;
     document.getElementById('deck-trigger-play-icon').className = "fas fa-pause text-xs";
+    startPlaybackTimerProgress();
+  }
+}
+
+function startPlaybackTimerProgress() {
+  clearInterval(timeProgressInterval);
+  timeProgressInterval = setInterval(() => {
+    if (ytStreamPlayerWorker && typeof ytStreamPlayerWorker.getCurrentTime === 'function') {
+      const cur = ytStreamPlayerWorker.getCurrentTime();
+      const dur = ytStreamPlayerWorker.getDuration() || 0;
+      
+      document.getElementById('player-time-current').textContent = formatTimeLayout(cur);
+      document.getElementById('player-time-total').textContent = formatTimeLayout(dur);
+      
+      if (dur > 0) {
+        document.getElementById('playback-range-slider').value = (cur / dur) * 100;
+      }
+    }
+  }, 1000);
+}
+
+function formatTimeLayout(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+function executeTrackSeek(value) {
+  if (ytStreamPlayerWorker && typeof ytStreamPlayerWorker.getDuration === 'function') {
+    const dur = ytStreamPlayerWorker.getDuration();
+    if (dur > 0) {
+      const targetSec = (value / 100) * dur;
+      ytStreamPlayerWorker.seekTo(targetSec, true);
+    }
   }
 }
 
@@ -374,11 +462,19 @@ function executeAdminSongAppend() {
   document.getElementById('form-input-ytid').value = "";
   
   buildTracksUIGridDashboard();
+  closeAllMobileDrawers();
 }
 
 function removeTrackFromSystemIndex(index) {
   songsArrayCloud.splice(index, 1);
-  if (globalActiveIndex === index) globalActiveIndex = -1;
+  if (globalActiveIndex === index) {
+    globalActiveIndex = -1;
+    if(ytStreamPlayerWorker) ytStreamPlayerWorker.stopVideo();
+    document.getElementById('current-player-title').textContent = "Select a Track to Stream";
+    document.getElementById('deck-trigger-play-icon').className = "fas fa-play text-xs pl-0.5";
+  } else if (globalActiveIndex > index) {
+    globalActiveIndex--;
+  }
   buildTracksUIGridDashboard();
 }
 
@@ -398,11 +494,12 @@ function changeAppRoute(route) {
     if (activeNavBtn) activeNavBtn.classList.add('active');
     widget.classList.add('hidden');
   }
+  closeAllMobileDrawers();
 }
 
 window.onYouTubeIframeAPIReady = function() {
   ytStreamPlayerWorker = new YT.Player('hidden-youtube-iframe-worker-target', {
-    height: '1', width: '1', playerVars: { autoplay: 0, controls: 0, playsinline: 1 },
+    height: '1', width: '1', playerVars: { autoplay: 0, controls: 0, playsinline: 1, rel: 0, disablekb: 1 },
     events: {
       onReady: () => { apiLoadingConfirmedState = true; },
       onStateChange: (e) => { if (e.data === 0) fireNextTrack(); }
@@ -410,7 +507,7 @@ window.onYouTubeIframeAPIReady = function() {
   });
 };
 
-// Injection script runtime bootstrap initiation trigger
+// Injection script runtime bootstrap trigger
 (function() {
   buildTracksUIGridDashboard();
   const scriptTagElement = document.createElement('script');

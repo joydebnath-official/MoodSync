@@ -28,24 +28,21 @@
     --muted: #777;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
+  html, body {
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
     color: var(--text);
     overflow-x: hidden;
     overscroll-behavior: none;
-    touch-action: pan-x pan-y;
     -webkit-overflow-scrolling: touch;
+    height: 100%;
   }
-  body.no-pull { overscroll-behavior-y: contain; }
   h1,h2,h3,.font-display { font-family: 'Syne', sans-serif; }
-
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
 
-  /* ── Auth Screen ───────────────────────────────────── */
+  /* ── Auth Screen ── */
   #auth-screen {
     min-height: 100vh;
     background: radial-gradient(ellipse at 20% 20%, #1a0a2e 0%, #0a0a0a 60%),
@@ -53,8 +50,6 @@
     display: flex; align-items: center; justify-content: center; padding: 1rem;
   }
   .auth-card { max-width: 420px; width: 100%; }
-
-  /* Neon liquid glow card */
   #auth-card-glow {
     position: relative;
     background: rgba(10,10,12,0.97);
@@ -79,10 +74,21 @@
     background: rgba(10,10,12,0.97);
   }
   #auth-card-glow:focus-within::before { opacity: .9; filter: blur(14px); animation-duration: 2.5s; }
-
-  .logo-glow { filter: drop-shadow(0 0 12px rgba(168,85,247,0.6)); }
-
-  /* Input fields */
+  @keyframes liquidShift {
+    0%,100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .logo-img {
+    width: 56px; height: 56px; border-radius: 14px;
+    object-fit: cover;
+    filter: drop-shadow(0 0 12px rgba(168,85,247,0.6));
+    border: 2px solid rgba(168,85,247,0.4);
+  }
+  .logo-img-sm {
+    width: 32px; height: 32px; border-radius: 8px;
+    object-fit: cover;
+    border: 1.5px solid rgba(168,85,247,0.3);
+  }
   .input-field {
     width: 100%; padding: 0.75rem 1rem;
     background: var(--surface3);
@@ -93,8 +99,6 @@
     outline: none;
   }
   .input-field:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(168,85,247,0.15); }
-
-  /* Glow input wrapper */
   .glow-input-wrap { position: relative; }
   .input-icon {
     position: absolute; right: .85rem; top: 50%; transform: translateY(-50%);
@@ -109,19 +113,43 @@
   }
   .pass-toggle:hover { color: var(--purple); }
 
-  /* Neon glow primary button */
+  /* Google button */
+  .google-btn {
+    width: 100%; padding: 0.75rem;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+  }
+  .google-btn:hover { background: var(--surface2); border-color: #555; }
+
+  /* OR divider */
+  .or-divider {
+    text-align: center; font-size: 0.78rem;
+    color: var(--muted); position: relative;
+    margin: 0.25rem 0;
+  }
+  .or-divider::before, .or-divider::after {
+    content: ''; position: absolute; top: 50%; width: 38%; height: 1px;
+    background: var(--border);
+  }
+  .or-divider::before { left: 0; }
+  .or-divider::after { right: 0; }
+
   .btn-primary {
     width: 100%; padding: 0.85rem;
     background: linear-gradient(135deg, #7c3aed, #a855f7);
     border: none; border-radius: 10px; color: white;
     font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600;
     cursor: pointer; transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
   .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(168,85,247,0.4); }
   .btn-primary:active { transform: translateY(0); }
   .btn-primary:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
-
-  /* Glow variant for primary action buttons */
   .glow-btn {
     position: relative; overflow: hidden;
     box-shadow: 0 0 20px rgba(168,85,247,.4);
@@ -137,32 +165,37 @@
   .glow-btn > * { position: relative; z-index: 1; }
   .glow-btn:hover:not(:disabled) { box-shadow: 0 0 36px rgba(168,85,247,.75); transform: translateY(-1px); }
   .glow-btn:disabled { opacity: .55; cursor: not-allowed; box-shadow: none; transform: none; }
-
-  /* Auth toggle tabs */
   .auth-toggle-tab {
     flex: 1; padding: .6rem .5rem; border-radius: 10px; border: none;
     font-family: 'Syne', sans-serif; font-size: .85rem; font-weight: 600;
     cursor: pointer; transition: all .22s; color: var(--muted); background: transparent;
+    -webkit-tap-highlight-color: transparent;
   }
   .auth-toggle-tab.active {
     background: linear-gradient(135deg,#7c3aed,#a855f7); color: white;
     box-shadow: 0 0 16px rgba(168,85,247,.4);
   }
-
-  /* Auth view animation */
   .auth-view { animation: authFadeIn .28s ease; }
   @keyframes authFadeIn { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:translateY(0); } }
-
-  /* Link helpers */
   .link-btn {
     background: none; border: none; color: var(--muted); font-size: .78rem;
     cursor: pointer; font-family: 'DM Sans', sans-serif; transition: color .2s;
+    -webkit-tap-highlight-color: transparent;
   }
   .link-btn:hover { color: var(--text); }
   .link-accent { color: var(--purple); cursor: pointer; font-weight: 600; }
   .link-accent:hover { text-decoration: underline; }
 
-  /* ── Mobile logout in top bar ──────────────────────── */
+  /* Spinner */
+  .spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white; border-radius: 50%;
+    animation: spin 0.7s linear infinite; vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Mobile logout */
   #mobile-logout-btn { display: none; }
   @media (max-width: 768px) { #mobile-logout-btn { display: flex; } }
   @media (max-width: 380px) { .mobile-logout-label { display: none; } #mobile-logout-btn { padding: .4rem .65rem; } }
@@ -170,8 +203,6 @@
   /* App Layout */
   #app-screen { display: none; }
   #app-screen.visible { display: flex; height: 100vh; overflow: hidden; }
-
-  /* Sidebar */
   #sidebar {
     width: 220px; min-width: 220px;
     background: var(--surface);
@@ -186,25 +217,19 @@
     border-radius: 0; transition: all 0.2s;
     font-size: 0.9rem; color: var(--muted);
     border-left: 3px solid transparent;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
   .nav-item:hover { color: var(--text); background: var(--surface2); }
   .nav-item.active { color: var(--purple); border-left-color: var(--purple); background: rgba(168,85,247,0.08); }
   .nav-item i { width: 18px; text-align: center; }
-
-  /* Main content */
   #main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
   #page-area {
     flex: 1;
     overflow-y: auto;
     padding: 1.5rem;
-    -webkit-overflow-scrolling: touch; /* critical for iOS momentum scroll */
-    overscroll-behavior-y: contain;   /* contains scroll within this area */
-  }
-
-  /* Guarantee body never loses scroll ability — JS may not set overflow:hidden */
-  body, html {
-    overflow-x: hidden;
-    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
   }
 
   /* Player bar */
@@ -214,6 +239,7 @@
     display: flex; align-items: center; gap: 1rem;
     padding: 0 1.5rem;
     backdrop-filter: blur(20px);
+    flex-shrink: 0;
   }
   .player-thumb {
     width: 52px; height: 52px; border-radius: 8px;
@@ -225,14 +251,20 @@
   #track-title { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #track-lang { font-size: 0.75rem; color: var(--muted); }
   .player-controls { display: flex; align-items: center; gap: 0.75rem; }
-  .ctrl-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0.4rem; transition: color 0.2s; }
+  .ctrl-btn {
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 1rem; padding: 0.5rem; transition: color 0.2s;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    min-width: 40px; min-height: 40px; display: flex; align-items: center; justify-content: center;
+  }
   .ctrl-btn:hover { color: var(--text); }
   #play-btn {
-    width: 40px; height: 40px; border-radius: 50%;
+    width: 44px; height: 44px; border-radius: 50%;
     background: linear-gradient(135deg, #7c3aed, #a855f7);
     border: none; color: white; cursor: pointer; font-size: 1rem;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
   }
   #play-btn:hover { transform: scale(1.08); box-shadow: 0 0 20px rgba(168,85,247,0.5); }
   .progress-wrap { flex: 1; max-width: 300px; display: flex; align-items: center; gap: 0.5rem; }
@@ -240,25 +272,13 @@
   #progress-bar::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--purple); cursor: pointer; }
   .time-text { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
 
-  /* Song delete button (admin/authorized only) */
-  .song-delete-btn {
-    background: none; border: none; cursor: pointer;
-    color: rgba(239,68,68,0.35); font-size: .78rem;
-    padding: .3rem .4rem; border-radius: 6px;
-    transition: color .2s, background .2s;
-    flex-shrink: 0;
-    opacity: 0; /* hidden until card is hovered */
-    transition: opacity .2s, color .2s;
-  }
-  .song-card:hover .song-delete-btn { opacity: 1; }
-  .song-delete-btn:hover { color: #ef4444; background: rgba(239,68,68,.12); }
-
   /* Song card */
   .song-card {
     display: flex; align-items: center; gap: 0.75rem;
     padding: 0.65rem 0.9rem; border-radius: 10px;
     cursor: pointer; transition: all 0.18s;
     border: 1px solid transparent;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
   }
   .song-card:hover { background: var(--surface2); border-color: var(--border); }
   .song-card.active { background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.3); }
@@ -268,6 +288,20 @@
   .song-name { font-size: 0.88rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .song-sub { font-size: 0.75rem; color: var(--muted); }
   .song-dur { font-size: 0.75rem; color: var(--muted); flex-shrink: 0; }
+  .song-delete-btn {
+    background: none; border: none; cursor: pointer;
+    color: rgba(239,68,68,0.35); font-size: .78rem;
+    padding: .4rem .5rem; border-radius: 6px;
+    transition: opacity .2s, color .2s;
+    flex-shrink: 0; opacity: 0;
+    -webkit-tap-highlight-color: transparent;
+    min-width: 32px; min-height: 32px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .song-card:hover .song-delete-btn { opacity: 1; }
+  /* Always show delete on touch devices */
+  @media (hover: none) { .song-delete-btn { opacity: 0.6 !important; } }
+  .song-delete-btn:hover, .song-delete-btn:active { color: #ef4444; background: rgba(239,68,68,.12); opacity: 1; }
 
   /* Membership badges */
   .badge-basic { background: rgba(100,100,100,0.2); color: #aaa; padding: 2px 8px; border-radius: 12px; font-size: 0.72rem; }
@@ -287,19 +321,27 @@
     width: 100%; max-width: 480px;
     box-shadow: 0 0 60px rgba(168,85,247,0.2);
     animation: modalIn 0.25s ease;
+    max-height: 90vh; overflow-y: auto;
   }
   @keyframes modalIn { from { opacity:0; transform:scale(0.94); } to { opacity:1; transform:scale(1); } }
 
-  /* Mobile overlay sidebar */
+  /* Mobile sidebar */
   #sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 40; }
+  #hamburger { display: none; }
+  @media (max-width: 768px) {
+    #sidebar { position: fixed; left: 0; top: 0; height: 100vh; transform: translateX(-100%); z-index: 50; }
+    #sidebar.open { transform: translateX(0); box-shadow: 4px 0 30px rgba(0,0,0,0.5); }
+    #sidebar-overlay.visible { display: block; }
+    #hamburger { display: flex; }
+    #player-bar { padding: 0 .75rem; gap: .5rem; height: 72px; }
+    .progress-wrap { display: none; }
+    #page-area { padding: 1rem; }
+  }
+  /* YouTube player — completely hidden */
+  #yt-player { position: fixed; top: -9999px; left: -9999px; width: 1px; height: 1px; pointer-events: none; opacity: 0; }
 
-  /* YouTube player hidden */
-  #yt-player { position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; }
-
-  /* Section headings */
+  /* Sections */
   .section-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; }
-
-  /* Search */
   .search-input {
     width: 100%; padding: 0.7rem 1rem 0.7rem 2.5rem;
     background: var(--surface2); border: 1px solid var(--border);
@@ -309,25 +351,11 @@
   .search-input:focus { border-color: var(--purple); }
   .search-wrap { position: relative; }
   .search-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.85rem; }
-
-  /* Adsterra ad placeholder */
   .ad-banner {
     background: linear-gradient(135deg, var(--surface2), var(--surface3));
     border: 1px solid var(--border); border-radius: 10px;
     padding: 0.75rem 1rem; margin-bottom: 1rem;
     display: flex; align-items: center; gap: 0.75rem; font-size: 0.82rem; color: var(--muted);
-  }
-
-  /* Mobile hamburger */
-  #hamburger { display: none; }
-  @media (max-width: 768px) {
-    #sidebar { position: fixed; left: 0; top: 0; height: 100vh; transform: translateX(-100%); z-index: 50; }
-    #sidebar.open { transform: translateX(0); }
-    #sidebar-overlay.visible { display: block; }
-    #hamburger { display: flex; }
-    #player-bar { padding: 0 .75rem; gap: .5rem; }
-    .progress-wrap { display: none; }
-    #page-area { padding: 1rem; }
   }
   .hero-card {
     background: linear-gradient(135deg, #1a0a3e, #0f1a0a, #1a0a0a);
@@ -339,30 +367,20 @@
     width: 300px; height: 300px; border-radius: 50%;
     background: radial-gradient(circle, rgba(168,85,247,0.15), transparent 70%);
   }
-
-  /* Admin table */
   .admin-table { width: 100%; border-collapse: collapse; }
   .admin-table th { padding: 0.75rem; text-align: left; font-size: 0.8rem; color: var(--muted); font-family: 'Syne', sans-serif; border-bottom: 1px solid var(--border); }
   .admin-table td { padding: 0.75rem; font-size: 0.85rem; border-bottom: 1px solid rgba(42,42,42,0.5); vertical-align: middle; }
   .admin-table tr:hover td { background: var(--surface2); }
-
-  /* Spinning animation for active track */
   @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   .spinning { animation: spin-slow 8s linear infinite; border-radius: 50% !important; }
-
-  /* Suggestion dropdown */
   .suggest-list { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; z-index: 100; max-height: 200px; overflow-y: auto; margin-top: 4px; }
   .suggest-item { padding: 0.6rem 1rem; cursor: pointer; font-size: 0.85rem; transition: background 0.15s; }
   .suggest-item:hover { background: var(--surface3); }
-  
-  /* Pulse animation for playing */
   @keyframes pulse-glow {
     0%,100% { box-shadow: 0 0 0 0 rgba(168,85,247,0.4); }
     50% { box-shadow: 0 0 0 8px rgba(168,85,247,0); }
   }
   .playing-pulse { animation: pulse-glow 2s infinite; }
-
-  /* Tips cards */
   .tip-card {
     background: var(--surface2); border: 1px solid var(--border);
     border-radius: 12px; padding: 1rem;
@@ -370,23 +388,15 @@
   }
   .tip-card:hover { border-color: rgba(168,85,247,0.3); transform: translateY(-1px); }
   .tip-card.girls { border-left: 3px solid #ec4899; }
-  .tip-card.girls:hover { border-color: rgba(236,72,153,0.4); }
   .tip-card .tip-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
-
-  /* Tips category tab switcher */
   .tips-tab {
     flex: 1; padding: 0.6rem; border-radius: 10px; border: none;
     font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 600;
     cursor: pointer; transition: all 0.2s; color: var(--muted); background: transparent;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
   }
   .tips-tab.active-boys { background: linear-gradient(135deg,#7c3aed,#a855f7); color: white; }
   .tips-tab.active-girls { background: linear-gradient(135deg,#be185d,#ec4899); color: white; }
-
-  /* Girls gradient accent */
-  .girls-glow { filter: drop-shadow(0 0 10px rgba(236,72,153,0.5)); }
-  .pink-text { color: #ec4899; }
-
-  /* Shake animation for wrong admin pin */
   @keyframes shake {
     0%,100% { transform: translateX(0); }
     15%,45%,75% { transform: translateX(-8px); }
@@ -403,103 +413,93 @@
     -webkit-text-fill-color: transparent;
     animation: shimmer 3s linear infinite;
   }
-
-  /* ── Auth error shake ── */
   .auth-error-shake { animation: shake .4s ease; }
+  @keyframes fadeInUp { from { opacity:0; transform:translateX(-50%) translateY(10px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
 </style>
 </head>
-<body class="no-pull">
+<body>
 
+<!-- ======= AUTH SCREEN ======= -->
 <div id="auth-screen">
   <div class="auth-card" id="auth-card-glow">
-
+    <!-- Logo with image -->
     <div class="text-center mb-6">
-      <div class="text-5xl mb-2 logo-glow">🎵</div>
+      <img src="https://i.pinimg.com/736x/04/2a/e4/042ae4bf49945e32faefafa950b2c3ba.jpg"
+           alt="MoodSync Pro" class="logo-img mx-auto mb-2">
       <h1 class="font-display text-2xl font-bold text-white">MoodSync <span style="color:var(--purple)">Pro</span></h1>
       <p class="text-xs mt-1" style="color:var(--muted)">Your premium music experience</p>
     </div>
 
+    <!-- Login / Sign Up Toggle -->
     <div class="flex gap-1.5 p-1 rounded-xl mb-5" style="background:rgba(255,255,255,0.04);border:1px solid rgba(168,85,247,0.18)">
       <button class="auth-toggle-tab active" id="main-tab-login" onclick="switchMainTab('login')">Login</button>
       <button class="auth-toggle-tab" id="main-tab-signup" onclick="switchMainTab('signup')">Sign Up</button>
     </div>
 
+    <!-- LOGIN VIEW -->
     <div id="view-login" class="auth-view flex flex-col gap-3">
-
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="login-email" type="email"
                placeholder="Email address" autocomplete="email"
                onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
         <i class="fas fa-envelope input-icon"></i>
       </div>
-
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="login-password" type="password"
                placeholder="Password" autocomplete="current-password"
                style="padding-right:2.8rem"
                onkeydown="if(event.key==='Enter')doEmailLogin()">
-        <button onclick="togglePassVis('login-password','eye-login')" class="pass-toggle">
+        <button onclick="togglePassVis('login-password','eye-login')" class="pass-toggle" type="button">
           <i class="fas fa-eye" id="eye-login"></i>
         </button>
       </div>
-
       <div class="text-right" style="margin-top:-.5rem">
-        <button onclick="doPasswordReset()" class="link-btn">Forgot password?</button>
+        <button onclick="doPasswordReset()" class="link-btn" type="button">Forgot password?</button>
       </div>
-
-      <button class="btn-primary glow-btn" id="email-login-btn" onclick="doEmailLogin()">
+      <button class="btn-primary glow-btn" id="email-login-btn" onclick="doEmailLogin()" type="button">
         <span id="email-login-label">Login</span>
       </button>
-
       <div class="or-divider">OR continue with</div>
-
-      <button class="google-btn" onclick="doGoogleSignIn()" id="google-login-btn">
+      <button class="google-btn" onclick="doGoogleSignIn()" id="google-login-btn" type="button">
         <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.7 29.3 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.8 20-21 0-1.4-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 16.3 3 9.6 7.8 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 36.5 26.8 37 24 37c-5.2 0-9.6-3.2-11.3-7.8l-6.6 4.9C9.7 40.9 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.5 4.6-4.6 6l6.2 5.2C40.8 36 44 30.5 44 24c0-1.4-.1-2.7-.4-4z"/></svg>
         Continue with Google
       </button>
-
       <p class="text-center text-xs" style="color:var(--muted);margin-top:.25rem">
         New here? <span onclick="switchMainTab('signup')" class="link-accent">Sign Up free</span>
       </p>
     </div>
 
+    <!-- SIGN UP VIEW -->
     <div id="view-signup" class="auth-view hidden flex flex-col gap-3">
-
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-name" type="text" placeholder="Full Name"
                autocomplete="name"
                onkeydown="if(event.key==='Enter')document.getElementById('signup-email').focus()">
         <i class="fas fa-user input-icon"></i>
       </div>
-
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-email" type="email" placeholder="Email address"
                autocomplete="email"
                onkeydown="if(event.key==='Enter')document.getElementById('signup-password').focus()">
         <i class="fas fa-envelope input-icon"></i>
       </div>
-
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-password" type="password"
                placeholder="Password (min 8 chars)" autocomplete="new-password"
                style="padding-right:2.8rem"
                onkeydown="if(event.key==='Enter')doEmailSignup()">
-        <button onclick="togglePassVis('signup-password','eye-signup')" class="pass-toggle">
+        <button onclick="togglePassVis('signup-password','eye-signup')" class="pass-toggle" type="button">
           <i class="fas fa-eye" id="eye-signup"></i>
         </button>
       </div>
-
-      <button class="btn-primary glow-btn" id="signup-submit-btn" onclick="doEmailSignup()">
+      <button class="btn-primary glow-btn" id="signup-submit-btn" onclick="doEmailSignup()" type="button">
         <span id="signup-submit-label">Create Account</span>
       </button>
-
       <div class="or-divider">OR</div>
-
-      <button class="google-btn" onclick="doGoogleSignIn()">
+      <button class="google-btn" onclick="doGoogleSignIn()" type="button">
         <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.7 29.3 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.8 20-21 0-1.4-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 16.3 3 9.6 7.8 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 36.5 26.8 37 24 37c-5.2 0-9.6-3.2-11.3-7.8l-6.6 4.9C9.7 40.9 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.5 4.6-4.6 6l6.2 5.2C40.8 36 44 30.5 44 24c0-1.4-.1-2.7-.4-4z"/></svg>
         Sign Up with Google
       </button>
-
       <p class="text-center text-xs" style="color:var(--muted);margin-top:.25rem">
         Already have an account? <span onclick="switchMainTab('login')" class="link-accent">Login</span>
       </p>
@@ -507,23 +507,22 @@
 
     <div id="auth-error" class="mt-3 text-center text-sm hidden"
          style="color:#ef4444;padding:.5rem .75rem;border-radius:8px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2)"></div>
-
     <div id="recaptcha-container" style="display:none"></div>
   </div>
 </div>
 
+<!-- ======= MAIN APP ======= -->
 <div id="app-screen">
   <div id="sidebar-overlay" onclick="closeSidebar()"></div>
-
   <nav id="sidebar">
     <div class="px-4 mb-6">
       <div class="flex items-center gap-2">
-        <span class="text-2xl">🎵</span>
+        <img src="https://i.pinimg.com/736x/04/2a/e4/042ae4bf49945e32faefafa950b2c3ba.jpg"
+             alt="Logo" class="logo-img-sm">
         <span class="font-display font-bold text-lg">MoodSync</span>
       </div>
       <div id="sidebar-user" class="mt-3 text-xs" style="color:var(--muted)"></div>
     </div>
-
     <div id="nav-links" class="flex flex-col gap-1">
       <div class="nav-item active" onclick="navigate('home')" data-page="home">
         <i class="fas fa-home"></i><span>Home</span>
@@ -544,9 +543,10 @@
         <i class="fas fa-shield-halved"></i><span>Admin</span>
       </div>
     </div>
-
     <div class="mt-auto px-4 pb-2">
-      <button onclick="doLogout()" class="w-full text-left text-sm flex items-center gap-2 py-2 px-3 rounded-lg transition-all" style="color:var(--muted)" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
+      <button onclick="doLogout()" class="w-full text-left text-sm flex items-center gap-2 py-2 px-3 rounded-lg transition-all"
+              style="color:var(--muted)" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'"
+              type="button">
         <i class="fas fa-sign-out-alt"></i> Logout
       </button>
     </div>
@@ -554,22 +554,20 @@
 
   <div id="main-content">
     <div class="flex items-center gap-3 px-4 py-3 border-b" style="border-color:var(--border);background:var(--surface)">
-      <button id="hamburger" onclick="toggleSidebar()" class="p-2 rounded-lg" style="background:var(--surface2);border:1px solid var(--border)">
+      <button id="hamburger" onclick="toggleSidebar()" type="button"
+              class="p-2 rounded-lg" style="background:var(--surface2);border:1px solid var(--border)">
         <i class="fas fa-bars text-sm"></i>
       </button>
       <div id="page-title" class="font-display font-bold text-lg flex-1">Home</div>
       <div id="user-badge-top" class="text-xs px-3 py-1 rounded-full" style="background:var(--surface2);border:1px solid var(--border)"></div>
-      <button id="mobile-logout-btn" onclick="doLogout()"
+      <button id="mobile-logout-btn" onclick="doLogout()" type="button"
               class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
-              style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171"
-              title="Logout">
+              style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171">
         <i class="fas fa-sign-out-alt"></i>
         <span class="mobile-logout-label">Logout</span>
       </button>
     </div>
-
     <div id="page-area"></div>
-
     <div id="player-bar">
       <div class="player-thumb" id="player-thumb"><span id="player-emoji">🎵</span></div>
       <div id="track-info">
@@ -577,9 +575,9 @@
         <div id="track-lang">—</div>
       </div>
       <div class="player-controls">
-        <button class="ctrl-btn" onclick="prevTrack()"><i class="fas fa-backward-step"></i></button>
-        <button id="play-btn" onclick="togglePlay()"><i class="fas fa-play" id="play-icon"></i></button>
-        <button class="ctrl-btn" onclick="nextTrack()"><i class="fas fa-forward-step"></i></button>
+        <button class="ctrl-btn" onclick="prevTrack()" type="button"><i class="fas fa-backward-step"></i></button>
+        <button id="play-btn" onclick="togglePlay()" type="button"><i class="fas fa-play" id="play-icon"></i></button>
+        <button class="ctrl-btn" onclick="nextTrack()" type="button"><i class="fas fa-forward-step"></i></button>
       </div>
       <div class="progress-wrap">
         <span class="time-text" id="cur-time">0:00</span>
@@ -590,12 +588,12 @@
   </div>
 </div>
 
+<!-- Premium Popup -->
 <div id="premium-popup" class="modal-overlay hidden">
   <div class="modal-box text-center" style="max-width:420px">
     <div class="text-5xl mb-3">⭐</div>
     <h2 class="font-display text-xl font-bold mb-1">Unlock Premium Access</h2>
     <p class="text-sm mb-4" style="color:var(--muted)">You're on the <strong style="color:#aaa">Basic (Free)</strong> plan. Upgrade now for ad-free music, A-Z sorting, and all Pro features!</p>
-
     <div class="flex gap-2 mb-4 text-left">
       <div class="flex-1 p-3 rounded-xl" style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3)">
         <div class="font-display font-bold text-sm mb-1" style="color:var(--purple)">Premium ⭐</div>
@@ -608,7 +606,6 @@
         <div class="text-xs mt-1" style="color:var(--muted)">All Premium + Badge</div>
       </div>
     </div>
-
     <div class="p-3 rounded-xl mb-4 text-left" style="background:rgba(232,0,75,0.08);border:1px solid rgba(232,0,75,0.25)">
       <div class="flex items-center gap-2 mb-2">
         <span style="color:#e8004b;font-size:1rem">🏦</span>
@@ -620,40 +617,19 @@
         <div class="mt-1 text-xs" style="color:var(--muted)">After payment, WhatsApp your screenshot to the same number. Your status will be updated within minutes.</div>
       </div>
     </div>
-
     <div class="flex flex-col gap-2">
       <a href="https://wa.me/8801540595258?text=I want to upgrade my MoodSync Pro account" target="_blank"
          class="btn-primary flex items-center justify-center gap-2 no-underline" style="display:flex">
         <i class="fab fa-whatsapp"></i> Pay & Upgrade via WhatsApp
       </a>
-      <button onclick="navigate('upgrade');closePremiumPopup()" class="text-sm py-2 transition-all" style="color:var(--purple)">
-        View All Plans
-      </button>
-      <button onclick="closePremiumPopup()" class="text-xs py-1" style="color:var(--muted)">
-        Maybe Later
-      </button>
+      <button onclick="navigate('upgrade');closePremiumPopup()" type="button"
+              class="text-sm py-2 transition-all" style="color:var(--purple)">View All Plans</button>
+      <button onclick="closePremiumPopup()" type="button" class="text-xs py-1" style="color:var(--muted)">Maybe Later</button>
     </div>
   </div>
 </div>
 
-<div id="boys-modal" class="modal-overlay hidden">
-  <div class="modal-box">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="font-display text-xl font-bold">💪 Boys Mood Fix Tips</h2>
-      <button onclick="document.getElementById('boys-modal').classList.add('hidden')" style="color:var(--muted)"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="flex flex-col gap-3">
-      <div class="tip-card"><div class="tip-icon">🎧</div><strong>Music Therapy</strong><p class="text-sm mt-1" style="color:var(--muted)">Play your favorite tracks and let the rhythm reset your mood. Music releases dopamine!</p></div>
-      <div class="tip-card"><div class="tip-icon">🏃</div><strong>Move Your Body</strong><p class="text-sm mt-1" style="color:var(--muted)">Even a 10-min walk outside can drastically shift your mindset and energy.</p></div>
-      <div class="tip-card"><div class="tip-icon">🧘</div><strong>Breathe Deeply</strong><p class="text-sm mt-1" style="color:var(--muted)">4 counts in, 4 hold, 4 out. Repeat 5 times. Your nervous system will thank you.</p></div>
-      <div class="tip-card"><div class="tip-icon">📞</div><strong>Talk to Someone</strong><p class="text-sm mt-1" style="color:var(--muted)">Don't bottle it up. Chat, laugh, vent — connection is the fastest mood cure.</p></div>
-    </div>
-    <a href="https://wa.me/8801540595258" target="_blank" class="btn-primary mt-4 flex items-center justify-center gap-2 no-underline" style="display:flex">
-      <i class="fab fa-whatsapp"></i> Chat with Support
-    </a>
-  </div>
-</div>
-
+<!-- Admin PIN Modal -->
 <div id="admin-pin-modal" class="modal-overlay hidden">
   <div class="modal-box" style="max-width:380px">
     <div class="text-center mb-5">
@@ -667,26 +643,30 @@
         <input class="input-field" id="admin-pin-pass" type="password" placeholder="Admin Password"
                style="padding-right:2.5rem"
                onkeydown="if(event.key==='Enter')verifyAdminPin()">
-        <button onclick="toggleAdminPassVis()" style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer">
+        <button onclick="toggleAdminPassVis()" type="button"
+                style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer">
           <i class="fas fa-eye" id="admin-eye-icon"></i>
         </button>
       </div>
       <div id="admin-pin-error" class="text-sm hidden" style="color:#ef4444;text-align:center"></div>
-      <button class="btn-primary" onclick="verifyAdminPin()">
+      <button class="btn-primary" onclick="verifyAdminPin()" type="button">
         <i class="fas fa-shield-halved mr-2"></i>Verify & Enter Admin
       </button>
-      <button onclick="closeAdminPinModal()" class="text-sm py-2 transition-all" style="color:var(--muted)">Cancel</button>
+      <button onclick="closeAdminPinModal()" type="button" class="text-sm py-2 transition-all" style="color:var(--muted)">Cancel</button>
     </div>
-    <div id="admin-lockout-msg" class="hidden mt-3 text-center text-xs p-2 rounded-lg" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3)">
+    <div id="admin-lockout-msg" class="hidden mt-3 text-center text-xs p-2 rounded-lg"
+         style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3)">
       <i class="fas fa-clock mr-1"></i><span id="lockout-text"></span>
     </div>
   </div>
 </div>
+
+<!-- Add Song Modal -->
 <div id="add-song-modal" class="modal-overlay hidden">
   <div class="modal-box">
     <div class="flex items-center justify-between mb-4">
       <h2 class="font-display text-xl font-bold">➕ Add New Song</h2>
-      <button onclick="document.getElementById('add-song-modal').classList.add('hidden')" style="color:var(--muted)"><i class="fas fa-times"></i></button>
+      <button onclick="document.getElementById('add-song-modal').classList.add('hidden')" type="button" style="color:var(--muted)"><i class="fas fa-times"></i></button>
     </div>
     <div class="flex flex-col gap-3">
       <input class="input-field" id="new-song-title" type="text" placeholder="Song Title">
@@ -696,167 +676,117 @@
         <option value="Bangla">Bangla</option>
       </select>
       <input class="input-field" id="new-song-emoji" type="text" placeholder="Emoji (optional, e.g. 🎵)">
-      <button class="btn-primary" onclick="adminAddSong()">Add Song to Cloud</button>
+      <button class="btn-primary" onclick="adminAddSong()" type="button">Add Song to Cloud</button>
     </div>
   </div>
 </div>
 
+<!-- Hidden YouTube IFrame -->
 <div id="yt-player"></div>
 
 <script>
+// ============================================================
+//  Firebase Config & REST Helpers
+// ============================================================
 const FB_URL = 'https://moodsync-678a0-default-rtdb.firebaseio.com';
-const FB_KEY = 'AIzaSyChct2KNjBxVENH_6tc36l0eh5n4SnNtSA'; // reads only
-
+const FB_KEY = 'AIzaSyChct2KNjBxVENH_6tc36l0eh5n4SnNtSA';
 const SAFE_MIN_DEPTH = 2;
 
 function _assertSafePath(path, operation) {
-  if (!path || typeof path !== 'string' || path.trim() === '') {
+  if (!path || typeof path !== 'string' || path.trim() === '')
     throw new Error(`[Firebase BLOCKED] ${operation} — path is null/empty`);
-  }
   const segments = path.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
-  if (segments.length < SAFE_MIN_DEPTH) {
-    throw new Error(
-      `[Firebase BLOCKED] ${operation} — path "${path}" is too shallow ` +
-      `(${segments.length} segment). Minimum: ${SAFE_MIN_DEPTH}. ` +
-      `This would overwrite an entire collection.`
-    );
-  }
+  if (segments.length < SAFE_MIN_DEPTH)
+    throw new Error(`[Firebase BLOCKED] ${operation} — path "${path}" is too shallow`);
   return segments;
 }
 
 async function _getIdToken(forceRefresh = false) {
   try {
-    if (fbAuth && fbAuth.currentUser) {
-      const token = await fbAuth.currentUser.getIdToken(forceRefresh);
-      console.debug('[Auth Token] ✅ Got ID token for:', fbAuth.currentUser.email);
-      return token;
-    }
-  } catch(e) {
-    console.warn('[Auth Token] getIdToken failed:', e.message);
-  }
+    if (fbAuth && fbAuth.currentUser)
+      return await fbAuth.currentUser.getIdToken(forceRefresh);
+  } catch(e) { console.warn('[Auth Token] getIdToken failed:', e.message); }
   return FB_KEY;
 }
 
 async function fbRead(path) {
   try {
-    if (!path) { console.warn('[Firebase READ] empty path'); return null; }
+    if (!path) return null;
     const r = await fetch(`${FB_URL}/${path}.json?auth=${FB_KEY}`);
-    if (!r.ok) { console.error(`[Firebase READ] HTTP ${r.status} for "${path}"`); return null; }
+    if (!r.ok) return null;
     return await r.json();
-  } catch(e) {
-    console.error('[Firebase READ] error:', e.message);
-    return null;
-  }
+  } catch(e) { return null; }
 }
+const fbGet = fbRead;
 
 async function fbWrite(path, data) {
   try {
-    _assertSafePath(path, 'PUT/Write');
+    _assertSafePath(path, 'PUT');
     const token = await _getIdToken();
     const r = await fetch(`${FB_URL}/${path}.json?auth=${token}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
     });
-    if (!r.ok) {
-      const body = await r.text().catch(() => '');
-      console.error(`[Firebase WRITE] HTTP ${r.status} for "${path}":`, body);
-      return false;
-    }
-    return true;
-  } catch(e) {
-    console.error(`[Firebase WRITE] error at "${path}":`, e.message);
-    return false;
-  }
+    return r.ok;
+  } catch(e) { console.error(`[Firebase WRITE] error at "${path}":`, e.message); return false; }
 }
 
 async function fbPatch(path, data) {
   try {
-    _assertSafePath(path, 'PATCH/Update');
+    _assertSafePath(path, 'PATCH');
     const token = await _getIdToken();
     const r = await fetch(`${FB_URL}/${path}.json?auth=${token}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
     });
-    if (!r.ok) {
-      const body = await r.text().catch(() => '');
-      console.error(`[Firebase PATCH] HTTP ${r.status} for "${path}":`, body);
-      return false;
-    }
-    return true;
-  } catch(e) {
-    console.error(`[Firebase PATCH] error at "${path}":`, e.message);
-    return false;
-  }
+    return r.ok;
+  } catch(e) { console.error(`[Firebase PATCH] error at "${path}":`, e.message); return false; }
 }
 
 async function fbPush(path, data) {
   try {
-    if (!path || typeof path !== 'string') throw new Error('Invalid path');
+    if (!path) throw new Error('Invalid path');
     const token = await _getIdToken();
     const r = await fetch(`${FB_URL}/${path}.json?auth=${token}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
     });
-    if (!r.ok) {
-      const body = await r.text().catch(() => '');
-      console.error(`[Firebase PUSH] HTTP ${r.status} for "${path}":`, body);
-      return null;
-    }
+    if (!r.ok) return null;
     return await r.json();
-  } catch(e) {
-    console.error(`[Firebase PUSH] error at "${path}":`, e.message);
-    return null;
-  }
+  } catch(e) { console.error(`[Firebase PUSH] error at "${path}":`, e.message); return null; }
 }
 
 async function fbDelete(path) {
   try {
     const segments = _assertSafePath(path, 'DELETE');
     const key = segments[segments.length - 1];
-
-    if (!key || key.length < 3) {
-      console.error(`[Firebase DELETE BLOCKED] key "${key}" in "${path}" looks invalid`);
-      return false;
-    }
+    if (!key || key.length < 3) { console.error('[Firebase DELETE BLOCKED] key looks invalid'); return false; }
 
     const callerEmail = (fbAuth?.currentUser?.email || currentUser?.email || '').toLowerCase();
     const isAuthorised = callerEmail === SONG_DELETE_EMAIL.toLowerCase()
                       || callerEmail === ADMIN_EMAIL.toLowerCase()
                       || currentUser?.status === 'admin';
-
-    if (!isAuthorised) {
-      console.error(`[Firebase DELETE BLOCKED] ${callerEmail} is not authorised`);
-      return false;
-    }
+    if (!isAuthorised) { console.error('[Firebase DELETE BLOCKED] not authorised:', callerEmail); return false; }
 
     let token;
-    try {
-      token = await fbAuth.currentUser.getIdToken(true);
-    } catch(e) {
-      console.error('[Firebase DELETE] getIdToken(true) failed:', e.message);
-      return false;
-    }
+    try { token = await fbAuth.currentUser.getIdToken(true); }
+    catch(e) { console.error('[Firebase DELETE] getIdToken(true) failed:', e.message); return false; }
 
     const res = await fetch(`${FB_URL}/${path}.json?auth=${token}`, { method: 'DELETE' });
-
     if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      console.error(`[Firebase DELETE] HTTP ${res.status} for "${path}":`, body);
+      if (res.status === 401 || res.status === 403)
+        alert(`Delete failed: Permission Denied (HTTP ${res.status})\nLogged in as: ${callerEmail}\nCheck Firebase RTDB rules.`);
       return false;
     }
+    console.log(`[Firebase DELETE] ✅ Success: ${path}`);
     return true;
-
-  } catch(e) {
-    console.error(`[Firebase DELETE] Exception for "${path}":`, e.message, e);
-    return false;
-  }
+  } catch(e) { console.error(`[Firebase DELETE] Exception:`, e.message); return false; }
 }
 
-const fbGet = fbRead;
-
+// ============================================================
+//  App State
+// ============================================================
 let currentUser = null;
-let songs = [];          
+let songs = [];
 let filteredSongs = [];
 let currentTrackIdx = -1;
 let isPlaying = false;
@@ -865,59 +795,49 @@ let ytReady = false;
 let progressInterval = null;
 let currentPage = 'home';
 let adminSessionToken = null;
-const ADMIN_SESSION_KEY = 'ms_ast';
 
+// ============================================================
+//  Constants
+// ============================================================
 const ADMIN_PHONE = '01540595258';
 const ADMIN_PASS  = 'Qwerasdf1234@#';
-const ADMIN_EMAIL = 'joydebnath.info@gmail.com'; 
+const ADMIN_EMAIL = 'joydebnath.info@gmail.com';
 const SONG_DELETE_EMAIL = 'joydebnath.info@gmail.com';
+const ADSTERRA_SMARTLINK = 'https://www.effectivecpmnetwork.com/mcdvz5y9b3?key=9a6f9937427c03e6a452d827ff5de053';
 
-function switchTab(tab) {
-  const loginForm = document.getElementById('login-form');
-  const signupForm = document.getElementById('signup-form');
-  const tabLogin = document.getElementById('tab-login');
-  const tabSignup = document.getElementById('tab-signup');
-  clearAuthError();
-  if (tab === 'login') {
-    loginForm.classList.remove('hidden');
-    signupForm.classList.add('hidden');
-    tabLogin.style.background = 'var(--purple)'; tabLogin.style.color = 'white';
-    tabSignup.style.background = 'transparent'; tabSignup.style.color = 'var(--muted)';
-  } else {
-    loginForm.classList.add('hidden');
-    signupForm.classList.remove('hidden');
-    tabSignup.style.background = 'var(--purple)'; tabSignup.style.color = 'white';
-    tabLogin.style.background = 'transparent'; tabLogin.style.color = 'var(--muted)';
-  }
+// ============================================================
+//  Firebase Init
+// ============================================================
+const FB_AUTH_CONFIG = {
+  apiKey: 'AIzaSyChct2KNjBxVENH_6tc36l0eh5n4SnNtSA',
+  authDomain: 'moodsync-678a0.firebaseapp.com',
+  databaseURL: 'https://moodsync-678a0-default-rtdb.firebaseio.com',
+  projectId: 'moodsync-678a0',
+  storageBucket: 'moodsync-678a0.firebasestorage.app',
+  appId: '1:818211283248:web:02ea0707218c0b9c7ee8f5'
+};
+let fbApp, fbAuth, fbDatabase;
+try {
+  fbApp      = firebase.initializeApp(FB_AUTH_CONFIG);
+  fbAuth     = firebase.auth();
+  fbDatabase = firebase.database();
+  fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
+} catch(e) { console.warn('Firebase init:', e.message); }
+
+// ============================================================
+//  Auth Helpers
+// ============================================================
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  el.style.animation = 'none';
+  el.offsetHeight;
+  el.style.animation = 'shake .4s ease';
 }
-
-// ── Unified User Layout Sync ──
-async function saveUserToDB(uid, profile) {
-  if (!uid) return null;
-  const existing = await fbGet(`users/${uid}`);
-  const record = {
-    uid,
-    name:       profile.name       || existing?.name       || 'MoodSync User',
-    email:      profile.email      || existing?.email      || '',
-    phone:      profile.phone      || existing?.phone      || '',
-    status:     existing?.status   || 'basic',
-    authMethod: profile.authMethod || existing?.authMethod || 'email',
-    createdAt:  existing?.createdAt || Date.now(),
-    lastLogin:  Date.now()
-  };
-
-  if (existing) {
-    await fbPatch(`users/${uid}`, {
-      name:       record.name,
-      email:      record.email,
-      phone:      record.phone,
-      authMethod: record.authMethod,
-      lastLogin:  record.lastLogin
-    });
-  } else {
-    await fbWrite(`users/${uid}`, record);
-  }
-  return record;
+function clearAuthError() {
+  const el = document.getElementById('auth-error');
+  if (el) el.classList.add('hidden');
 }
 
 function switchMainTab(tab) {
@@ -927,53 +847,87 @@ function switchMainTab(tab) {
   const tabLogin   = document.getElementById('main-tab-login');
   const tabSignup  = document.getElementById('main-tab-signup');
   clearAuthError();
-
   if (isLogin) {
-    loginView.classList.remove('hidden');
-    loginView.classList.add('auth-view');
+    loginView.classList.remove('hidden');  loginView.classList.add('auth-view');
     signupView.classList.add('hidden');
-    tabLogin.classList.add('active');
-    tabSignup.classList.remove('active');
+    tabLogin.classList.add('active');      tabSignup.classList.remove('active');
   } else {
-    signupView.classList.remove('hidden');
-    signupView.classList.add('auth-view');
+    signupView.classList.remove('hidden'); signupView.classList.add('auth-view');
     loginView.classList.add('hidden');
-    tabSignup.classList.add('active');
-    tabLogin.classList.remove('active');
+    tabSignup.classList.add('active');     tabLogin.classList.remove('active');
   }
 }
 
+function togglePassVis(inputId, iconId) {
+  const inp = document.getElementById(inputId);
+  const ico = document.getElementById(iconId);
+  if (!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  ico.className = inp.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+}
+
+function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+function setAuthLoading(isLoading, btnId, labelId, labelText) {
+  const btn   = document.getElementById(btnId);
+  const label = document.getElementById(labelId);
+  if (!btn) return;
+  btn.disabled = isLoading;
+  if (label) label.innerHTML = isLoading ? '<span class="spinner"></span>' : labelText;
+}
+
+// ============================================================
+//  Google Sign-In (FIX: lock prevents duplicate popup)
+// ============================================================
 let googlePopupOpen = false;
 async function doGoogleSignIn() {
-  if (googlePopupOpen) return;
+  if (googlePopupOpen) { showAuthError('A sign-in window is already open.'); return; }
   clearAuthError();
   googlePopupOpen = true;
   const provider = new firebase.auth.GoogleAuthProvider();
+  provider.addScope('profile'); provider.addScope('email');
+  provider.setCustomParameters({ prompt: 'select_account' });
   try {
     const result = await fbAuth.signInWithPopup(provider);
-    const profile = await saveUserToDB(result.user.uid, { name: result.user.displayName, email: result.user.email, authMethod: 'google' });
-    currentUser = { ...profile, uid: result.user.uid };
-    saveSession(currentUser);
-    launchApp();
+    await _handleGoogleUser(result.user);
   } catch(err) {
-    showAuthError(err.message || 'Google sign-in failed');
-  } finally {
-    googlePopupOpen = false;
-  }
+    const silent = ['auth/popup-closed-by-user','auth/cancelled-popup-request','auth/user-cancelled'];
+    if (!silent.includes(err.code)) {
+      showAuthError(
+        err.code === 'auth/popup-blocked' ? 'Popup blocked. Allow popups for this site.' :
+        err.code === 'auth/network-request-failed' ? 'Network error. Check your connection.' :
+        err.message || 'Google sign-in failed'
+      );
+    }
+  } finally { googlePopupOpen = false; }
+}
+async function _handleGoogleUser(fbUser) {
+  const profile = await saveUserToDB(fbUser.uid, { name: fbUser.displayName || '', email: fbUser.email || '', authMethod: 'google' });
+  currentUser = { ...profile, uid: fbUser.uid };
+  saveSession(currentUser);
+  launchApp();
 }
 
+// ============================================================
+//  Email Login (FIX: always re-enables button in finally)
+// ============================================================
 async function doEmailLogin() {
   const email = document.getElementById('login-email')?.value?.trim() || '';
   const pass  = document.getElementById('login-password')?.value || '';
-
-  if (!email || !pass) { showAuthError('Please fill all fields.'); return; }
+  if (!email) { showAuthError('Please enter your email address.'); return; }
+  if (!isValidEmail(email)) { showAuthError('Please enter a valid email address.'); return; }
+  if (!pass) { showAuthError('Please enter your password.'); return; }
+  if (pass.length < 8) { showAuthError('Password must be at least 8 characters.'); return; }
   clearAuthError();
 
+  // Admin gate
   if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && pass === ADMIN_PASS) {
     setAuthLoading(true, 'email-login-btn', 'email-login-label', 'Logging in…');
-    try { await fbAuth.signInWithEmailAndPassword(email, pass); } catch(e){}
+    try {
+      await fbAuth.signInWithEmailAndPassword(email, pass);
+    } catch(e) { console.warn('[Admin] Firebase Auth sign-in:', e.code); }
     adminSessionToken = generateToken();
-    currentUser = { name:'Master Admin', email:ADMIN_EMAIL, phone:ADMIN_PHONE, status:'admin', uid: fbAuth.currentUser?.uid || 'admin-hardcoded', authMethod:'email' };
+    currentUser = { name:'Master Admin', email:ADMIN_EMAIL, phone:ADMIN_PHONE, status:'admin', uid: fbAuth.currentUser?.uid || 'admin-hc', authMethod:'email' };
     saveSession(currentUser);
     setAuthLoading(false, 'email-login-btn', 'email-login-label', 'Login');
     launchApp();
@@ -983,77 +937,162 @@ async function doEmailLogin() {
   setAuthLoading(true, 'email-login-btn', 'email-login-label', 'Logging in…');
   try {
     const result = await fbAuth.signInWithEmailAndPassword(email, pass);
-    const profile = await saveUserToDB(result.user.uid, { email: result.user.email, name: result.user.displayName || email.split('@')[0], authMethod: 'email' });
-    currentUser = { ...profile, uid: result.user.uid };
+    const fbUser = result.user;
+    const profile = await saveUserToDB(fbUser.uid, { email: fbUser.email, name: fbUser.displayName || email.split('@')[0], authMethod: 'email' });
+    currentUser = { ...profile, uid: fbUser.uid };
     saveSession(currentUser);
     launchApp();
   } catch(err) {
-    showAuthError(err.message || 'Login failed.');
+    showAuthError(
+      err.code === 'auth/user-not-found'         ? 'No account found. Please sign up.' :
+      err.code === 'auth/wrong-password'         ? 'Incorrect password.' :
+      err.code === 'auth/invalid-credential'     ? 'Email or password is incorrect.' :
+      err.code === 'auth/invalid-email'          ? 'Invalid email address.' :
+      err.code === 'auth/user-disabled'          ? 'Account disabled. Contact support.' :
+      err.code === 'auth/too-many-requests'      ? 'Too many attempts. Please wait.' :
+      err.code === 'auth/network-request-failed' ? 'Network error. Check your connection.' :
+      err.message || 'Login failed.'
+    );
   } finally {
+    // CRITICAL: always re-enable — prevents "dead button after logout" bug
     setAuthLoading(false, 'email-login-btn', 'email-login-label', 'Login');
   }
 }
 
+// ============================================================
+//  Email Sign Up
+// ============================================================
 async function doEmailSignup() {
   const name  = document.getElementById('signup-name')?.value?.trim() || '';
   const email = document.getElementById('signup-email')?.value?.trim() || '';
   const pass  = document.getElementById('signup-password')?.value || '';
-
-  if (!name || !email || pass.length < 8) { showAuthError('Invalid input configurations.'); return; }
+  if (!name)  { showAuthError('Please enter your full name.'); return; }
+  if (!email) { showAuthError('Please enter your email address.'); return; }
+  if (!isValidEmail(email)) { showAuthError('Please enter a valid email.'); return; }
+  if (!pass || pass.length < 8) { showAuthError('Password must be at least 8 characters.'); return; }
   clearAuthError();
-
   setAuthLoading(true, 'signup-submit-btn', 'signup-submit-label', 'Creating account…');
   try {
     const result = await fbAuth.createUserWithEmailAndPassword(email, pass);
-    await result.user.updateProfile({ displayName: name });
-    const profile = await saveUserToDB(result.user.uid, { uid: result.user.uid, name, email, authMethod: 'email' });
-    currentUser = { ...profile, uid: result.user.uid };
+    const fbUser = result.user;
+    await fbUser.updateProfile({ displayName: name });
+    const profile = await saveUserToDB(fbUser.uid, { uid: fbUser.uid, name, email, authMethod: 'email' });
+    currentUser = { ...profile, uid: fbUser.uid };
     saveSession(currentUser);
     launchApp();
   } catch(err) {
-    showAuthError(err.message);
+    showAuthError(
+      err.code === 'auth/email-already-in-use' ? 'Email already registered. Try logging in.' :
+      err.code === 'auth/invalid-email'        ? 'Invalid email address.' :
+      err.code === 'auth/weak-password'        ? 'Password too weak. Use 8+ characters.' :
+      err.message || 'Sign up failed.'
+    );
   } finally {
     setAuthLoading(false, 'signup-submit-btn', 'signup-submit-label', 'Create Account');
   }
 }
 
-function setAuthLoading(isLoading, btnId, labelId, labelText) {
-  const btn   = document.getElementById(btnId);
-  const label = document.getElementById(labelId);
-  if (!btn) return;
-  btn.disabled = isLoading;
-  if (label) label.innerHTML = isLoading ? '<i class="fas fa-spinner fa-spin"></i>' : labelText;
-}
-
 async function doPasswordReset() {
   const email = document.getElementById('login-email')?.value?.trim() || '';
-  if (!email) return;
-  try { await fbAuth.sendPasswordResetEmail(email); showToast('Reset email sent!'); } catch(e){}
+  if (!email) { showAuthError('Enter your email address above first.'); return; }
+  try {
+    await fbAuth.sendPasswordResetEmail(email);
+    showToast('Password reset email sent! Check your inbox.');
+  } catch(err) { showAuthError(err.message || 'Reset failed.'); }
 }
 
-function saveSession(user) { try { localStorage.setItem(SESSION_KEY, JSON.stringify(user)); } catch(e) {} }
-function clearSession() { try { localStorage.removeItem(SESSION_KEY); } catch(e) {} }
-function loadSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) { return null; } }
+// ============================================================
+//  Session Management
+// ============================================================
+const SESSION_KEY = 'ms_session_v1';
+function saveSession(user) { try { localStorage.setItem(SESSION_KEY, JSON.stringify(user)); } catch(e){} }
+function clearSession()    { try { localStorage.removeItem(SESSION_KEY); } catch(e){} }
+function loadSession()     { try { const r = localStorage.getItem(SESSION_KEY); return r ? JSON.parse(r) : null; } catch(e){ return null; } }
+function generateToken()   { const a = new Uint8Array(32); crypto.getRandomValues(a); return Array.from(a).map(b=>b.toString(16).padStart(2,'0')).join(''); }
+
+async function saveUserToDB(uid, profile) {
+  if (!uid) return null;
+  const existing = await fbGet(`users/${uid}`);
+  const record = {
+    uid, name: profile.name || existing?.name || 'MoodSync User',
+    email: profile.email || existing?.email || '',
+    phone: profile.phone || existing?.phone || '',
+    status: existing?.status || 'basic',
+    authMethod: profile.authMethod || existing?.authMethod || 'email',
+    createdAt: existing?.createdAt || Date.now(),
+    lastLogin: Date.now()
+  };
+  if (existing) {
+    await fbPatch(`users/${uid}`, { name: record.name, email: record.email, phone: record.phone, authMethod: record.authMethod, lastLogin: record.lastLogin });
+  } else {
+    await fbWrite(`users/${uid}`, record);
+  }
+  return record;
+}
 
 async function tryAutoLogin() {
   const saved = loadSession();
   if (!saved) return;
   if (saved.phone === ADMIN_PHONE && saved.status === 'admin') {
-    adminSessionToken = generateToken(); currentUser = saved; launchApp(true); return;
+    adminSessionToken = generateToken();
+    currentUser = saved;
+    launchApp(true); return;
   }
-  if (saved.uid) {
+  if (saved.uid && fbAuth) {
+    const fbUser = fbAuth.currentUser;
+    if (fbUser && fbUser.uid === saved.uid) {
+      const profile = await fbGet(`users/${fbUser.uid}`);
+      if (profile) { currentUser = { ...profile, uid: fbUser.uid }; saveSession(currentUser); launchApp(true); return; }
+    }
     const profile = await fbGet(`users/${saved.uid}`);
     if (profile) { currentUser = { ...profile, uid: saved.uid }; saveSession(currentUser); launchApp(true); return; }
   }
   clearSession();
 }
 
-function generateToken() {
-  const arr = new Uint8Array(32); crypto.getRandomValues(arr);
-  return Array.from(arr).map(b => b.toString(16).padStart(2,'0')).join('');
-}
+// ============================================================
+//  Logout (FIX: fully resets all state including button labels)
+// ============================================================
+function doLogout() {
+  clearSession();
+  currentUser = null;
+  adminSessionToken = null;
+  adsterraLoaded = false;
+  currentTrackIdx = -1;
+  isPlaying = false;
+  ytLoadPending = false;
+  isTransitioning = false;
+  pendingTrackIdx = -1;
 
-function doLogout() { clearSession(); location.reload(); }
+  // Stop any playing audio
+  if (ytPlayer) {
+    try { ytPlayer.stopVideo(); } catch(e){}
+    try { ytPlayer.mute(); } catch(e){}
+  }
+  clearInterval(progressInterval);
+  if (fbAuth) fbAuth.signOut().catch(() => {});
+
+  document.getElementById('app-screen').classList.remove('visible');
+  document.getElementById('auth-screen').style.display = 'flex';
+
+  // Re-enable ALL auth buttons (critical fix)
+  ['email-login-btn','signup-submit-btn'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.disabled = false;
+  });
+  // Reset label text
+  const loginLabel  = document.getElementById('email-login-label');
+  const signupLabel = document.getElementById('signup-submit-label');
+  if (loginLabel)  loginLabel.innerHTML = 'Login';
+  if (signupLabel) signupLabel.innerHTML = 'Create Account';
+  // Clear inputs
+  ['login-email','login-password','signup-name','signup-email','signup-password'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  switchMainTab('login');
+  clearAuthError();
+}
 
 function launchApp(isRestore = false) {
   document.getElementById('auth-screen').style.display = 'none';
@@ -1062,32 +1101,59 @@ function launchApp(isRestore = false) {
   loadSongsFromCloud();
   navigate('home');
   loadAdsterraForBasicUser();
+  if (currentUser.status === 'basic') {
+    setTimeout(() => {
+      if (currentUser && currentUser.status === 'basic')
+        document.getElementById('premium-popup').classList.remove('hidden');
+    }, 5000);
+  }
 }
 
 function updateUserUI() {
-  const statusMap = { basic: { label: 'Basic', cls: 'badge-basic' }, premium: { label: 'Premium ⭐', cls: 'badge-premium' }, vip: { label: 'Ultra VIP 👑', cls: 'badge-vip' }, admin: { label: 'Admin 🛡️', cls: 'badge-basic' } };
+  const statusMap = {
+    basic:   { label: 'Basic',         cls: 'badge-basic' },
+    premium: { label: 'Premium ⭐',    cls: 'badge-premium' },
+    vip:     { label: 'Ultra VIP 👑',  cls: 'badge-vip' },
+    admin:   { label: 'Admin 🛡️',      cls: 'badge-basic' },
+  };
   const s = statusMap[currentUser.status] || statusMap.basic;
-  document.getElementById('sidebar-user').innerHTML = `<div class="font-semibold text-white text-sm">${currentUser.name}</div><span class="${s.cls} mt-1 inline-block">${s.label}</span>`;
+  document.getElementById('sidebar-user').innerHTML = `
+    <div class="font-semibold text-white text-sm">${currentUser.name}</div>
+    <span class="${s.cls} mt-1 inline-block">${s.label}</span>
+  `;
   document.getElementById('user-badge-top').innerHTML = s.label;
   document.getElementById('user-badge-top').className = `text-xs px-3 py-1 rounded-full ${s.cls}`;
-  if (currentUser.status === 'admin') document.getElementById('admin-nav').classList.remove('hidden');
+  if (currentUser.status === 'admin')
+    document.getElementById('admin-nav').classList.remove('hidden');
 }
 
 async function loadSongsFromCloud() {
   songs = []; filteredSongs = [];
   const cloudSongs = await fbGet('songs');
-  if (!cloudSongs) { if (currentPage === 'home' || currentPage === 'search') renderPage(currentPage); return; }
-  songs = Object.entries(cloudSongs).map(([key, s]) => ({ id: s.id || '', title: s.title || 'Untitled', lang: s.lang || 'Hindi', emoji: s.emoji || '🎵', cloudKey: key }));
+  if (!cloudSongs) { if (currentPage==='home'||currentPage==='search') renderPage(currentPage); return; }
+  songs = Object.entries(cloudSongs).map(([key, s]) => ({
+    id: s.id || '', title: s.title || 'Untitled', lang: s.lang || 'Hindi',
+    emoji: s.emoji || '🎵', cloudKey: key,
+  }));
   filteredSongs = [...songs];
-  if (currentPage === 'home' || currentPage === 'search') renderPage(currentPage);
+  if (currentPage==='home'||currentPage==='search') renderPage(currentPage);
 }
 
+// ============================================================
+//  Navigation
+// ============================================================
 function navigate(page) {
-  if (page === 'admin' && (!currentUser || currentUser.status !== 'admin' || !adminSessionToken)) { showAdminPinModal(); return; }
+  if (page === 'admin') {
+    if (!currentUser || currentUser.status !== 'admin' || !adminSessionToken) {
+      showAdminPinModal(); return;
+    }
+  }
   currentPage = page;
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   const navEl = document.querySelector(`[data-page="${page}"]`);
   if (navEl) navEl.classList.add('active');
+  const titles = { home:'Home', search:'Search', upgrade:'Upgrade', 'boys-tips':'Boys Tips', 'girls-tips':'Girls Tips', admin:'Admin Panel' };
+  document.getElementById('page-title').textContent = titles[page] || page;
   closeSidebar();
   renderPage(page);
 }
@@ -1095,133 +1161,419 @@ function navigate(page) {
 function renderPage(page) {
   const area = document.getElementById('page-area');
   switch(page) {
-    case 'home': renderHome(area); break;
-    case 'search': renderSearch(area); break;
-    case 'upgrade': renderUpgrade(area); break;
-    case 'boys-tips': renderBoysTips(area); break;
+    case 'home':       renderHome(area);      break;
+    case 'search':     renderSearch(area);    break;
+    case 'upgrade':    renderUpgrade(area);   break;
+    case 'boys-tips':  renderBoysTips(area);  break;
     case 'girls-tips': renderGirlsTips(area); break;
-    case 'admin': renderAdmin(area); break;
+    case 'admin':      renderAdmin(area);     break;
     default: area.innerHTML = '';
   }
 }
 
+// ============================================================
+//  HOME PAGE
+// ============================================================
 function renderHome(area) {
   const user = currentUser;
-  const isPremium = user.status === 'premium' || user.status === 'vip' || user.status === 'admin';
+  const isVip = user.status === 'vip';
+  const isPremium = user.status === 'premium' || isVip;
+  const isAdmin = user.status === 'admin';
+  const showAds = user.status === 'basic';
+
   let songList = [...songs];
-  if (isPremium) songList.sort((a,b) => a.title.localeCompare(b.title));
+  if (isPremium || isAdmin) songList.sort((a,b) => a.title.localeCompare(b.title));
 
   if (songs.length === 0) {
-    area.innerHTML = `<div class="hero-card text-center"><h2 class="font-display text-xl font-bold mb-2">No Songs Found</h2></div>`; return;
+    area.innerHTML = `
+      <div class="hero-card" style="text-align:center">
+        <div style="font-size:3rem;margin-bottom:1rem">🎵</div>
+        <h2 class="font-display text-xl font-bold mb-2">No Songs Yet</h2>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem">Add songs via the Admin Panel to get started.</p>
+        ${currentUser?.status==='admin' ? `<button class="btn-primary" style="max-width:200px;margin:0 auto" onclick="navigate('admin')" type="button">Go to Admin Panel</button>` : ''}
+      </div>`;
+    return;
   }
 
-  const adsBanner = user.status === 'basic' ? `<div class="ad-banner"><i class="fas fa-ad"></i><span>Premium Engine Core Active</span></div>` : '';
+  const adsBanner = showAds ? `<div class="ad-banner"><i class="fas fa-ad"></i><span>Sponsored — <span style="color:var(--purple);cursor:pointer" onclick="navigate('upgrade')">Go Premium for ad-free music!</span></span></div>` : '';
+  const vipBadge = isVip ? `<span class="vip-text font-bold">Ultra VIP 👑</span>` : '';
 
   area.innerHTML = `
     <div class="hero-card">
-      <h2 class="font-display text-2xl font-bold">Welcome back, <span style="color:var(--purple)">${user.name.split(' ')[0]}</span>!</h2>
+      <div class="relative z-10">
+        <div class="text-3xl mb-1">🎵</div>
+        <h2 class="font-display text-2xl font-bold">Welcome back, <span style="color:var(--purple)">${user.name.split(' ')[0]}</span>! ${vipBadge}</h2>
+        <p class="text-sm mt-1 mb-3" style="color:var(--muted)">Discover music that matches your mood</p>
+        ${isPremium||isAdmin
+          ? '<span style="color:var(--green);font-size:0.8rem"><i class="fas fa-check-circle"></i> Songs sorted A-Z for you</span>'
+          : '<span style="color:var(--muted);font-size:0.8rem"><i class="fas fa-lock"></i> Upgrade to unlock A-Z sorting</span>'}
+      </div>
     </div>
     ${adsBanner}
     <div class="mb-6">
-      <div class="section-title">🎶 Hindi Tracks</div>
-      <div class="flex flex-col gap-1">${songList.filter(s=>s.lang==='Hindi').map((s,i) => songCardHTML(s, songs.indexOf(s), i+1)).join('')}</div>
+      <div class="section-title mb-3">💡 Mood Tips</div>
+      <div class="flex gap-3">
+        <div onclick="openTipsWithAdGate('boys-tips')" class="flex-1 cursor-pointer rounded-2xl p-4 flex flex-col gap-2 transition-all"
+             style="background:linear-gradient(135deg,#1a1040,#0f0a2a);border:1px solid rgba(168,85,247,0.3)"
+             onmouseover="this.style.borderColor='rgba(168,85,247,0.7)';this.style.transform='translateY(-2px)'"
+             onmouseout="this.style.borderColor='rgba(168,85,247,0.3)';this.style.transform='translateY(0)'">
+          <div class="text-2xl">💪</div>
+          <div class="font-display font-bold text-sm" style="color:var(--purple)">Boys Tips</div>
+          <div class="text-xs" style="color:var(--muted)">Boost your mood & energy</div>
+          <div class="text-xs flex items-center gap-1 mt-1" style="color:var(--purple)">Explore <i class="fas fa-arrow-right text-xs"></i></div>
+        </div>
+        <div onclick="openTipsWithAdGate('girls-tips')" class="flex-1 cursor-pointer rounded-2xl p-4 flex flex-col gap-2 transition-all"
+             style="background:linear-gradient(135deg,#2a0a1a,#1a0510);border:1px solid rgba(236,72,153,0.3)"
+             onmouseover="this.style.borderColor='rgba(236,72,153,0.7)';this.style.transform='translateY(-2px)'"
+             onmouseout="this.style.borderColor='rgba(236,72,153,0.3)';this.style.transform='translateY(0)'">
+          <div class="text-2xl">🌸</div>
+          <div class="font-display font-bold text-sm" style="color:#ec4899">Girls Tips</div>
+          <div class="text-xs" style="color:var(--muted)">Self-care & good vibes</div>
+          <div class="text-xs flex items-center gap-1 mt-1" style="color:#ec4899">Explore <i class="fas fa-arrow-right text-xs"></i></div>
+        </div>
+      </div>
     </div>
     <div class="mb-6">
-      <div class="section-title">🎵 Bangla Tracks</div>
-      <div class="flex flex-col gap-1">${songList.filter(s=>s.lang==='Bangla').map((s,i) => songCardHTML(s, songs.indexOf(s), i+1)).join('')}</div>
+      <div class="section-title">🎶 Hindi Songs <span style="color:var(--muted);font-size:0.85rem;font-family:'DM Sans'">(${songs.filter(s=>s.lang==='Hindi').length})</span></div>
+      <div class="flex flex-col gap-1">
+        ${songList.filter(s=>s.lang==='Hindi').map((s,i)=>songCardHTML(s, songs.indexOf(s), i+1)).join('')}
+      </div>
     </div>
+    <div class="mb-6">
+      <div class="section-title">🎵 Bangla Songs <span style="color:var(--muted);font-size:0.85rem;font-family:'DM Sans'">(${songs.filter(s=>s.lang==='Bangla').length})</span></div>
+      <div class="flex flex-col gap-1">
+        ${songList.filter(s=>s.lang==='Bangla').map((s,i)=>songCardHTML(s, songs.indexOf(s), i+1)).join('')}
+      </div>
+    </div>
+    <div style="height:1rem"></div>
   `;
 }
 
 function songCardHTML(song, globalIdx, displayNum) {
-  const isActive = currentTrackIdx === globalIdx || pendingTrackIdx === globalIdx;
-  const playing = isActive && isPlaying;
-  const callerEmail = (fbAuth?.currentUser?.email || currentUser?.email || '').toLowerCase();
-  const canDelete = callerEmail === SONG_DELETE_EMAIL.toLowerCase() || callerEmail === ADMIN_EMAIL.toLowerCase() || currentUser?.status === 'admin';
-
-  const deleteBtn = canDelete ? `<button class="song-delete-btn" onclick="event.stopPropagation();deleteSong('${song.cloudKey}','${song.id}',this)"><i class="fas fa-trash-alt"></i></button>` : '';
-
+  const isActive  = currentTrackIdx === globalIdx || pendingTrackIdx === globalIdx;
+  const playing   = isActive && isPlaying;
+  const userEmail = currentUser?.email?.toLowerCase() || '';
+  const canDelete = userEmail === SONG_DELETE_EMAIL.toLowerCase() ||
+                    userEmail === ADMIN_EMAIL.toLowerCase() ||
+                    currentUser?.status === 'admin';
+  const safeTitle = (song.title||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  const deleteBtn = canDelete
+    ? `<button class="song-delete-btn" title="Delete song" type="button"
+         onclick="event.stopPropagation();deleteSong('${song.cloudKey||''}','${song.id}',this)"
+         aria-label="Delete ${safeTitle}">
+         <i class="fas fa-trash-alt"></i>
+       </button>` : '';
   return `
-    <div class="song-card ${isActive ? 'active' : ''}" onclick="playSongById('${song.id}',${globalIdx})">
-      <div class="song-num">${playing ? '<i class="fas fa-music text-purple-500"></i>' : displayNum}</div>
-      <div class="song-emoji ${playing ? 'spinning' : ''}">${song.emoji || '🎵'}</div>
-      <div class="song-meta"><div class="song-name">${song.title}</div><div class="song-sub">${song.lang}</div></div>
-      <div class="song-actions">${deleteBtn}</div>
-    </div>
-  `;
+    <div class="song-card ${isActive?'active':''}" data-idx="${globalIdx}" data-ytid="${song.id}"
+         onclick="event.preventDefault();event.stopPropagation();playSongById('${song.id}',${globalIdx})">
+      <div class="song-num">${playing?'<i class="fas fa-music" style="color:var(--purple)"></i>':displayNum}</div>
+      <div class="song-emoji ${playing?'spinning':''}" style="${isActive?'border:2px solid var(--purple)':''}">${song.emoji||'🎵'}</div>
+      <div class="song-meta">
+        <div class="song-name" style="${isActive?'color:var(--purple)':''}">${song.title}</div>
+        <div class="song-sub">${song.lang}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0">
+        ${deleteBtn}
+        <div class="song-dur">${playing?'<i class="fas fa-volume-up" style="color:var(--purple);font-size:0.8rem"></i>':'<i class="far fa-clock" style="opacity:0.4"></i>'}</div>
+      </div>
+    </div>`;
 }
 
+// ============================================================
+//  SEARCH PAGE
+// ============================================================
 function renderSearch(area) {
   area.innerHTML = `
-    <div class="mb-4"><div class="search-wrap"><i class="fas fa-search search-icon"></i><input class="search-input" id="search-input" type="text" placeholder="Search tracks..." oninput="doSearch(this.value)"></div></div>
+    <div class="mb-4">
+      <div class="search-wrap">
+        <i class="fas fa-search search-icon"></i>
+        <input class="search-input" id="search-input" type="text" placeholder="Search songs..." oninput="doSearch(this.value)" autofocus>
+      </div>
+    </div>
     <div id="search-results" class="flex flex-col gap-1"></div>
   `;
   doSearch('');
 }
 function doSearch(query) {
   const q = query.toLowerCase().trim();
-  const results = songs.filter(s => s.title.toLowerCase().includes(q));
+  const results = songs.filter(s => s.title.toLowerCase().includes(q) || s.lang.toLowerCase().includes(q));
   const container = document.getElementById('search-results');
-  if (container) container.innerHTML = results.map((s, i) => songCardHTML(s, songs.indexOf(s), i+1)).join('');
+  if (!container) return;
+  if (results.length === 0) {
+    container.innerHTML = `<div class="text-center py-10" style="color:var(--muted)"><i class="fas fa-music text-3xl mb-3 block"></i>No songs found for "${query}"</div>`;
+    return;
+  }
+  container.innerHTML = results.map((s,i) => songCardHTML(s, songs.indexOf(s), i+1)).join('');
 }
 
+// ============================================================
+//  UPGRADE PAGE
+// ============================================================
 function renderUpgrade(area) {
-  area.innerHTML = `<div class="hero-card"><h2>Support bKash & Upgrade: 01540595258</h2></div>`;
+  area.innerHTML = `
+    <div class="mb-6">
+      <h2 class="font-display text-2xl font-bold mb-1">Choose Your Plan</h2>
+      <p style="color:var(--muted);font-size:0.9rem">Unlock the full MoodSync Pro experience</p>
+    </div>
+    <div class="flex flex-col gap-4 mb-6">
+      <div class="p-5 rounded-2xl border" style="background:var(--surface2);border-color:var(--border)">
+        <div class="flex items-center justify-between mb-3">
+          <div><div class="font-display font-bold text-lg">Basic</div><div class="text-2xl font-bold mt-1">Free</div></div>
+          <span class="badge-basic text-sm px-3 py-1">Current</span>
+        </div>
+        <ul class="flex flex-col gap-2 text-sm" style="color:var(--muted)">
+          <li><i class="fas fa-check text-green-500 mr-2"></i>All songs access</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i>Basic playback</li>
+          <li><i class="fas fa-times text-red-500 mr-2"></i>With Ads</li>
+          <li><i class="fas fa-times text-red-500 mr-2"></i>No A-Z sorting</li>
+        </ul>
+      </div>
+      <div class="p-5 rounded-2xl border relative overflow-hidden" style="background:linear-gradient(135deg,#1a0a3e,#111);border-color:var(--purple)">
+        <div class="absolute top-3 right-3 text-xs px-2 py-1 rounded-full font-bold" style="background:var(--purple);color:white">POPULAR</div>
+        <div class="flex items-center justify-between mb-3">
+          <div><div class="font-display font-bold text-lg">Premium ⭐</div><div class="text-2xl font-bold mt-1" style="color:var(--purple)">৳99<span class="text-sm font-normal" style="color:var(--muted)">/mo</span></div></div>
+        </div>
+        <ul class="flex flex-col gap-2 text-sm mb-4" style="color:#ccc">
+          <li><i class="fas fa-check text-green-500 mr-2"></i>Ad-free music</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i>A-Z sorting</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i>Priority support</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i>Premium badge ⭐</li>
+        </ul>
+        <a href="https://wa.me/8801540595258?text=I want Premium Plan" target="_blank" class="btn-primary flex items-center justify-center gap-2 no-underline" style="display:flex"><i class="fab fa-whatsapp"></i> Pay via WhatsApp</a>
+      </div>
+      <div class="p-5 rounded-2xl border relative overflow-hidden" style="background:linear-gradient(135deg,#1a1000,#111);border-color:var(--gold)">
+        <div class="absolute top-3 right-3 text-xs px-2 py-1 rounded-full font-bold" style="background:var(--gold);color:#000">VIP</div>
+        <div class="flex items-center justify-between mb-3">
+          <div><div class="font-display font-bold text-lg vip-text">Ultra VIP 👑</div><div class="text-2xl font-bold mt-1" style="color:var(--gold)">৳199<span class="text-sm font-normal" style="color:var(--muted)">/mo</span></div></div>
+        </div>
+        <ul class="flex flex-col gap-2 text-sm mb-4" style="color:#ccc">
+          <li><i class="fas fa-check text-yellow-400 mr-2"></i>Everything in Premium</li>
+          <li><i class="fas fa-check text-yellow-400 mr-2"></i>Golden VIP badge 👑</li>
+          <li><i class="fas fa-check text-yellow-400 mr-2"></i>Early access to new songs</li>
+          <li><i class="fas fa-check text-yellow-400 mr-2"></i>Direct admin support</li>
+        </ul>
+        <a href="https://wa.me/8801540595258?text=I want Ultra VIP Plan" target="_blank" class="btn-primary flex items-center justify-center gap-2 no-underline" style="display:flex;background:linear-gradient(135deg,#b8860b,#f5c842);color:#000"><i class="fab fa-whatsapp"></i> Pay via WhatsApp</a>
+      </div>
+    </div>
+    <div class="text-center text-sm pb-4" style="color:var(--muted)">
+      <i class="fab fa-whatsapp text-green-500"></i> Contact: <strong>01540595258</strong>
+    </div>`;
 }
+
+// ============================================================
+//  Adsterra — Social Bar (effectivecpmnetwork URLs)
+// ============================================================
+let adsterraLoaded = false;
 function loadAdsterraForBasicUser() {
-  if (adsterraLoaded || currentUser?.status !== 'basic') return;
+  if (adsterraLoaded) return;
+  if (!currentUser || currentUser.status !== 'basic') return;
   adsterraLoaded = true;
-  ['https://pl29379584.profitablecpmratenetwork.com/26/11/70/261170c6567c084d324ff55e51bcd398.js', 'https://pl29379583.profitablecpmratenetwork.com/0a/52/4e/0a524e013f4ca5150236529d7ff01d63.js'].forEach(src => {
-    const s = document.createElement('script'); s.src = src; s.async = true; document.body.appendChild(s);
+  [
+    'https://pl29379584.effectivecpmnetwork.com/26/11/70/261170c6567c084d324ff55e51bcd398.js',
+    'https://pl29379583.effectivecpmnetwork.com/0a/52/4e/0a524e013f4ca5150236529d7ff01d63.js'
+  ].forEach(src => {
+    const s = document.createElement('script');
+    s.src = src; s.async = true; document.body.appendChild(s);
   });
 }
+
+// ============================================================
+//  Tips Ad Gate (effectivecpmnetwork Smartlink)
+// ============================================================
 function openTipsWithAdGate(targetPage) {
-  if (currentUser?.status === 'basic') window.open(ADSTERRA_SMARTLINK, '_blank');
+  const isPaid = currentUser && (currentUser.status==='premium'||currentUser.status==='vip'||currentUser.status==='admin');
+  if (!isPaid) window.open(ADSTERRA_SMARTLINK, '_blank', 'noopener,noreferrer');
   navigate(targetPage);
 }
 
+// ============================================================
+//  BOYS TIPS
+// ============================================================
 function renderBoysTips(area) {
-  area.innerHTML = `<div class="flex flex-col gap-3 p-4"><div class="tip-card"><strong>Listen & Recover Vibe</strong><p>Focus on your goals and play your tracking lists.</p></div></div>`;
-}
-function renderGirlsTips(area) {
-  area.innerHTML = `<div class="flex flex-col gap-3 p-4"><div class="tip-card girls"><strong>Self-Care Mode</strong><p>Take a break and put on your favorite tracks.</p></div></div>`;
+  const isPaid = currentUser && (currentUser.status==='premium'||currentUser.status==='vip'||currentUser.status==='admin');
+  const adNotice = isPaid
+    ? `<div class="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:#4ade80"><i class="fas fa-shield-halved"></i> Ad-free experience — enjoy your Premium access!</div>`
+    : `<div class="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs" style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);color:var(--muted)"><i class="fas fa-circle-info" style="color:var(--purple)"></i> Free users see a sponsored link. <span style="color:var(--purple);cursor:pointer" onclick="navigate('upgrade')">Go Premium</span> to remove all ads.</div>`;
+  area.innerHTML = `
+    <div class="flex gap-2 p-1 rounded-xl mb-5" style="background:var(--surface3)">
+      <button class="tips-tab active-boys" onclick="navigate('boys-tips')" type="button"><i class="fas fa-mars mr-1" style="color:#93c5fd"></i> Boys Tips</button>
+      <button class="tips-tab" onclick="openTipsWithAdGate('girls-tips')" type="button" style="color:var(--muted)"><i class="fas fa-venus mr-1" style="color:#f9a8d4"></i> Girls Tips</button>
+    </div>
+    <div class="mb-5"><h2 class="font-display text-2xl font-bold mb-1">💪 Boys Mood Fix</h2><p style="color:var(--muted);font-size:0.9rem">Tips to instantly boost your vibe</p></div>
+    ${adNotice}
+    <div class="flex flex-col gap-3 mb-6">
+      <div class="tip-card"><div class="tip-icon">🎧</div><strong class="font-display">Music Therapy</strong><p class="text-sm mt-1" style="color:var(--muted)">Play your favorite tracks and let the rhythm reset your mood. Music releases dopamine which elevates your energy instantly.</p></div>
+      <div class="tip-card"><div class="tip-icon">🏃</div><strong class="font-display">Move Your Body</strong><p class="text-sm mt-1" style="color:var(--muted)">Even a 10-min walk outside can drastically shift your mindset and energy.</p></div>
+      <div class="tip-card"><div class="tip-icon">🧘</div><strong class="font-display">Deep Breathing</strong><p class="text-sm mt-1" style="color:var(--muted)">4 counts in, 4 hold, 4 out. Repeat 5 times. Your nervous system will calm down and clarity returns.</p></div>
+      <div class="tip-card"><div class="tip-icon">📞</div><strong class="font-display">Talk to Someone</strong><p class="text-sm mt-1" style="color:var(--muted)">Don't bottle it up. Chat, laugh, vent — connection is the fastest mood cure.</p></div>
+      <div class="tip-card"><div class="tip-icon">💧</div><strong class="font-display">Stay Hydrated</strong><p class="text-sm mt-1" style="color:var(--muted)">Dehydration causes brain fog and irritability. Drink water now.</p></div>
+      <div class="tip-card"><div class="tip-icon">🌙</div><strong class="font-display">Rest & Recover</strong><p class="text-sm mt-1" style="color:var(--muted)">7-8 hours repairs your mind, body, and emotional resilience.</p></div>
+      <div class="tip-card"><div class="tip-icon">✍️</div><strong class="font-display">Write it Down</strong><p class="text-sm mt-1" style="color:var(--muted)">Write 3 things you're grateful for and watch your perspective shift.</p></div>
+      <div class="tip-card"><div class="tip-icon">🎯</div><strong class="font-display">Focus on One Thing</strong><p class="text-sm mt-1" style="color:var(--muted)">Pick one small task and complete it. Momentum builds.</p></div>
+      <div class="tip-card"><div class="tip-icon">🥗</div><strong class="font-display">Eat Right</strong><p class="text-sm mt-1" style="color:var(--muted)">Skip processed food for one day and notice the mental clarity.</p></div>
+      <div class="tip-card"><div class="tip-icon">☀️</div><strong class="font-display">Morning Sunlight</strong><p class="text-sm mt-1" style="color:var(--muted)">10 minutes of direct morning sun boosts serotonin instantly.</p></div>
+    </div>
+    <a href="https://wa.me/8801540595258" target="_blank" class="btn-primary flex items-center justify-center gap-2 no-underline mb-6" style="display:flex"><i class="fab fa-whatsapp text-green-400"></i> Talk to Support on WhatsApp</a>`;
 }
 
-async function renderAdmin(area) {
+// ============================================================
+//  GIRLS TIPS
+// ============================================================
+function renderGirlsTips(area) {
+  const isPaid = currentUser && (currentUser.status==='premium'||currentUser.status==='vip'||currentUser.status==='admin');
+  const adNotice = isPaid
+    ? `<div class="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:#4ade80"><i class="fas fa-shield-halved"></i> Ad-free experience — enjoy your Premium access!</div>`
+    : `<div class="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs" style="background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.2);color:var(--muted)"><i class="fas fa-circle-info" style="color:#ec4899"></i> Free users see a sponsored link. <span style="color:#ec4899;cursor:pointer" onclick="navigate('upgrade')">Go Premium</span> to remove all ads.</div>`;
   area.innerHTML = `
-    <div class="mb-5"><h2 class="font-display text-2xl font-bold">🛡️ Command Dashboard</h2></div>
-    <button onclick="document.getElementById('add-song-modal').classList.remove('hidden')" class="btn-primary mb-4" style="max-width:160px">Add Song</button>
-    <div id="admin-users-table" class="bg-zinc-900 rounded-xl p-4"></div>
-  `;
+    <div class="flex gap-2 p-1 rounded-xl mb-5" style="background:var(--surface3)">
+      <button class="tips-tab" onclick="navigate('boys-tips')" type="button" style="color:var(--muted)"><i class="fas fa-mars mr-1" style="color:#93c5fd"></i> Boys Tips</button>
+      <button class="tips-tab active-girls" type="button"><i class="fas fa-venus mr-1"></i> Girls Tips</button>
+    </div>
+    <div class="mb-5"><h2 class="font-display text-2xl font-bold mb-1" style="background:linear-gradient(135deg,#ec4899,#f9a8d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">🌸 Girls Mood Fix</h2><p style="color:var(--muted);font-size:0.9rem">Self-care tips to lift your spirit</p></div>
+    ${adNotice}
+    <div class="flex flex-col gap-3 mb-6">
+      <div class="tip-card girls"><div class="tip-icon">🛁</div><strong class="font-display" style="color:#f9a8d4">Self-Care Ritual</strong><p class="text-sm mt-1" style="color:var(--muted)">A warm bath, your favorite playlist, and a face mask.</p></div>
+      <div class="tip-card girls"><div class="tip-icon">🎵</div><strong class="font-display" style="color:#f9a8d4">Sing It Out</strong><p class="text-sm mt-1" style="color:var(--muted)">Put on your favorite song and sing at the top of your lungs.</p></div>
+      <div class="tip-card girls"><div class="tip-icon">💅</div><strong class="font-display" style="color:#f9a8d4">Treat Yourself</strong><p class="text-sm mt-1" style="color:var(--muted)">Do your nails, wear the outfit you've been saving.</p></div>
+      <div class="tip-card girls"><div class="tip-icon">📓</div><strong class="font-display" style="color:#f9a8d4">Gratitude Journaling</strong><p class="text-sm mt-1" style="color:var(--muted)">Write 5 things that made you smile today.</p></div>
+      <div class="tip-card girls"><div class="tip-icon">🌿</div><strong class="font-display" style="color:#f9a8d4">Nature Walk</strong><p class="text-sm mt-1" style="color:var(--muted)">Step outside and breathe fresh air. Nature reduces anxiety.</p></div>
+      <div class="tip-card girls"><div class="tip-icon">🤗</div><strong class="font-display" style="color:#f9a8d4">Call Your Person</strong><p class="text-sm mt-1" style="color:var(--muted)">A 10-minute chat reminds you that you're loved.</p></div>
+      <div class="tip-card girls"><div class="tip-icon">🍵</div><strong class="font-display" style="color:#f9a8d4">Slow Morning</strong><p class="text-sm mt-1" style="color:var(--muted)">Make a warm drink and sit without your phone for 5 minutes.</p></div>
+      <div class="tip-card girls"><div class="tip-icon">🎨</div><strong class="font-display" style="color:#f9a8d4">Create Something</strong><p class="text-sm mt-1" style="color:var(--muted)">Draw, cook, rearrange your room. Creativity heals.</p></div>
+      <div class="tip-card girls"><div class="tip-icon">🧘‍♀️</div><strong class="font-display" style="color:#f9a8d4">Body Scan Meditation</strong><p class="text-sm mt-1" style="color:var(--muted)">10 minutes resets your entire nervous system.</p></div>
+      <div class="tip-card girls"><div class="tip-icon">💌</div><strong class="font-display" style="color:#f9a8d4">Letter to Yourself</strong><p class="text-sm mt-1" style="color:var(--muted)">Write to your future self about what you're feeling today.</p></div>
+    </div>
+    <a href="https://wa.me/8801540595258" target="_blank"
+       class="flex items-center justify-center gap-2 no-underline mb-6 py-3 rounded-xl font-semibold text-white"
+       style="background:linear-gradient(135deg,#be185d,#ec4899);font-family:'Syne',sans-serif;display:flex">
+      <i class="fab fa-whatsapp"></i> Talk to Support on WhatsApp
+    </a>`;
+}
+
+// ============================================================
+//  ADMIN PAGE
+// ============================================================
+async function renderAdmin(area) {
+  if (!currentUser || currentUser.status !== 'admin' || !adminSessionToken) {
+    area.innerHTML = `<div class="text-center py-20 flex flex-col items-center gap-4"><div class="text-5xl">🔒</div><div class="font-display text-xl font-bold">Access Denied</div><p class="text-sm" style="color:var(--muted)">Valid admin credentials required.</p><button onclick="showAdminPinModal()" class="btn-primary" style="max-width:200px" type="button">Admin Login</button></div>`;
+    return;
+  }
+  area.innerHTML = `
+    <div class="mb-5"><h2 class="font-display text-2xl font-bold mb-1">🛡️ Admin Panel</h2><p style="color:var(--muted);font-size:0.9rem">Manage users and music library</p></div>
+    <div class="flex gap-3 mb-6 flex-wrap">
+      <button onclick="document.getElementById('add-song-modal').classList.remove('hidden')" type="button"
+              class="px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2" style="background:var(--purple);color:white">
+        <i class="fas fa-plus"></i> Add Song
+      </button>
+    </div>
+    <div class="mb-6 p-4 rounded-xl" style="background:var(--surface2);border:1px solid var(--border)">
+      <div class="font-display font-semibold mb-2">🗑️ Remove Song</div>
+      <div class="search-wrap relative mb-2">
+        <i class="fas fa-search search-icon"></i>
+        <input class="search-input" id="remove-search" type="text" placeholder="Search song to remove..." oninput="showRemoveSuggestions(this.value)">
+        <div id="remove-suggestions" class="suggest-list hidden"></div>
+      </div>
+    </div>
+    <div class="mb-4 font-display font-semibold">👥 Registered Users</div>
+    <div id="admin-users-table" class="rounded-xl overflow-hidden" style="background:var(--surface2);border:1px solid var(--border)">
+      <div class="text-center py-6" style="color:var(--muted)"><i class="fas fa-spinner fa-spin"></i> Loading users...</div>
+    </div>
+    <div style="height:1rem"></div>`;
   loadAdminUsers();
 }
+
 async function loadAdminUsers() {
   const users = await fbGet('users');
   const table = document.getElementById('admin-users-table');
-  if (table && users) {
-    table.innerHTML = Object.entries(users).map(([key, u]) => `
-      <div class="flex justify-between p-2 border-b border-zinc-800 text-sm">
-        <span>${u.name} (${u.phone || 'Email User'})</span>
-        <select onchange="updateUserStatus('${key}', this.value)" class="bg-black text-white p-1 rounded">
-          <option value="basic" ${u.status==='basic'?'selected':''}>Basic</option>
+  if (!table) return;
+  if (!users) { table.innerHTML = '<div class="text-center py-6 text-sm" style="color:var(--muted)">No users yet</div>'; return; }
+  const rows = Object.entries(users).map(([key, u]) => `
+    <tr>
+      <td>${u.name||'—'}</td>
+      <td>${u.phone||u.email||'—'}</td>
+      <td>
+        <select onchange="updateUserStatus('${key}', this.value)" class="input-field text-xs py-1 px-2" style="width:auto">
+          <option value="basic"   ${u.status==='basic'?'selected':''}>Basic</option>
           <option value="premium" ${u.status==='premium'?'selected':''}>Premium ⭐</option>
-          <option value="vip" ${u.status==='vip'?'selected':''}>Ultra VIP 👑</option>
+          <option value="vip"     ${u.status==='vip'?'selected':''}>Ultra VIP 👑</option>
         </select>
-      </div>`).join('');
-  }
+      </td>
+      <td class="text-xs" style="color:var(--muted)">${u.createdAt?new Date(u.createdAt).toLocaleDateString():'—'}</td>
+    </tr>`).join('');
+  table.innerHTML = `<table class="admin-table"><thead><tr><th>Name</th><th>Phone/Email</th><th>Status</th><th>Joined</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-async function deleteSong(songKey, youtubeId, btnElement = null) {
-  if (!confirm('Delete permanently?')) return;
-  if(btnElement) btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-  const ok = await fbDelete(`songs/${songKey}`);
-  if(ok) {
-    songs = songs.filter(s => s.id !== youtubeId);
-    filteredSongs = filteredSongs.filter(s => s.id !== youtubeId);
+async function updateUserStatus(key, status) {
+  const ok = await fbPatch(`users/${key}`, { status });
+  if (!ok) { showToast('Failed to update status.'); return; }
+  if (currentUser && currentUser.key === key) { currentUser.status = status; saveSession(currentUser); updateUserUI(); }
+  showToast(`User updated to ${status}`);
+}
+
+function showRemoveSuggestions(query) {
+  const list = document.getElementById('remove-suggestions');
+  if (!query.trim()) { list.classList.add('hidden'); return; }
+  const matches = songs.filter(s => s.title.toLowerCase().includes(query.toLowerCase()));
+  if (matches.length === 0) { list.classList.add('hidden'); return; }
+  list.classList.remove('hidden');
+  list.innerHTML = matches.slice(0,8).map(s => `
+    <div class="suggest-item flex items-center justify-between gap-2"
+         onclick="adminRemoveSong('${s.id}','${s.title.replace(/'/g,"\\'")}')">
+      <span>${s.emoji||'🎵'} ${s.title} <span style="color:var(--muted);font-size:0.75rem">${s.lang}</span></span>
+      <i class="fas fa-trash text-red-400 text-xs"></i>
+    </div>`).join('');
+}
+
+async function adminRemoveSong(id, title) {
+  if (!confirm(`Remove "${title}"?`)) return;
+  const song = songs.find(s => s.id === id);
+  if (song && song.cloudKey) await fbDelete(`songs/${song.cloudKey}`);
+  // Instant local removal
+  songs         = songs.filter(s => s.id !== id);
+  filteredSongs = filteredSongs.filter(s => s.id !== id);
+  document.getElementById('remove-suggestions')?.classList.add('hidden');
+  const rs = document.getElementById('remove-search'); if (rs) rs.value = '';
+  showToast(`"${title}" removed`);
+}
+
+// ============================================================
+//  deleteSong — FIXED: instant local update + immediate re-render
+// ============================================================
+async function deleteSong(songKey, youtubeId, btnElement) {
+  const callerEmail = (fbAuth?.currentUser?.email || currentUser?.email || '').toLowerCase();
+  const isAuthorised = callerEmail === SONG_DELETE_EMAIL.toLowerCase()
+                    || callerEmail === ADMIN_EMAIL.toLowerCase()
+                    || currentUser?.status === 'admin';
+  if (!isAuthorised) { console.error('[deleteSong] Unauthorised:', callerEmail); return; }
+  if (!songKey) { alert('Cannot delete: Firebase key missing. Try refreshing.'); return; }
+  if (!confirm('Delete this song permanently?')) return;
+
+  if (btnElement) { btnElement.disabled = true; btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+
+  try {
+    const ok = await fbDelete(`songs/${songKey}`);
+    if (!ok) {
+      if (btnElement) { btnElement.disabled = false; btnElement.innerHTML = '<i class="fas fa-trash-alt"></i>'; }
+      return;
+    }
+    // ── INSTANT local removal (no page reload needed) ────────
+    songs         = songs.filter(s => s.cloudKey !== songKey && s.id !== youtubeId);
+    filteredSongs = filteredSongs.filter(s => s.cloudKey !== songKey && s.id !== youtubeId);
+
+    // Fix player index after removal
+    if (songs.length === 0) {
+      currentTrackIdx = -1; pendingTrackIdx = -1; isPlaying = false;
+    } else if (currentTrackIdx >= songs.length) {
+      currentTrackIdx = songs.length - 1;
+      pendingTrackIdx = currentTrackIdx;
+    }
+    // Re-render page immediately
     renderPage(currentPage);
-    showToast('Song deleted successfully!');
-  } else {
-    if(btnElement) btnElement.innerHTML = '<i class="fas fa-trash-alt"></i>';
+    showToast('Song deleted ✅');
+  } catch(e) {
+    console.error('[deleteSong] Exception:', e);
+    alert('Delete failed: ' + e.message);
+    if (btnElement) { btnElement.disabled = false; btnElement.innerHTML = '<i class="fas fa-trash-alt"></i>'; }
   }
 }
 
@@ -1230,97 +1582,390 @@ async function adminAddSong() {
   const ytid  = document.getElementById('new-song-ytid').value.trim();
   const lang  = document.getElementById('new-song-lang').value;
   const emoji = document.getElementById('new-song-emoji').value.trim() || '🎵';
-  if(!title || !ytid) return;
-  const res = await fbPush('songs', { id: ytid, title, lang, emoji });
-  if(res) {
-    document.getElementById('add-song-modal').classList.add('hidden');
-    loadSongsFromCloud();
-    showToast('Song added online!');
+  if (!title || !ytid) { alert('Please fill Title and YouTube ID'); return; }
+  const btn = document.querySelector('#add-song-modal .btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = 'Adding…'; }
+  try {
+    const result = await fbPush('songs', { id: ytid, title, lang, emoji });
+    if (result && result.name) {
+      songs.push({ id: ytid, title, lang, emoji, cloudKey: result.name });
+      filteredSongs = [...songs];
+      document.getElementById('add-song-modal').classList.add('hidden');
+      ['new-song-title','new-song-ytid','new-song-emoji'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      renderPage(currentPage);
+      showToast(`"${title}" added ✅`);
+    } else {
+      alert('Failed to add song. Make sure you are logged in as admin via Firebase Auth (not hardcoded session).\nCheck console (F12) for details.');
+    }
+  } catch(e) {
+    alert('Failed to add song: ' + e.message);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Add Song to Cloud'; }
   }
 }
 
-// ── Anti-Overlap Mobile Audio Engine ──
-let ytLoadPending = false, isTransitioning = false, ytErrorStreak = 0, pendingTrackIdx = -1;
+// ============================================================
+//  YouTube Player Engine — Anti-Overlap Mobile Fix
+//
+//  Key improvements:
+//  1. _stopAndClear() mutes + stops before any new load
+//  2. loadVideoById is called with explicit suggestedQuality
+//  3. isTransitioning blocks stale ENDED/PAUSED events
+//  4. pendingTrackIdx vs currentTrackIdx separation
+//  5. ytErrorStreak prevents infinite skip on blocked videos
+// ============================================================
+
+let ytLoadPending   = false;
+let isTransitioning = false;
+let ytErrorStreak   = 0;
+const YT_MAX_ERR    = 4;
+let pendingTrackIdx = -1;
+
 window.onYouTubeIframeAPIReady = function() {
   ytReady = true;
   ytPlayer = new YT.Player('yt-player', {
     height: '1', width: '1',
-    playerVars: { autoplay: 0, controls: 0, playsinline: 1, rel: 0, disablekb: 1 },
+    playerVars: {
+      autoplay:    0,
+      controls:    0,
+      playsinline: 1,   // iOS inline audio — critical
+      rel:         0,
+      fs:          0,
+      disablekb:   1,
+      enablejsapi: 1,
+      origin:      location.origin
+    },
     events: {
-      onReady: () => { ytReady = true; },
+      onReady:       onPlayerReady,
       onStateChange: onPlayerStateChange,
-      onError: () => { nextTrack(); }
+      onError:       onPlayerError
     }
   });
 };
 
+function onPlayerReady() {
+  ytReady = true;
+  if (ytLoadPending && pendingTrackIdx >= 0) {
+    ytLoadPending = false;
+    _doPlay(pendingTrackIdx);
+  }
+}
+
 function onPlayerStateChange(e) {
-  if (e.data === YT.PlayerState.PLAYING) {
-    isTransitioning = false; currentTrackIdx = pendingTrackIdx; isPlaying = true;
+  const state = e.data;
+  if (state === YT.PlayerState.PLAYING) {
+    isTransitioning = false;
+    ytErrorStreak   = 0;
+    currentTrackIdx = pendingTrackIdx;
+    isPlaying       = true;
     document.getElementById('play-icon').className = 'fas fa-pause';
-    const song = songs[currentTrackIdx]; if (song) updatePlayerBar(song);
+    document.getElementById('play-btn').classList.add('playing-pulse');
+    const song = songs[currentTrackIdx];
+    if (song) updatePlayerBar(song);
     startProgressTracking();
-  } else if (e.data === YT.PlayerState.ENDED) {
-    nextTrack();
+    refreshActiveCard();
+
+  } else if (state === YT.PlayerState.PAUSED) {
+    if (!isTransitioning) {
+      isPlaying = false;
+      document.getElementById('play-icon').className = 'fas fa-play';
+      document.getElementById('play-btn').classList.remove('playing-pulse');
+      clearInterval(progressInterval);
+      refreshActiveCard();
+    }
+
+  } else if (state === YT.PlayerState.ENDED) {
+    if (!isTransitioning) {
+      isPlaying = false;
+      clearInterval(progressInterval);
+      nextTrack();
+    }
+  }
+  // UNSTARTED(-1), BUFFERING(3), CUED(5) — intentionally ignored
+}
+
+function onPlayerError(e) {
+  console.warn(`YT Error [${e.data}] on idx ${pendingTrackIdx}:`, songs[pendingTrackIdx]?.title);
+  isTransitioning = false; isPlaying = false; ytLoadPending = false;
+  ytErrorStreak++;
+  if (ytErrorStreak >= YT_MAX_ERR) {
+    ytErrorStreak = 0;
+    showToast('Some songs unavailable. Tap ▶ Next to continue.');
+    document.getElementById('play-icon').className = 'fas fa-play';
+    document.getElementById('play-btn').classList.remove('playing-pulse');
+    return;
+  }
+  setTimeout(() => { if (!isPlaying) nextTrack(); }, 1200);
+}
+
+// ── Anti-overlap: stop + mute before any new load ────────────
+function _stopAndClear() {
+  if (!ytPlayer || typeof ytPlayer.stopVideo !== 'function') return;
+  try { ytPlayer.mute(); }      catch(e){}
+  try { ytPlayer.stopVideo(); } catch(e){}
+  // Small delay lets iOS audio pipeline flush the buffer
+  // before the new loadVideoById call is issued
+}
+
+function _doPlay(idx) {
+  if (idx < 0 || idx >= songs.length) return;
+  const song = songs[idx];
+  if (!song || !song.id) return;
+
+  isTransitioning = true;
+  pendingTrackIdx = idx;
+  updatePlayerBarPending(song);
+
+  try {
+    // Stop previous audio completely before loading new video
+    _stopAndClear();
+    // Slight delay on mobile to let audio pipeline drain
+    setTimeout(() => {
+      try {
+        ytPlayer.unMute();
+        ytPlayer.loadVideoById({ videoId: song.id, startSeconds: 0 });
+      } catch(err) {
+        console.error('loadVideoById delayed call failed:', err);
+        isTransitioning = false;
+      }
+    }, isPlaying ? 120 : 0);
+  } catch(err) {
+    console.error('_doPlay failed:', err);
+    isTransitioning = false;
   }
 }
 
-function playSongById(ytId, hintIdx) {
-  let idx = songs.findIndex(s => s.id === ytId);
-  if (idx === -1) idx = hintIdx;
-  isTransitioning = true; pendingTrackIdx = idx;
-  
-  // Anti audio ad overlap configuration filter
-  if(ytPlayer && ytReady) {
-    ytPlayer.stopVideo();
-    ytPlayer.mute(); 
-    ytPlayer.loadVideoById({ videoId: ytId, startSeconds: 0 });
-    setTimeout(() => { try { ytPlayer.unmute(); ytPlayer.playVideo(); } catch(err){} }, 600);
-  }
+function updatePlayerBarPending(song) {
+  document.getElementById('track-title').textContent  = song.title;
+  document.getElementById('track-lang').textContent   = song.lang + ' · loading…';
+  document.getElementById('player-emoji').textContent = song.emoji || '🎵';
 }
-
 function updatePlayerBar(song) {
-  document.getElementById('track-title').textContent = song.title;
-  document.getElementById('track-lang').textContent  = song.lang;
+  document.getElementById('track-title').textContent  = song.title;
+  document.getElementById('track-lang').textContent   = song.lang;
   document.getElementById('player-emoji').textContent = song.emoji || '🎵';
 }
 
-function togglePlay() {
-  if (!ytPlayer) return;
-  if (isPlaying) { ytPlayer.pauseVideo(); isPlaying = false; document.getElementById('play-icon').className = 'fas fa-play'; }
-  else { ytPlayer.playVideo(); isPlaying = true; document.getElementById('play-icon').className = 'fas fa-pause'; }
+function playSongById(ytId, hintIdx) {
+  // Always look up by YouTube ID first (survives index shifts after sort/delete)
+  let idx = songs.findIndex(s => s.id === ytId);
+  if (idx === -1) { idx = hintIdx; console.warn(`playSongById: ytId "${ytId}" not found, using hint ${hintIdx}`); }
+  if (idx < 0 || idx >= songs.length) return;
+  playSong(idx);
 }
-function nextTrack() { if(currentTrackIdx < songs.length - 1) playSongById(songs[currentTrackIdx+1].id, currentTrackIdx+1); }
-function prevTrack() { if(currentTrackIdx > 0) playSongById(songs[currentTrackIdx-1].id, currentTrackIdx-1); }
-function seekTrack(val) { if (ytPlayer) ytPlayer.seekTo((val / 100) * ytPlayer.getDuration(), true); }
 
+function playSong(idx) {
+  if (typeof idx !== 'number' || idx < 0 || idx >= songs.length) return;
+  // Clicking current confirmed-playing song → toggle
+  if (idx === currentTrackIdx && !isTransitioning && ytReady && ytPlayer) { togglePlay(); return; }
+  isTransitioning = false; ytErrorStreak = 0;
+  if (!ytReady || !ytPlayer || typeof ytPlayer.loadVideoById !== 'function') {
+    pendingTrackIdx = idx; ytLoadPending = true;
+    if (songs[idx]) updatePlayerBarPending(songs[idx]);
+    return;
+  }
+  _doPlay(idx);
+}
+
+function nextTrack() {
+  if (songs.length === 0) return;
+  const next = (currentTrackIdx + 1) % songs.length;
+  if (ytReady && ytPlayer) _doPlay(next);
+}
+function prevTrack() {
+  if (songs.length === 0) return;
+  let prev = currentTrackIdx;
+  try { if ((ytPlayer?.getCurrentTime?.() || 0) < 3 && currentTrackIdx > 0) prev = currentTrackIdx - 1; }
+  catch(e) { prev = (currentTrackIdx - 1 + songs.length) % songs.length; }
+  if (ytReady && ytPlayer) _doPlay(prev < 0 ? 0 : prev);
+}
+function togglePlay() {
+  if (!ytPlayer || currentTrackIdx < 0) return;
+  try { if (isPlaying) ytPlayer.pauseVideo(); else ytPlayer.playVideo(); }
+  catch(e) { console.warn('togglePlay error:', e); }
+}
+function seekTrack(val) {
+  if (!ytPlayer) return;
+  const dur = ytPlayer.getDuration() || 0;
+  ytPlayer.seekTo((val / 100) * dur, true);
+}
 function startProgressTracking() {
   clearInterval(progressInterval);
   progressInterval = setInterval(() => {
     if (!ytPlayer || !isPlaying) return;
-    const cur = ytPlayer.getCurrentTime() || 0; const dur = ytPlayer.getDuration() || 1;
-    document.getElementById('progress-bar').value = (cur / dur) * 100;
-    document.getElementById('cur-time').textContent = fmt(cur);
-    document.getElementById('dur-time').textContent = fmt(dur);
+    try {
+      const cur = ytPlayer.getCurrentTime() || 0;
+      const dur = ytPlayer.getDuration() || 1;
+      document.getElementById('progress-bar').value = (cur / dur) * 100;
+      document.getElementById('cur-time').textContent = fmt(cur);
+      document.getElementById('dur-time').textContent = fmt(dur);
+    } catch(e){}
   }, 1000);
 }
+function fmt(s) { const m = Math.floor(s/60), sec = Math.floor(s%60); return `${m}:${sec.toString().padStart(2,'0')}`; }
 
-function verifyAdminPin() {
-  const phone = document.getElementById('admin-pin-phone').value.trim();
-  const pass  = document.getElementById('admin-pin-pass').value.trim();
-  if (phone === ADMIN_PHONE && pass === ADMIN_PASS) {
-    adminSessionToken = generateToken(); currentUser = currentUser || { status: 'admin' };
-    currentUser.status = 'admin'; closeAdminPinModal();
-    document.getElementById('admin-nav').classList.remove('hidden'); updateUserUI(); navigate('admin');
+function refreshActiveCard() {
+  if (currentPage === 'home') renderHome(document.getElementById('page-area'));
+  else if (currentPage === 'search') {
+    const q = document.getElementById('search-input')?.value || '';
+    doSearch(q);
   }
 }
 
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebar-overlay').classList.toggle('visible'); }
-function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('visible'); }
+// ============================================================
+//  Admin PIN Modal
+// ============================================================
+let adminPinAttempts = 0;
+let adminLockoutUntil = 0;
+const MAX_ADMIN_ATTEMPTS = 5;
+const LOCKOUT_MS = 5 * 60 * 1000;
+
+function showAdminPinModal() {
+  document.getElementById('admin-pin-modal').classList.remove('hidden');
+  document.getElementById('admin-pin-phone').value = '';
+  document.getElementById('admin-pin-pass').value = '';
+  document.getElementById('admin-pin-error').classList.add('hidden');
+  checkLockout();
+  setTimeout(() => document.getElementById('admin-pin-phone').focus(), 100);
+}
+function closeAdminPinModal() {
+  document.getElementById('admin-pin-modal').classList.add('hidden');
+  document.getElementById('admin-pin-error').classList.add('hidden');
+}
+function toggleAdminPassVis() {
+  const inp = document.getElementById('admin-pin-pass');
+  const ico = document.getElementById('admin-eye-icon');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  ico.className = inp.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+}
+function checkLockout() {
+  const lockoutEl = document.getElementById('admin-lockout-msg');
+  const lockoutText = document.getElementById('lockout-text');
+  if (Date.now() < adminLockoutUntil) {
+    const remaining = Math.ceil((adminLockoutUntil - Date.now()) / 1000);
+    lockoutEl.classList.remove('hidden');
+    lockoutText.textContent = `Too many attempts. Try again in ${Math.floor(remaining/60)}m ${remaining%60}s`;
+    document.getElementById('admin-pin-phone').disabled = true;
+    document.getElementById('admin-pin-pass').disabled  = true;
+    setTimeout(checkLockout, 1000);
+  } else {
+    lockoutEl.classList.add('hidden');
+    document.getElementById('admin-pin-phone').disabled = false;
+    document.getElementById('admin-pin-pass').disabled  = false;
+  }
+}
+function verifyAdminPin() {
+  if (Date.now() < adminLockoutUntil) { checkLockout(); return; }
+  const phone = document.getElementById('admin-pin-phone').value.trim();
+  const pass  = document.getElementById('admin-pin-pass').value.trim();
+  const errEl = document.getElementById('admin-pin-error');
+  if (!phone || !pass) { errEl.textContent = 'Please fill both fields'; errEl.classList.remove('hidden'); return; }
+  if (phone === ADMIN_PHONE && pass === ADMIN_PASS) {
+    adminPinAttempts  = 0;
+    adminSessionToken = generateToken();
+    currentUser = currentUser || { name:'Master Admin', phone:ADMIN_PHONE, status:'admin' };
+    currentUser.status = 'admin';
+    closeAdminPinModal();
+    document.getElementById('admin-nav').classList.remove('hidden');
+    updateUserUI();
+    navigate('admin');
+    showToast('✅ Admin access granted');
+  } else {
+    adminPinAttempts++;
+    const remaining = MAX_ADMIN_ATTEMPTS - adminPinAttempts;
+    if (adminPinAttempts >= MAX_ADMIN_ATTEMPTS) {
+      adminLockoutUntil = Date.now() + LOCKOUT_MS;
+      adminPinAttempts  = 0;
+      errEl.textContent = 'Too many failed attempts. Locked for 5 minutes.';
+      checkLockout();
+    } else {
+      errEl.textContent = `Incorrect credentials. ${remaining} attempt${remaining!==1?'s':''} left.`;
+    }
+    errEl.classList.remove('hidden');
+    document.getElementById('admin-pin-pass').value = '';
+    const box = document.querySelector('#admin-pin-modal .modal-box');
+    box.style.animation = 'none'; box.offsetHeight; box.style.animation = 'shake 0.4s ease';
+  }
+}
+
+// ============================================================
+//  Sidebar helpers
+// ============================================================
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('visible');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('visible');
+}
+
+// ============================================================
+//  Premium popup
+// ============================================================
 function closePremiumPopup() { document.getElementById('premium-popup').classList.add('hidden'); }
 
-(async function boot() { await tryAutoLogin(); })();
-const ytScript = document.createElement('script'); ytScript.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(ytScript);
+// ============================================================
+//  Toast
+// ============================================================
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = `position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--purple);color:white;padding:0.6rem 1.2rem;border-radius:24px;font-size:0.85rem;z-index:9999;white-space:nowrap;animation:fadeInUp 0.3s ease;pointer-events:none`;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ============================================================
+//  Boot
+// ============================================================
+(async function boot() {
+  document.getElementById('auth-screen').style.display = 'none';
+  const splash = document.createElement('div');
+  splash.id = 'boot-splash';
+  splash.style.cssText = 'position:fixed;inset:0;background:#0a0a0a;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:1rem;';
+  splash.innerHTML = `
+    <img src="https://i.pinimg.com/736x/04/2a/e4/042ae4bf49945e32faefafa950b2c3ba.jpg"
+         style="width:64px;height:64px;border-radius:16px;object-fit:cover;filter:drop-shadow(0 0 16px rgba(168,85,247,0.7));border:2px solid rgba(168,85,247,0.5)" alt="Logo">
+    <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:#f0f0f0">MoodSync <span style="color:#a855f7">Pro</span></div>
+    <div style="width:40px;height:3px;border-radius:2px;background:#222;overflow:hidden;margin-top:0.5rem">
+      <div id="boot-bar" style="width:0%;height:100%;background:linear-gradient(90deg,#7c3aed,#a855f7);transition:width 0.4s ease"></div>
+    </div>`;
+  document.body.appendChild(splash);
+  setTimeout(() => { const b = document.getElementById('boot-bar'); if(b) b.style.width='60%'; }, 100);
+  await tryAutoLogin();
+  const bar = document.getElementById('boot-bar');
+  if (bar) bar.style.width = '100%';
+  setTimeout(() => {
+    splash.style.transition = 'opacity 0.35s ease'; splash.style.opacity = '0';
+    setTimeout(() => {
+      splash.remove();
+      if (!currentUser) document.getElementById('auth-screen').style.display = 'flex';
+    }, 350);
+  }, 300);
+})();
+
+// Load YouTube IFrame API
+const ytScript = document.createElement('script');
+ytScript.src = 'https://www.youtube.com/iframe_api';
+document.head.appendChild(ytScript);
+
+// ============================================================
+//  Mobile touch — block ONLY pull-to-refresh, never page scroll
+// ============================================================
+let _touchStartY = 0;
+document.addEventListener('touchstart', e => { _touchStartY = e.touches[0].clientY; }, { passive: true });
+document.addEventListener('touchmove', e => {
+  const target = e.target;
+  if (target.closest('#page-area, .modal-box, .auth-card, #auth-screen')) return;
+  const path = e.composedPath ? e.composedPath() : [];
+  for (const el of path) {
+    if (el === document.body || el === document.documentElement) break;
+    if (el.scrollHeight > el.clientHeight) return;
+  }
+  if (e.touches[0].clientY - _touchStartY > 0 && (document.scrollingElement?.scrollTop || 0) === 0)
+    e.preventDefault();
+}, { passive: false });
 </script>
 </body>
 </html>

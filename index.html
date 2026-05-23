@@ -383,6 +383,7 @@
   .admin-table th { padding: 0.75rem; text-align: left; font-size: 0.8rem; color: var(--muted); font-family: 'Syne', sans-serif; border-bottom: 1px solid var(--border); }
   .admin-table td { padding: 0.75rem; font-size: 0.85rem; border-bottom: 1px solid rgba(42,42,42,0.5); vertical-align: middle; }
   .admin-table tr:hover td { background: var(--surface2); }
+  @media (hover: none) { .song-card:hover .song-delete-btn { opacity: 0.6; } }
   @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   .spinning { animation: spin-slow 8s linear infinite; border-radius: 50% !important; }
   .suggest-list { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; z-index: 100; max-height: 200px; overflow-y: auto; margin-top: 4px; }
@@ -446,14 +447,12 @@
     </div>
 
     <div id="view-login" class="auth-view flex flex-col gap-3">
-
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="login-email" type="email"
                placeholder="Email address" autocomplete="email"
                onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
         <i class="fas fa-envelope input-icon"></i>
       </div>
-
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="login-password" type="password"
                placeholder="Password" autocomplete="current-password"
@@ -463,43 +462,35 @@
           <i class="fas fa-eye" id="eye-login"></i>
         </button>
       </div>
-
       <div class="text-right" style="margin-top:-.5rem">
         <button onclick="doPasswordReset()" class="link-btn" type="button">Forgot password?</button>
       </div>
-
       <button class="btn-primary glow-btn" id="email-login-btn" onclick="doEmailLogin()" type="button">
         <span id="email-login-label">Login</span>
       </button>
-
       <div class="or-divider">OR continue with</div>
-
       <button class="google-btn" onclick="doGoogleSignIn()" id="google-login-btn" type="button">
         <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.7 29.3 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.8 20-21 0-1.4-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 16.3 3 9.6 7.8 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 36.5 26.8 37 24 37c-5.2 0-9.6-3.2-11.3-7.8l-6.6 4.9C9.7 40.9 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.5 4.6-4.6 6l6.2 5.2C40.8 36 44 30.5 44 24c0-1.4-.1-2.7-.4-4z"/></svg>
         Continue with Google
       </button>
-
       <p class="text-center text-xs" style="color:var(--muted);margin-top:.25rem">
         New here? <span onclick="switchMainTab('signup')" class="link-accent">Sign Up free</span>
       </p>
     </div>
 
     <div id="view-signup" class="auth-view hidden flex flex-col gap-3">
-
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-name" type="text" placeholder="Full Name"
                autocomplete="name"
                onkeydown="if(event.key==='Enter')document.getElementById('signup-email').focus()">
         <i class="fas fa-user input-icon"></i>
       </div>
-
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-email" type="email" placeholder="Email address"
                autocomplete="email"
                onkeydown="if(event.key==='Enter')document.getElementById('signup-password').focus()">
         <i class="fas fa-envelope input-icon"></i>
       </div>
-
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-password" type="password"
                placeholder="Password (min 8 chars)" autocomplete="new-password"
@@ -509,18 +500,14 @@
           <i class="fas fa-eye" id="eye-signup"></i>
         </button>
       </div>
-
       <button class="btn-primary glow-btn" id="signup-submit-btn" onclick="doEmailSignup()" type="button">
         <span id="signup-submit-label">Create Account</span>
       </button>
-
       <div class="or-divider">OR</div>
-
       <button class="google-btn" onclick="doGoogleSignIn()" type="button">
         <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.7 29.3 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.8 20-21 0-1.4-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 16.3 3 9.6 7.8 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 36.5 26.8 37 24 37c-5.2 0-9.6-3.2-11.3-7.8l-6.6 4.9C9.7 40.9 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.5 4.6-4.6 6l6.2 5.2C40.8 36 44 30.5 44 24c0-1.4-.1-2.7-.4-4z"/></svg>
         Sign Up with Google
       </button>
-
       <p class="text-center text-xs" style="color:var(--muted);margin-top:.25rem">
         Already have an account? <span onclick="switchMainTab('login')" class="link-accent">Login</span>
       </p>
@@ -1016,7 +1003,7 @@ async function doPasswordReset() {
 }
 
 // ============================================================
-//  Session Management
+//  Session Management (FIXED: State observer locks local session state)
 // ============================================================
 const SESSION_KEY = 'ms_session_v1';
 function saveSession(user) { try { localStorage.setItem(SESSION_KEY, JSON.stringify(user)); } catch(e){} }
@@ -1044,24 +1031,50 @@ async function saveUserToDB(uid, profile) {
   return record;
 }
 
+// SECURE AUTO LOGIN HUB CONNECTIVITY SYNC
 async function tryAutoLogin() {
-  const saved = loadSession();
-  if (!saved) return;
-  if (saved.phone === ADMIN_PHONE && saved.status === 'admin') {
-    adminSessionToken = generateToken();
-    currentUser = saved;
-    launchApp(true); return;
-  }
-  if (saved.uid && fbAuth) {
-    const fbUser = fbAuth.currentUser;
-    if (fbUser && fbUser.uid === saved.uid) {
-      const profile = await fbGet(`users/${fbUser.uid}`);
-      if (profile) { currentUser = { ...profile, uid: fbUser.uid }; saveSession(currentUser); launchApp(true); return; }
+  return new Promise((resolve) => {
+    // 1st Priority: Check active Firebase instance instance validation
+    if (fbAuth) {
+      fbAuth.onAuthStateChanged(async (fbUser) => {
+        if (fbUser) {
+          const profile = await fbGet(`users/${fbUser.uid}`);
+          if (profile) {
+            currentUser = { ...profile, uid: fbUser.uid };
+            saveSession(currentUser);
+            launchApp(true);
+            resolve(true);
+            return;
+          }
+        }
+        
+        // 2nd Priority Fallback: Check structural LocalStorage cache fallback keys
+        const saved = loadSession();
+        if (saved) {
+          if (saved.phone === ADMIN_PHONE && saved.status === 'admin') {
+            adminSessionToken = generateToken();
+            currentUser = saved;
+            launchApp(true);
+            resolve(true);
+            return;
+          }
+          if (saved.uid) {
+            const profile = await fbGet(`users/${saved.uid}`);
+            if (profile) {
+              currentUser = { ...profile, uid: saved.uid };
+              saveSession(currentUser);
+              launchApp(true);
+              resolve(true);
+              return;
+            }
+          }
+        }
+        resolve(false);
+      });
+    } else {
+      resolve(false);
     }
-    const profile = await fbGet(`users/${saved.uid}`);
-    if (profile) { currentUser = { ...profile, uid: saved.uid }; saveSession(currentUser); launchApp(true); return; }
-  }
-  clearSession();
+  });
 }
 
 function doLogout() {
@@ -1273,7 +1286,7 @@ function songCardHTML(song, globalIdx, displayNum) {
   return `
     <div class="song-card ${isActive?'active':''}" data-idx="${globalIdx}" data-ytid="${song.id}"
          onclick="event.preventDefault();event.stopPropagation();playSongById('${song.id}',${globalIdx})">
-      <div class="song-num">${playing?'<i class="fas fa-music" style="color:var(--purple)"></i>':displayNum}</div>
+      <div class="song-num">${playing?'<i class="fas fa-music" style="color:var(--purple)"></i>' : displayNum}</div>
       <div class="song-emoji ${playing?'spinning':''}" style="${isActive?'border:2px solid var(--purple)':''}">${song.emoji||'🎵'}</div>
       <div class="song-meta">
         <div class="song-name" style="${isActive?'color:var(--purple)':''}">${song.title}</div>
@@ -1542,40 +1555,23 @@ async function adminRemoveSong(id, title) {
   showToast(`"${title}" removed`);
 }
 
-// ============================================================
-//  deleteSong — Instant local wipe + active UI refresh
-// ============================================================
 async function deleteSong(songKey, youtubeId, btnElement) {
   const callerEmail = (fbAuth?.currentUser?.email || currentUser?.email || '').toLowerCase();
-  const isAuthorised = callerEmail === SONG_DELETE_EMAIL.toLowerCase()
-                    || callerEmail === ADMIN_EMAIL.toLowerCase()
-                    || currentUser?.status === 'admin';
+  const isAuthorised = callerEmail === SONG_DELETE_EMAIL.toLowerCase() || callerEmail === ADMIN_EMAIL.toLowerCase() || currentUser?.status === 'admin';
   if (!isAuthorised) { console.error('[deleteSong] Unauthorised:', callerEmail); return; }
   if (!songKey) { alert('Cannot delete: Firebase key missing. Try refreshing.'); return; }
   if (!confirm('Delete this song permanently?')) return;
-
   if (btnElement) { btnElement.disabled = true; btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
-
   try {
     const ok = await fbDelete(`songs/${songKey}`);
-    if (!ok) {
-      if (btnElement) { btnElement.disabled = false; btnElement.innerHTML = '<i class="fas fa-trash-alt"></i>'; }
-      return;
-    }
+    if (!ok) { if (btnElement) { btnElement.disabled = false; btnElement.innerHTML = '<i class="fas fa-trash-alt"></i>'; } return; }
     songs         = songs.filter(s => s.cloudKey !== songKey && s.id !== youtubeId);
     filteredSongs = filteredSongs.filter(s => s.cloudKey !== songKey && s.id !== youtubeId);
-
-    if (songs.length === 0) {
-      currentTrackIdx = -1; pendingTrackIdx = -1; isPlaying = false;
-    } else if (currentTrackIdx >= songs.length) {
-      currentTrackIdx = songs.length - 1;
-      pendingTrackIdx = currentTrackIdx;
-    }
+    if (songs.length === 0) { currentTrackIdx = -1; pendingTrackIdx = -1; isPlaying = false; } 
+    else if (currentTrackIdx >= songs.length) { currentTrackIdx = songs.length - 1; pendingTrackIdx = currentTrackIdx; }
     renderPage(currentPage);
     showToast('Song deleted ✅');
   } catch(e) {
-    console.error('[deleteSong] Exception:', e);
-    alert('Delete failed: ' + e.message);
     if (btnElement) { btnElement.disabled = false; btnElement.innerHTML = '<i class="fas fa-trash-alt"></i>'; }
   }
 }
@@ -1598,7 +1594,7 @@ async function adminAddSong() {
       renderPage(currentPage);
       showToast(`"${title}" added ✅`);
     } else {
-      alert('Failed to add song. Sign in with joydebnath.info@gmail.com on the login screen to authorize cloud database storage keys.');
+      alert('Failed to add song. Sign in with joydebnath.info@gmail.com on the login screen.');
     }
   } catch(e) {
     alert('Failed to add song: ' + e.message);
@@ -1608,7 +1604,7 @@ async function adminAddSong() {
 }
 
 // ============================================================
-//  YouTube Player Engine — Anti-Overlap Mobile Logic
+//  YouTube Player Engine
 // ============================================================
 let ytLoadPending   = false;
 let isTransitioning = false;
@@ -1621,62 +1617,40 @@ window.onYouTubeIframeAPIReady = function() {
   ytPlayer = new YT.Player('yt-player', {
     height: '1', width: '1',
     playerVars: { autoplay: 0, controls: 0, playsinline: 1, rel: 0, disablekb: 1, enablejsapi: 1, origin: location.origin },
-    events: {
-      onReady:       onPlayerReady,
-      onStateChange: onPlayerStateChange,
-      onError:       onPlayerError
-    }
+    events: { onReady: onPlayerReady, onStateChange: onPlayerStateChange, onError: onPlayerError }
   });
 };
 
 function onPlayerReady() {
   ytReady = true;
-  if (ytLoadPending && pendingTrackIdx >= 0) {
-    ytLoadPending = false;
-    _doPlay(pendingTrackIdx);
-  }
+  if (ytLoadPending && pendingTrackIdx >= 0) { ytLoadPending = false; _doPlay(pendingTrackIdx); }
 }
 
 function onPlayerStateChange(e) {
   const state = e.data;
   if (state === YT.PlayerState.PLAYING) {
-    isTransitioning = false;
-    ytErrorStreak   = 0;
-    currentTrackIdx = pendingTrackIdx;
-    isPlaying       = true;
+    isTransitioning = false; ytErrorStreak = 0; currentTrackIdx = pendingTrackIdx; isPlaying = true;
     document.getElementById('play-icon').className = 'fas fa-pause';
     document.getElementById('play-btn').classList.add('playing-pulse');
-    const song = songs[currentTrackIdx];
-    if (song) updatePlayerBar(song);
-    startProgressTracking();
-    refreshActiveCard();
+    const song = songs[currentTrackIdx]; if (song) updatePlayerBar(song);
+    startProgressTracking(); refreshActiveCard();
   } else if (state === YT.PlayerState.PAUSED) {
     if (!isTransitioning) {
-      isPlaying = false;
-      document.getElementById('play-icon').className = 'fas fa-play';
+      isPlaying = false; document.getElementById('play-icon').className = 'fas fa-play';
       document.getElementById('play-btn').classList.remove('playing-pulse');
-      clearInterval(progressInterval);
-      refreshActiveCard();
+      clearInterval(progressInterval); refreshActiveCard();
     }
   } else if (state === YT.PlayerState.ENDED) {
-    if (!isTransitioning) {
-      isPlaying = false;
-      clearInterval(progressInterval);
-      nextTrack();
-    }
+    if (!isTransitioning) { isPlaying = false; clearInterval(progressInterval); nextTrack(); }
   }
 }
 
 function onPlayerError(e) {
-  console.warn(`YT Error [${e.data}] on idx ${pendingTrackIdx}:`, songs[pendingTrackIdx]?.title);
-  isTransitioning = false; isPlaying = false; ytLoadPending = false;
-  ytErrorStreak++;
+  isTransitioning = false; isPlaying = false; ytLoadPending = false; ytErrorStreak++;
   if (ytErrorStreak >= YT_MAX_ERR) {
-    ytErrorStreak = 0;
-    showToast('Some songs unavailable. Tap ▶ Next to continue.');
+    ytErrorStreak = 0; showToast('Some songs unavailable. Tap ▶ Next.');
     document.getElementById('play-icon').className = 'fas fa-play';
-    document.getElementById('play-btn').classList.remove('playing-pulse');
-    return;
+    document.getElementById('play-btn').classList.remove('playing-pulse'); return;
   }
   setTimeout(() => { if (!isPlaying) nextTrack(); }, 1200);
 }
@@ -1689,28 +1663,15 @@ function _stopAndClear() {
 
 function _doPlay(idx) {
   if (idx < 0 || idx >= songs.length) return;
-  const song = songs[idx];
-  if (!song || !song.id) return;
-
-  isTransitioning = true;
-  pendingTrackIdx = idx;
-  updatePlayerBarPending(song);
-
+  const song = songs[idx]; if (!song || !song.id) return;
+  isTransitioning = true; pendingTrackIdx = idx; updatePlayerBarPending(song);
   try {
     _stopAndClear();
     setTimeout(() => {
-      try {
-        ytPlayer.unMute();
-        ytPlayer.loadVideoById({ videoId: song.id, startSeconds: 0 });
-      } catch(err) {
-        console.error('loadVideoById delayed call failed:', err);
-        isTransitioning = false;
-      }
+      try { ytPlayer.unMute(); ytPlayer.loadVideoById({ videoId: song.id, startSeconds: 0 }); } 
+      catch(err) { isTransitioning = false; }
     }, isPlaying ? 120 : 0);
-  } catch(err) {
-    console.error('_doPlay failed:', err);
-    isTransitioning = false;
-  }
+  } catch(err) { isTransitioning = false; }
 }
 
 function updatePlayerBarPending(song) {
@@ -1726,7 +1687,7 @@ function updatePlayerBar(song) {
 
 function playSongById(ytId, hintIdx) {
   let idx = songs.findIndex(s => s.id === ytId);
-  if (idx === -1) { idx = hintIdx; console.warn(`playSongById: ytId "${ytId}" not found, using hint ${hintIdx}`); }
+  if (idx === -1) idx = hintIdx;
   if (idx < 0 || idx >= songs.length) return;
   playSong(idx);
 }
@@ -1736,45 +1697,31 @@ function playSong(idx) {
   if (idx === currentTrackIdx && !isTransitioning && ytReady && ytPlayer) { togglePlay(); return; }
   isTransitioning = false; ytErrorStreak = 0;
   if (!ytReady || !ytPlayer || typeof ytPlayer.loadVideoById !== 'function') {
-    pendingTrackIdx = idx; ytLoadPending = true;
-    if (songs[idx]) updatePlayerBarPending(songs[idx]);
-    return;
+    pendingTrackIdx = idx; ytLoadPending = true; if (songs[idx]) updatePlayerBarPending(songs[idx]); return;
   }
   _doPlay(idx);
 }
 
-function nextTrack() {
-  if (songs.length === 0) return;
-  const next = (currentTrackIdx + 1) % songs.length;
-  if (ytReady && ytPlayer) _doPlay(next);
-}
+function nextTrack() { if (songs.length === 0) return; _doPlay((currentTrackIdx + 1) % songs.length); }
 function prevTrack() {
-  if (songs.length === 0) return;
-  let prev = currentTrackIdx;
+  if (songs.length === 0) return; let prev = currentTrackIdx;
   try { if ((ytPlayer?.getCurrentTime?.() || 0) < 3 && currentTrackIdx > 0) prev = currentTrackIdx - 1; }
   catch(e) { prev = (currentTrackIdx - 1 + songs.length) % songs.length; }
-  if (ytReady && ytPlayer) _doPlay(prev < 0 ? 0 : prev);
+  _doPlay(prev < 0 ? 0 : prev);
 }
 function togglePlay() {
   if (!ytPlayer || currentTrackIdx < 0) return;
-  try { if (isPlaying) ytPlayer.pauseVideo(); else ytPlayer.playVideo(); }
-  catch(e) { console.warn('togglePlay error:', e); }
+  try { if (isPlaying) ytPlayer.pauseVideo(); else ytPlayer.playVideo(); } catch(e){}
 }
-function seekTrack(val) {
-  if (!ytPlayer) return;
-  const dur = ytPlayer.getDuration() || 0;
-  ytPlayer.seekTo((val / 100) * dur, true);
-}
+function seekTrack(val) { if (ytPlayer) ytPlayer.seekTo((val / 100) * ytPlayer.getDuration(), true); }
 function startProgressTracking() {
   clearInterval(progressInterval);
   progressInterval = setInterval(() => {
     if (!ytPlayer || !isPlaying) return;
     try {
-      const cur = ytPlayer.getCurrentTime() || 0;
-      const dur = ytPlayer.getDuration() || 1;
+      const cur = ytPlayer.getCurrentTime() || 0; const dur = ytPlayer.getDuration() || 1;
       document.getElementById('progress-bar').value = (cur / dur) * 100;
-      document.getElementById('cur-time').textContent = fmt(cur);
-      document.getElementById('dur-time').textContent = fmt(dur);
+      document.getElementById('cur-time').textContent = fmt(cur); document.getElementById('dur-time').textContent = fmt(dur);
     } catch(e){}
   }, 1000);
 }
@@ -1782,165 +1729,101 @@ function fmt(s) { const m = Math.floor(s/60), sec = Math.floor(s%60); return `${
 
 function refreshActiveCard() {
   if (currentPage === 'home') renderHome(document.getElementById('page-area'));
-  else if (currentPage === 'search') {
-    const q = document.getElementById('search-input')?.value || '';
-    doSearch(q);
-  }
+  else if (currentPage === 'search') { doSearch(document.getElementById('search-input')?.value || ''); }
 }
 
 // ============================================================
 //  Admin PIN Modal
 // ============================================================
-let adminPinAttempts = 0;
-let adminLockoutUntil = 0;
-const MAX_ADMIN_ATTEMPTS = 5;
-const LOCKOUT_MS = 5 * 60 * 1000;
+let adminPinAttempts = 0; let adminLockoutUntil = 0;
+const MAX_ADMIN_ATTEMPTS = 5; const LOCKOUT_MS = 5 * 60 * 1000;
 
 function showAdminPinModal() {
   document.getElementById('admin-pin-modal').classList.remove('hidden');
-  document.getElementById('admin-pin-phone').value = '';
-  document.getElementById('admin-pin-pass').value = '';
-  document.getElementById('admin-pin-error').classList.add('hidden');
-  checkLockout();
+  document.getElementById('admin-pin-phone').value = ''; document.getElementById('admin-pin-pass').value = '';
+  document.getElementById('admin-pin-error').classList.add('hidden'); checkLockout();
   setTimeout(() => document.getElementById('admin-pin-phone').focus(), 100);
 }
-function closeAdminPinModal() {
-  document.getElementById('admin-pin-modal').classList.add('hidden');
-  document.getElementById('admin-pin-error').classList.add('hidden');
-}
+function closeAdminPinModal() { document.getElementById('admin-pin-modal').classList.add('hidden'); }
 function toggleAdminPassVis() {
-  const inp = document.getElementById('admin-pin-pass');
-  const ico = document.getElementById('admin-eye-icon');
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-  ico.className = inp.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+  const inp = document.getElementById('admin-pin-pass'); const ico = document.getElementById('admin-eye-icon');
+  inp.type = inp.type === 'password' ? 'text' : 'password'; ico.className = inp.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
 }
 function checkLockout() {
-  const lockoutEl = document.getElementById('admin-lockout-msg');
-  const lockoutText = document.getElementById('lockout-text');
+  const lockoutEl = document.getElementById('admin-lockout-msg'); const lockoutText = document.getElementById('lockout-text');
   if (Date.now() < adminLockoutUntil) {
     const remaining = Math.ceil((adminLockoutUntil - Date.now()) / 1000);
-    lockoutEl.classList.remove('hidden');
-    lockoutText.textContent = `Too many attempts. Try again in ${Math.floor(remaining/60)}m ${remaining%60}s`;
-    document.getElementById('admin-pin-phone').disabled = true;
-    document.getElementById('admin-pin-pass').disabled  = true;
-    setTimeout(checkLockout, 1000);
+    lockoutEl.classList.remove('hidden'); lockoutText.textContent = `Too many attempts. Try again in ${Math.floor(remaining/60)}m ${remaining%60}s`;
+    document.getElementById('admin-pin-phone').disabled = true; document.getElementById('admin-pin-pass').disabled  = true; setTimeout(checkLockout, 1000);
   } else {
-    lockoutEl.classList.add('hidden');
-    document.getElementById('admin-pin-phone').disabled = false;
-    document.getElementById('admin-pin-pass').disabled  = false;
+    lockoutEl.classList.add('hidden'); document.getElementById('admin-pin-phone').disabled = false; document.getElementById('admin-pin-pass').disabled  = false;
   }
 }
 function verifyAdminPin() {
   if (Date.now() < adminLockoutUntil) { checkLockout(); return; }
-  const phone = document.getElementById('admin-pin-phone').value.trim();
-  const pass  = document.getElementById('admin-pin-pass').value.trim();
+  const phone = document.getElementById('admin-pin-phone').value.trim(); const pass  = document.getElementById('admin-pin-pass').value.trim();
   const errEl = document.getElementById('admin-pin-error');
   if (!phone || !pass) { errEl.textContent = 'Please fill both fields'; errEl.classList.remove('hidden'); return; }
   if (phone === ADMIN_PHONE && pass === ADMIN_PASS) {
-    adminPinAttempts  = 0;
-    adminSessionToken = generateToken();
-    currentUser = currentUser || { name:'Master Admin', phone:ADMIN_PHONE, status:'admin' };
-    currentUser.status = 'admin';
-    closeAdminPinModal();
-    document.getElementById('admin-nav').classList.remove('hidden');
-    updateUserUI();
-    navigate('admin');
-    showToast('✅ Admin access granted');
+    adminPinAttempts  = 0; adminSessionToken = generateToken(); currentUser = currentUser || { name:'Master Admin', phone:ADMIN_PHONE, status:'admin' };
+    currentUser.status = 'admin'; closeAdminPinModal(); document.getElementById('admin-nav').classList.remove('hidden'); updateUserUI(); navigate('admin'); showToast('✅ Admin access granted');
   } else {
-    adminPinAttempts++;
-    const remaining = MAX_ADMIN_ATTEMPTS - adminPinAttempts;
-    if (adminPinAttempts >= MAX_ADMIN_ATTEMPTS) {
-      adminLockoutUntil = Date.now() + LOCKOUT_MS;
-      adminPinAttempts  = 0;
-      errEl.textContent = 'Too many failed attempts. Locked for 5 minutes.';
-      checkLockout();
-    } else {
-      errEl.textContent = `Incorrect credentials. ${remaining} attempt${remaining !== 1 ? 's' : ''} left.`;
-    }
-    errEl.classList.remove('hidden');
-    document.getElementById('admin-pin-pass').value = '';
-    const box = document.querySelector('#admin-pin-modal .modal-box');
-    box.style.animation = 'none'; box.offsetHeight; box.style.animation = 'shake 0.4s ease';
+    adminPinAttempts++; const remaining = MAX_ADMIN_ATTEMPTS - adminPinAttempts;
+    if (adminPinAttempts >= MAX_ADMIN_ATTEMPTS) { adminLockoutUntil = Date.now() + LOCKOUT_MS; adminPinAttempts = 0; errEl.textContent = 'Locked for 5 minutes.'; checkLockout(); } 
+    else { errEl.textContent = `Incorrect credentials. ${remaining} attempts left.`; }
+    errEl.classList.remove('hidden'); document.getElementById('admin-pin-pass').value = '';
+    const box = document.querySelector('#admin-pin-modal .modal-box'); box.style.animation = 'none'; box.offsetHeight; box.style.animation = 'shake 0.4s ease';
   }
 }
 
-// ============================================================
-//  Sidebar helpers
-// ============================================================
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebar-overlay').classList.toggle('visible');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('visible');
-}
-
-// ============================================================
-//  Premium popup
-// ============================================================
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebar-overlay').classList.toggle('visible'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('visible'); }
 function closePremiumPopup() { document.getElementById('premium-popup').classList.add('hidden'); }
 
-// ============================================================
-//  Toast
-// ============================================================
 function showToast(msg) {
-  const t = document.createElement('div');
-  t.textContent = msg;
+  const t = document.createElement('div'); t.textContent = msg;
   t.style.cssText = `position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--purple);color:white;padding:0.6rem 1.2rem;border-radius:24px;font-size:0.85rem;z-index:9999;white-space:nowrap;animation:fadeInUp 0.3s ease;pointer-events:none`;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3000);
+  document.body.appendChild(t); setTimeout(() => t.remove(), 3000);
 }
 
 // ============================================================
-//  Boot
+//  Boot Synchronization System Engine
 // ============================================================
 (async function boot() {
   document.getElementById('auth-screen').style.display = 'none';
-  const splash = document.createElement('div');
-  splash.id = 'boot-splash';
+  const splash = document.createElement('div'); splash.id = 'boot-splash';
   splash.style.cssText = 'position:fixed;inset:0;background:#0a0a0a;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:1rem;';
   splash.innerHTML = `
-    <img src="https://i.pinimg.com/736x/04/2a/e4/042ae4bf49945e32faefafa950b2c3ba.jpg"
-         style="width:64px;height:64px;border-radius:16px;object-fit:cover;filter:drop-shadow(0 0 16px rgba(168,85,247,0.7));border:2px solid rgba(168,85,247,0.5)" alt="Logo">
+    <img src="https://i.pinimg.com/736x/04/2a/e4/042ae4bf49945e32faefafa950b2c3ba.jpg" style="width:64px;height:64px;border-radius:16px;object-fit:cover;filter:drop-shadow(0 0 16px rgba(168,85,247,0.7));border:2px solid rgba(168,85,247,0.5)" alt="Logo">
     <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:#f0f0f0">MoodSync <span style="color:#a855f7">Pro</span></div>
     <div style="width:40px;height:3px;border-radius:2px;background:#222;overflow:hidden;margin-top:0.5rem">
       <div id="boot-bar" style="width:0%;height:100%;background:linear-gradient(90deg,#7c3aed,#a855f7);transition:width 0.4s ease"></div>
     </div>`;
   document.body.appendChild(splash);
   setTimeout(() => { const b = document.getElementById('boot-bar'); if(b) b.style.width='60%'; }, 100);
-  await tryAutoLogin();
-  const bar = document.getElementById('boot-bar');
-  if (bar) bar.style.width = '100%';
+
+  // Core Sync Waiter
+  const loginSuccess = await tryAutoLogin();
+
+  const bar = document.getElementById('boot-bar'); if (bar) bar.style.width = '100%';
   setTimeout(() => {
     splash.style.transition = 'opacity 0.35s ease'; splash.style.opacity = '0';
     setTimeout(() => {
       splash.remove();
-      if (!currentUser) document.getElementById('auth-screen').style.display = 'flex';
+      if (!loginSuccess && !currentUser) document.getElementById('auth-screen').style.display = 'flex';
     }, 350);
   }, 300);
 })();
 
-// Load YouTube IFrame API
-const ytScript = document.createElement('script');
-ytScript.src = 'https://www.youtube.com/iframe_api';
-document.head.appendChild(ytScript);
+const ytScript = document.createElement('script'); ytScript.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(ytScript);
 
-// ============================================================
-//  Mobile touch — block ONLY pull-to-refresh, never page scroll
-// ============================================================
 let _touchStartY = 0;
 document.addEventListener('touchstart', e => { _touchStartY = e.touches[0].clientY; }, { passive: true });
 document.addEventListener('touchmove', e => {
-  const target = e.target;
-  if (target.closest('#page-area, .modal-box, .auth-card, #auth-screen')) return;
+  if (e.target.closest('#page-area, .modal-box, .auth-card, #auth-screen')) return;
   const path = e.composedPath ? e.composedPath() : [];
-  for (const el of path) {
-    if (el === document.body || el === document.documentElement) break;
-    if (el.scrollHeight > el.clientHeight) return;
-  }
-  if (e.touches[0].clientY - _touchStartY > 0 && (document.scrollingElement?.scrollTop || 0) === 0)
-    e.preventDefault();
+  for (const el of path) { if (el === document.body || el === document.documentElement) break; if (el.scrollHeight > el.clientHeight) return; }
+  if (e.touches[0].clientY - _touchStartY > 0 && (document.scrollingElement?.scrollTop || 0) === 0) e.preventDefault();
 }, { passive: false });
 </script>
 </body>

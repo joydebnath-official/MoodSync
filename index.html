@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>MoodSync Pro 🎵</title>
+<meta name="google-site-verification" content="GC3PjMScdkMFOJxcE4mVUd4vzvnSa3y1AVgY6_CWpXI" />
+<meta name="description" content="MoodSync Pro by Joy Debnath. Stream the best Hindi hits and Bangla songs free online. Enjoy ad-free premium music with background play support on mobile." />
+<meta name="keywords" content="MoodSync Pro, Joy Debnath, joydebnathjds, joydebnathjds-official, MoodSync music, free online music player, Hindi hits online, Bangla songs streaming, background play music, ad-free music website" />
+<meta name="author" content="Joy Debnath" />
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -232,6 +238,11 @@
     overscroll-behavior-y: contain;
   }
 
+  body, html {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
   /* Player bar */
   #player-bar {
     height: 80px; background: rgba(15,15,15,0.98);
@@ -272,6 +283,21 @@
   #progress-bar::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--purple); cursor: pointer; }
   .time-text { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
 
+  /* Song delete button (admin/authorized only) */
+  .song-delete-btn {
+    background: none; border: none; cursor: pointer;
+    color: rgba(239,68,68,0.35); font-size: .78rem;
+    padding: .4rem .5rem; border-radius: 6px;
+    transition: opacity .2s, color .2s;
+    flex-shrink: 0; opacity: 0;
+    -webkit-tap-highlight-color: transparent;
+    min-width: 32px; min-height: 32px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .song-card:hover .song-delete-btn { opacity: 1; }
+  @media (hover: none) { .song-delete-btn { opacity: 0.6 !important; } }
+  .song-delete-btn:hover, .song-delete-btn:active { color: #ef4444; background: rgba(239,68,68,.12); opacity: 1; }
+
   /* Song card */
   .song-card {
     display: flex; align-items: center; gap: 0.75rem;
@@ -288,20 +314,6 @@
   .song-name { font-size: 0.88rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .song-sub { font-size: 0.75rem; color: var(--muted); }
   .song-dur { font-size: 0.75rem; color: var(--muted); flex-shrink: 0; }
-  .song-delete-btn {
-    background: none; border: none; cursor: pointer;
-    color: rgba(239,68,68,0.35); font-size: .78rem;
-    padding: .4rem .5rem; border-radius: 6px;
-    transition: opacity .2s, color .2s;
-    flex-shrink: 0; opacity: 0;
-    -webkit-tap-highlight-color: transparent;
-    min-width: 32px; min-height: 32px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .song-card:hover .song-delete-btn { opacity: 1; }
-  /* Always show delete on touch devices */
-  @media (hover: none) { .song-delete-btn { opacity: 0.6 !important; } }
-  .song-delete-btn:hover, .song-delete-btn:active { color: #ef4444; background: rgba(239,68,68,.12); opacity: 1; }
 
   /* Membership badges */
   .badge-basic { background: rgba(100,100,100,0.2); color: #aaa; padding: 2px 8px; border-radius: 12px; font-size: 0.72rem; }
@@ -417,12 +429,10 @@
   @keyframes fadeInUp { from { opacity:0; transform:translateX(-50%) translateY(10px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
 </style>
 </head>
-<body>
+<body class="no-pull">
 
-<!-- ======= AUTH SCREEN ======= -->
 <div id="auth-screen">
   <div class="auth-card" id="auth-card-glow">
-    <!-- Logo with image -->
     <div class="text-center mb-6">
       <img src="https://i.pinimg.com/736x/04/2a/e4/042ae4bf49945e32faefafa950b2c3ba.jpg"
            alt="MoodSync Pro" class="logo-img mx-auto mb-2">
@@ -430,20 +440,20 @@
       <p class="text-xs mt-1" style="color:var(--muted)">Your premium music experience</p>
     </div>
 
-    <!-- Login / Sign Up Toggle -->
     <div class="flex gap-1.5 p-1 rounded-xl mb-5" style="background:rgba(255,255,255,0.04);border:1px solid rgba(168,85,247,0.18)">
       <button class="auth-toggle-tab active" id="main-tab-login" onclick="switchMainTab('login')">Login</button>
       <button class="auth-toggle-tab" id="main-tab-signup" onclick="switchMainTab('signup')">Sign Up</button>
     </div>
 
-    <!-- LOGIN VIEW -->
     <div id="view-login" class="auth-view flex flex-col gap-3">
+
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="login-email" type="email"
                placeholder="Email address" autocomplete="email"
                onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
         <i class="fas fa-envelope input-icon"></i>
       </div>
+
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="login-password" type="password"
                placeholder="Password" autocomplete="current-password"
@@ -453,36 +463,43 @@
           <i class="fas fa-eye" id="eye-login"></i>
         </button>
       </div>
+
       <div class="text-right" style="margin-top:-.5rem">
         <button onclick="doPasswordReset()" class="link-btn" type="button">Forgot password?</button>
       </div>
+
       <button class="btn-primary glow-btn" id="email-login-btn" onclick="doEmailLogin()" type="button">
         <span id="email-login-label">Login</span>
       </button>
+
       <div class="or-divider">OR continue with</div>
+
       <button class="google-btn" onclick="doGoogleSignIn()" id="google-login-btn" type="button">
         <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.7 29.3 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.8 20-21 0-1.4-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 16.3 3 9.6 7.8 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 36.5 26.8 37 24 37c-5.2 0-9.6-3.2-11.3-7.8l-6.6 4.9C9.7 40.9 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.5 4.6-4.6 6l6.2 5.2C40.8 36 44 30.5 44 24c0-1.4-.1-2.7-.4-4z"/></svg>
         Continue with Google
       </button>
+
       <p class="text-center text-xs" style="color:var(--muted);margin-top:.25rem">
         New here? <span onclick="switchMainTab('signup')" class="link-accent">Sign Up free</span>
       </p>
     </div>
 
-    <!-- SIGN UP VIEW -->
     <div id="view-signup" class="auth-view hidden flex flex-col gap-3">
+
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-name" type="text" placeholder="Full Name"
                autocomplete="name"
                onkeydown="if(event.key==='Enter')document.getElementById('signup-email').focus()">
         <i class="fas fa-user input-icon"></i>
       </div>
+
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-email" type="email" placeholder="Email address"
                autocomplete="email"
                onkeydown="if(event.key==='Enter')document.getElementById('signup-password').focus()">
         <i class="fas fa-envelope input-icon"></i>
       </div>
+
       <div class="glow-input-wrap">
         <input class="input-field glow-input" id="signup-password" type="password"
                placeholder="Password (min 8 chars)" autocomplete="new-password"
@@ -492,14 +509,18 @@
           <i class="fas fa-eye" id="eye-signup"></i>
         </button>
       </div>
+
       <button class="btn-primary glow-btn" id="signup-submit-btn" onclick="doEmailSignup()" type="button">
         <span id="signup-submit-label">Create Account</span>
       </button>
+
       <div class="or-divider">OR</div>
+
       <button class="google-btn" onclick="doGoogleSignIn()" type="button">
         <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.7 29.3 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.8 20-21 0-1.4-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.4 5.1 29.5 3 24 3 16.3 3 9.6 7.8 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 36.5 26.8 37 24 37c-5.2 0-9.6-3.2-11.3-7.8l-6.6 4.9C9.7 40.9 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.5 4.6-4.6 6l6.2 5.2C40.8 36 44 30.5 44 24c0-1.4-.1-2.7-.4-4z"/></svg>
         Sign Up with Google
       </button>
+
       <p class="text-center text-xs" style="color:var(--muted);margin-top:.25rem">
         Already have an account? <span onclick="switchMainTab('login')" class="link-accent">Login</span>
       </p>
@@ -511,7 +532,6 @@
   </div>
 </div>
 
-<!-- ======= MAIN APP ======= -->
 <div id="app-screen">
   <div id="sidebar-overlay" onclick="closeSidebar()"></div>
   <nav id="sidebar">
@@ -588,7 +608,6 @@
   </div>
 </div>
 
-<!-- Premium Popup -->
 <div id="premium-popup" class="modal-overlay hidden">
   <div class="modal-box text-center" style="max-width:420px">
     <div class="text-5xl mb-3">⭐</div>
@@ -629,7 +648,6 @@
   </div>
 </div>
 
-<!-- Admin PIN Modal -->
 <div id="admin-pin-modal" class="modal-overlay hidden">
   <div class="modal-box" style="max-width:380px">
     <div class="text-center mb-5">
@@ -661,7 +679,6 @@
   </div>
 </div>
 
-<!-- Add Song Modal -->
 <div id="add-song-modal" class="modal-overlay hidden">
   <div class="modal-box">
     <div class="flex items-center justify-between mb-4">
@@ -681,7 +698,6 @@
   </div>
 </div>
 
-<!-- Hidden YouTube IFrame -->
 <div id="yt-player"></div>
 
 <script>
@@ -877,7 +893,7 @@ function setAuthLoading(isLoading, btnId, labelId, labelText) {
 }
 
 // ============================================================
-//  Google Sign-In (FIX: lock prevents duplicate popup)
+//  Google Sign-In
 // ============================================================
 let googlePopupOpen = false;
 async function doGoogleSignIn() {
@@ -909,7 +925,7 @@ async function _handleGoogleUser(fbUser) {
 }
 
 // ============================================================
-//  Email Login (FIX: always re-enables button in finally)
+//  Email Login
 // ============================================================
 async function doEmailLogin() {
   const email = document.getElementById('login-email')?.value?.trim() || '';
@@ -920,7 +936,6 @@ async function doEmailLogin() {
   if (pass.length < 8) { showAuthError('Password must be at least 8 characters.'); return; }
   clearAuthError();
 
-  // Admin gate
   if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && pass === ADMIN_PASS) {
     setAuthLoading(true, 'email-login-btn', 'email-login-label', 'Logging in…');
     try {
@@ -954,7 +969,6 @@ async function doEmailLogin() {
       err.message || 'Login failed.'
     );
   } finally {
-    // CRITICAL: always re-enable — prevents "dead button after logout" bug
     setAuthLoading(false, 'email-login-btn', 'email-login-label', 'Login');
   }
 }
@@ -968,7 +982,7 @@ async function doEmailSignup() {
   const pass  = document.getElementById('signup-password')?.value || '';
   if (!name)  { showAuthError('Please enter your full name.'); return; }
   if (!email) { showAuthError('Please enter your email address.'); return; }
-  if (!isValidEmail(email)) { showAuthError('Please enter a valid email.'); return; }
+  if (!isValidEmail(email)) { showAuthError('Please enter a valid email address.'); return; }
   if (!pass || pass.length < 8) { showAuthError('Password must be at least 8 characters.'); return; }
   clearAuthError();
   setAuthLoading(true, 'signup-submit-btn', 'signup-submit-label', 'Creating account…');
@@ -1050,9 +1064,6 @@ async function tryAutoLogin() {
   clearSession();
 }
 
-// ============================================================
-//  Logout (FIX: fully resets all state including button labels)
-// ============================================================
 function doLogout() {
   clearSession();
   currentUser = null;
@@ -1064,7 +1075,6 @@ function doLogout() {
   isTransitioning = false;
   pendingTrackIdx = -1;
 
-  // Stop any playing audio
   if (ytPlayer) {
     try { ytPlayer.stopVideo(); } catch(e){}
     try { ytPlayer.mute(); } catch(e){}
@@ -1075,17 +1085,14 @@ function doLogout() {
   document.getElementById('app-screen').classList.remove('visible');
   document.getElementById('auth-screen').style.display = 'flex';
 
-  // Re-enable ALL auth buttons (critical fix)
   ['email-login-btn','signup-submit-btn'].forEach(id => {
     const btn = document.getElementById(id);
     if (btn) btn.disabled = false;
   });
-  // Reset label text
   const loginLabel  = document.getElementById('email-login-label');
   const signupLabel = document.getElementById('signup-submit-label');
   if (loginLabel)  loginLabel.innerHTML = 'Login';
   if (signupLabel) signupLabel.innerHTML = 'Create Account';
-  // Clear inputs
   ['login-email','login-password','signup-name','signup-email','signup-password'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -1111,10 +1118,10 @@ function launchApp(isRestore = false) {
 
 function updateUserUI() {
   const statusMap = {
-    basic:   { label: 'Basic',         cls: 'badge-basic' },
-    premium: { label: 'Premium ⭐',    cls: 'badge-premium' },
-    vip:     { label: 'Ultra VIP 👑',  cls: 'badge-vip' },
-    admin:   { label: 'Admin 🛡️',      cls: 'badge-basic' },
+    basic:   { label: 'Basic',          cls: 'badge-basic' },
+    premium: { label: 'Premium ⭐',     cls: 'badge-premium' },
+    vip:     { label: 'Ultra VIP 👑',   cls: 'badge-vip' },
+    admin:   { label: 'Admin 🛡️',       cls: 'badge-basic' },
   };
   const s = statusMap[currentUser.status] || statusMap.basic;
   document.getElementById('sidebar-user').innerHTML = `
@@ -1252,9 +1259,9 @@ function renderHome(area) {
 function songCardHTML(song, globalIdx, displayNum) {
   const isActive  = currentTrackIdx === globalIdx || pendingTrackIdx === globalIdx;
   const playing   = isActive && isPlaying;
-  const userEmail = currentUser?.email?.toLowerCase() || '';
-  const canDelete = userEmail === SONG_DELETE_EMAIL.toLowerCase() ||
-                    userEmail === ADMIN_EMAIL.toLowerCase() ||
+  const callerEmail = (fbAuth?.currentUser?.email || currentUser?.email || '').toLowerCase();
+  const canDelete = callerEmail === SONG_DELETE_EMAIL.toLowerCase() ||
+                    callerEmail === ADMIN_EMAIL.toLowerCase() ||
                     currentUser?.status === 'admin';
   const safeTitle = (song.title||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
   const deleteBtn = canDelete
@@ -1361,7 +1368,7 @@ function renderUpgrade(area) {
 }
 
 // ============================================================
-//  Adsterra — Social Bar (effectivecpmnetwork URLs)
+//  Adsterra — Social Bar
 // ============================================================
 let adsterraLoaded = false;
 function loadAdsterraForBasicUser() {
@@ -1378,7 +1385,7 @@ function loadAdsterraForBasicUser() {
 }
 
 // ============================================================
-//  Tips Ad Gate (effectivecpmnetwork Smartlink)
+//  Tips Ad Gate
 // ============================================================
 function openTipsWithAdGate(targetPage) {
   const isPaid = currentUser && (currentUser.status==='premium'||currentUser.status==='vip'||currentUser.status==='admin');
@@ -1405,7 +1412,7 @@ function renderBoysTips(area) {
       <div class="tip-card"><div class="tip-icon">🎧</div><strong class="font-display">Music Therapy</strong><p class="text-sm mt-1" style="color:var(--muted)">Play your favorite tracks and let the rhythm reset your mood. Music releases dopamine which elevates your energy instantly.</p></div>
       <div class="tip-card"><div class="tip-icon">🏃</div><strong class="font-display">Move Your Body</strong><p class="text-sm mt-1" style="color:var(--muted)">Even a 10-min walk outside can drastically shift your mindset and energy.</p></div>
       <div class="tip-card"><div class="tip-icon">🧘</div><strong class="font-display">Deep Breathing</strong><p class="text-sm mt-1" style="color:var(--muted)">4 counts in, 4 hold, 4 out. Repeat 5 times. Your nervous system will calm down and clarity returns.</p></div>
-      <div class="tip-card"><div class="tip-icon">📞</div><strong class="font-display">Talk to Someone</strong><p class="text-sm mt-1" style="color:var(--muted)">Don't bottle it up. Chat, laugh, vent — connection is the fastest mood cure.</p></div>
+      <div class="tip-card"><div class="tip-icon">📞</div><strong class="font-display">Talk to Someone</strong><p class="text-sm mt-1" style="color:var(--muted)">Don't bottle it up. Chat, laugh, vent — connection is the fastest mood cure available to us.</p></div>
       <div class="tip-card"><div class="tip-icon">💧</div><strong class="font-display">Stay Hydrated</strong><p class="text-sm mt-1" style="color:var(--muted)">Dehydration causes brain fog and irritability. Drink water now.</p></div>
       <div class="tip-card"><div class="tip-icon">🌙</div><strong class="font-display">Rest & Recover</strong><p class="text-sm mt-1" style="color:var(--muted)">7-8 hours repairs your mind, body, and emotional resilience.</p></div>
       <div class="tip-card"><div class="tip-icon">✍️</div><strong class="font-display">Write it Down</strong><p class="text-sm mt-1" style="color:var(--muted)">Write 3 things you're grateful for and watch your perspective shift.</p></div>
@@ -1439,7 +1446,7 @@ function renderGirlsTips(area) {
       <div class="tip-card girls"><div class="tip-icon">🌿</div><strong class="font-display" style="color:#f9a8d4">Nature Walk</strong><p class="text-sm mt-1" style="color:var(--muted)">Step outside and breathe fresh air. Nature reduces anxiety.</p></div>
       <div class="tip-card girls"><div class="tip-icon">🤗</div><strong class="font-display" style="color:#f9a8d4">Call Your Person</strong><p class="text-sm mt-1" style="color:var(--muted)">A 10-minute chat reminds you that you're loved.</p></div>
       <div class="tip-card girls"><div class="tip-icon">🍵</div><strong class="font-display" style="color:#f9a8d4">Slow Morning</strong><p class="text-sm mt-1" style="color:var(--muted)">Make a warm drink and sit without your phone for 5 minutes.</p></div>
-      <div class="tip-card girls"><div class="tip-icon">🎨</div><strong class="font-display" style="color:#f9a8d4">Create Something</strong><p class="text-sm mt-1" style="color:var(--muted)">Draw, cook, rearrange your room. Creativity heals.</p></div>
+      <div class="tip-card girls"><div class="tip-icon">🎨</div><strong class="font-display" style="color:#f9a8d4">Create Something</strong><p class="text-sm mt-1" style="color:var(--muted)">Draw, doodle, cook something new. Creative expression heals.</p></div>
       <div class="tip-card girls"><div class="tip-icon">🧘‍♀️</div><strong class="font-display" style="color:#f9a8d4">Body Scan Meditation</strong><p class="text-sm mt-1" style="color:var(--muted)">10 minutes resets your entire nervous system.</p></div>
       <div class="tip-card girls"><div class="tip-icon">💌</div><strong class="font-display" style="color:#f9a8d4">Letter to Yourself</strong><p class="text-sm mt-1" style="color:var(--muted)">Write to your future self about what you're feeling today.</p></div>
     </div>
@@ -1528,7 +1535,6 @@ async function adminRemoveSong(id, title) {
   if (!confirm(`Remove "${title}"?`)) return;
   const song = songs.find(s => s.id === id);
   if (song && song.cloudKey) await fbDelete(`songs/${song.cloudKey}`);
-  // Instant local removal
   songs         = songs.filter(s => s.id !== id);
   filteredSongs = filteredSongs.filter(s => s.id !== id);
   document.getElementById('remove-suggestions')?.classList.add('hidden');
@@ -1537,7 +1543,7 @@ async function adminRemoveSong(id, title) {
 }
 
 // ============================================================
-//  deleteSong — FIXED: instant local update + immediate re-render
+//  deleteSong — Instant local wipe + active UI refresh
 // ============================================================
 async function deleteSong(songKey, youtubeId, btnElement) {
   const callerEmail = (fbAuth?.currentUser?.email || currentUser?.email || '').toLowerCase();
@@ -1556,18 +1562,15 @@ async function deleteSong(songKey, youtubeId, btnElement) {
       if (btnElement) { btnElement.disabled = false; btnElement.innerHTML = '<i class="fas fa-trash-alt"></i>'; }
       return;
     }
-    // ── INSTANT local removal (no page reload needed) ────────
     songs         = songs.filter(s => s.cloudKey !== songKey && s.id !== youtubeId);
     filteredSongs = filteredSongs.filter(s => s.cloudKey !== songKey && s.id !== youtubeId);
 
-    // Fix player index after removal
     if (songs.length === 0) {
       currentTrackIdx = -1; pendingTrackIdx = -1; isPlaying = false;
     } else if (currentTrackIdx >= songs.length) {
       currentTrackIdx = songs.length - 1;
       pendingTrackIdx = currentTrackIdx;
     }
-    // Re-render page immediately
     renderPage(currentPage);
     showToast('Song deleted ✅');
   } catch(e) {
@@ -1595,7 +1598,7 @@ async function adminAddSong() {
       renderPage(currentPage);
       showToast(`"${title}" added ✅`);
     } else {
-      alert('Failed to add song. Make sure you are logged in as admin via Firebase Auth (not hardcoded session).\nCheck console (F12) for details.');
+      alert('Failed to add song. Sign in with joydebnath.info@gmail.com on the login screen to authorize cloud database storage keys.');
     }
   } catch(e) {
     alert('Failed to add song: ' + e.message);
@@ -1605,16 +1608,8 @@ async function adminAddSong() {
 }
 
 // ============================================================
-//  YouTube Player Engine — Anti-Overlap Mobile Fix
-//
-//  Key improvements:
-//  1. _stopAndClear() mutes + stops before any new load
-//  2. loadVideoById is called with explicit suggestedQuality
-//  3. isTransitioning blocks stale ENDED/PAUSED events
-//  4. pendingTrackIdx vs currentTrackIdx separation
-//  5. ytErrorStreak prevents infinite skip on blocked videos
+//  YouTube Player Engine — Anti-Overlap Mobile Logic
 // ============================================================
-
 let ytLoadPending   = false;
 let isTransitioning = false;
 let ytErrorStreak   = 0;
@@ -1625,16 +1620,7 @@ window.onYouTubeIframeAPIReady = function() {
   ytReady = true;
   ytPlayer = new YT.Player('yt-player', {
     height: '1', width: '1',
-    playerVars: {
-      autoplay:    0,
-      controls:    0,
-      playsinline: 1,   // iOS inline audio — critical
-      rel:         0,
-      fs:          0,
-      disablekb:   1,
-      enablejsapi: 1,
-      origin:      location.origin
-    },
+    playerVars: { autoplay: 0, controls: 0, playsinline: 1, rel: 0, disablekb: 1, enablejsapi: 1, origin: location.origin },
     events: {
       onReady:       onPlayerReady,
       onStateChange: onPlayerStateChange,
@@ -1664,7 +1650,6 @@ function onPlayerStateChange(e) {
     if (song) updatePlayerBar(song);
     startProgressTracking();
     refreshActiveCard();
-
   } else if (state === YT.PlayerState.PAUSED) {
     if (!isTransitioning) {
       isPlaying = false;
@@ -1673,7 +1658,6 @@ function onPlayerStateChange(e) {
       clearInterval(progressInterval);
       refreshActiveCard();
     }
-
   } else if (state === YT.PlayerState.ENDED) {
     if (!isTransitioning) {
       isPlaying = false;
@@ -1681,7 +1665,6 @@ function onPlayerStateChange(e) {
       nextTrack();
     }
   }
-  // UNSTARTED(-1), BUFFERING(3), CUED(5) — intentionally ignored
 }
 
 function onPlayerError(e) {
@@ -1698,13 +1681,10 @@ function onPlayerError(e) {
   setTimeout(() => { if (!isPlaying) nextTrack(); }, 1200);
 }
 
-// ── Anti-overlap: stop + mute before any new load ────────────
 function _stopAndClear() {
   if (!ytPlayer || typeof ytPlayer.stopVideo !== 'function') return;
   try { ytPlayer.mute(); }      catch(e){}
   try { ytPlayer.stopVideo(); } catch(e){}
-  // Small delay lets iOS audio pipeline flush the buffer
-  // before the new loadVideoById call is issued
 }
 
 function _doPlay(idx) {
@@ -1717,9 +1697,7 @@ function _doPlay(idx) {
   updatePlayerBarPending(song);
 
   try {
-    // Stop previous audio completely before loading new video
     _stopAndClear();
-    // Slight delay on mobile to let audio pipeline drain
     setTimeout(() => {
       try {
         ytPlayer.unMute();
@@ -1747,7 +1725,6 @@ function updatePlayerBar(song) {
 }
 
 function playSongById(ytId, hintIdx) {
-  // Always look up by YouTube ID first (survives index shifts after sort/delete)
   let idx = songs.findIndex(s => s.id === ytId);
   if (idx === -1) { idx = hintIdx; console.warn(`playSongById: ytId "${ytId}" not found, using hint ${hintIdx}`); }
   if (idx < 0 || idx >= songs.length) return;
@@ -1756,7 +1733,6 @@ function playSongById(ytId, hintIdx) {
 
 function playSong(idx) {
   if (typeof idx !== 'number' || idx < 0 || idx >= songs.length) return;
-  // Clicking current confirmed-playing song → toggle
   if (idx === currentTrackIdx && !isTransitioning && ytReady && ytPlayer) { togglePlay(); return; }
   isTransitioning = false; ytErrorStreak = 0;
   if (!ytReady || !ytPlayer || typeof ytPlayer.loadVideoById !== 'function') {
@@ -1879,7 +1855,7 @@ function verifyAdminPin() {
       errEl.textContent = 'Too many failed attempts. Locked for 5 minutes.';
       checkLockout();
     } else {
-      errEl.textContent = `Incorrect credentials. ${remaining} attempt${remaining!==1?'s':''} left.`;
+      errEl.textContent = `Incorrect credentials. ${remaining} attempt${remaining !== 1 ? 's' : ''} left.`;
     }
     errEl.classList.remove('hidden');
     document.getElementById('admin-pin-pass').value = '';
